@@ -2,7 +2,7 @@ import { Lock } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import PageFrame from '../components/layout/PageFrame'
 import CreateHeader from '../components/navigation/CreateHeader'
-import { defaultPromptCopy, includeOptions } from '../data/brandData'
+import {includeOptions } from '../data/brandData'
 import {
   appTabs,
   formatOptions,
@@ -20,7 +20,7 @@ function CreatePage({ navigate }) {
   const [duration, setDuration] = useState(20)
   const [activeTab, setActiveTab] = useState('Preview')
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [prompt, setPrompt] = useState(defaultPromptCopy)
+  const [prompt, setPrompt] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
   const [hasGenerated, setHasGenerated] = useState(false)
   const { items: included, toggleItem: toggleIncluded } = useToggleList(includeOptions)
@@ -54,7 +54,7 @@ function CreatePage({ navigate }) {
         />
 
         <main className="mt-8 sm:mt-10 lg:mt-12">
-          <h1 className="text-[clamp(2.35rem,7vw,3.25rem)] font-semibold tracking-[-0.06em] text-[#131129]">
+          <h1 className="text-[clamp(2.35rem,7vw,3.25rem)] font-semibold tracking-[0.00em] text-[#131129]">
             Create on-brand content
           </h1>
           <p className="mt-1 max-w-[760px] text-[16px] tracking-[-0.02em] text-[#7d7692] sm:text-[18px]">

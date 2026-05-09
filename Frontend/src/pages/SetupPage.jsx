@@ -168,73 +168,81 @@ function SetupPage({ navigate }) {
           </div>
 
           <div className="mt-8 space-y-4">
-            <SetupIdentitySection
-              brandName={draftData.brandName}
-              logo={draftData.logo}
-              mascot={draftData.mascot}
-              isEditing={isEditing}
-              brandNameError={
-                showValidation && !validation.brandNameValid
-                  ? 'Add your brand name to continue.'
-                  : ''
-              }
-              logoError={
-                showValidation && !validation.logoValid
-                  ? 'Upload a logo before continuing.'
-                  : ''
-              }
-              onBrandNameChange={(value) => updateDraftField('brandName', value)}
-              onLogoUpload={(file) => handleAssetUpload('logo', file)}
-              onMascotUpload={(file) => handleAssetUpload('mascot', file)}
-              onLogoRemove={() => updateDraftAsset('logo', createEmptyAsset())}
-              onMascotRemove={() => updateDraftAsset('mascot', createEmptyAsset())}
-            />
-            <SetupPersonalitySection
-              tagline={draftData.tagline}
-              tone={draftData.tone}
-              toneOptions={toneOptions}
-              isEditing={isEditing}
-              toneError={
-                showValidation && !validation.toneValid
-                  ? 'Select the tone that best represents your brand.'
-                  : ''
-              }
-              onTaglineChange={(value) => updateDraftField('tagline', value)}
-              onToneChange={(value) => updateDraftField('tone', value)}
-            />
-            <SetupVisualStyleSection
-              palette={draftData.palette}
-              references={draftData.references}
-              isEditing={isEditing}
-              paletteError={
-                showValidation && !validation.paletteValid
-                  ? 'Choose between 3 and 5 brand colors.'
-                  : ''
-              }
-              activePaletteIndex={activePaletteIndex}
-              onAddPaletteColor={handleAddColor}
-              onUpdatePaletteColor={openPaletteEditor}
-              onRemovePaletteColor={handleRemoveColor}
-              onPaletteEditorClose={() => setActivePaletteIndex(-1)}
-              onPaletteColorChange={handlePaletteColorChange}
-              onReferenceUpload={handleReferenceUpload}
-              onReferenceRemove={(index) =>
-                updateDraftReferences(
-                  draftData.references.filter((_, itemIndex) => itemIndex !== index),
-                )
-              }
-            />
-            <SetupAudienceSection
-              audienceOptions={audienceOptions}
-              selectedAudience={draftData.audience}
-              isEditing={isEditing}
-              audienceError={
-                showValidation && !validation.audienceValid
-                  ? 'Choose at least one audience segment.'
-                  : ''
-              }
-              onAudienceToggle={toggleAudience}
-            />
+            <div id="step-1" className="scroll-mt-24">
+              <SetupIdentitySection
+                brandName={draftData.brandName}
+                logo={draftData.logo}
+                mascot={draftData.mascot}
+                isEditing={isEditing}
+                brandNameError={
+                  showValidation && !validation.brandNameValid
+                    ? 'Add your brand name to continue.'
+                    : ''
+                }
+                logoError={
+                  showValidation && !validation.logoValid
+                    ? 'Upload a logo before continuing.'
+                    : ''
+                }
+                onBrandNameChange={(value) => updateDraftField('brandName', value)}
+                onLogoUpload={(file) => handleAssetUpload('logo', file)}
+                onMascotUpload={(file) => handleAssetUpload('mascot', file)}
+                onLogoRemove={() => updateDraftAsset('logo', createEmptyAsset())}
+                onMascotRemove={() => updateDraftAsset('mascot', createEmptyAsset())}
+              />
+            </div>
+            <div id="step-2" className="scroll-mt-24">
+              <SetupPersonalitySection
+                tagline={draftData.tagline}
+                tone={draftData.tone}
+                toneOptions={toneOptions}
+                isEditing={isEditing}
+                toneError={
+                  showValidation && !validation.toneValid
+                    ? 'Select the tone that best represents your brand.'
+                    : ''
+                }
+                onTaglineChange={(value) => updateDraftField('tagline', value)}
+                onToneChange={(value) => updateDraftField('tone', value)}
+              />
+            </div>
+            <div id="step-3" className="scroll-mt-24">
+              <SetupVisualStyleSection
+                palette={draftData.palette}
+                references={draftData.references}
+                isEditing={isEditing}
+                paletteError={
+                  showValidation && !validation.paletteValid
+                    ? 'Choose between 3 and 5 brand colors.'
+                    : ''
+                }
+                activePaletteIndex={activePaletteIndex}
+                onAddPaletteColor={handleAddColor}
+                onUpdatePaletteColor={openPaletteEditor}
+                onRemovePaletteColor={handleRemoveColor}
+                onPaletteEditorClose={() => setActivePaletteIndex(-1)}
+                onPaletteColorChange={handlePaletteColorChange}
+                onReferenceUpload={handleReferenceUpload}
+                onReferenceRemove={(index) =>
+                  updateDraftReferences(
+                    draftData.references.filter((_, itemIndex) => itemIndex !== index),
+                  )
+                }
+              />
+            </div>
+            <div id="step-4" className="scroll-mt-24">
+              <SetupAudienceSection
+                audienceOptions={audienceOptions}
+                selectedAudience={draftData.audience}
+                isEditing={isEditing}
+                audienceError={
+                  showValidation && !validation.audienceValid
+                    ? 'Choose at least one audience segment.'
+                    : ''
+                }
+                onAudienceToggle={toggleAudience}
+              />
+            </div>
           </div>
 
           <div className="mt-auto pt-6">
@@ -246,11 +254,10 @@ function SetupPage({ navigate }) {
             <button
               onClick={saveAndContinue}
               disabled={!validation.isValid}
-              className={`flex min-h-[58px] w-full items-center justify-center gap-3 rounded-[12px] px-6 py-4 text-center text-[16px] font-medium tracking-[-0.02em] shadow-[0_18px_48px_rgba(125,85,255,0.26)] transition duration-300 sm:px-8 sm:text-[17px] ${
-                validation.isValid
+              className={`flex min-h-[58px] w-full items-center justify-center gap-3 rounded-[12px] px-6 py-4 text-center text-[16px] font-medium tracking-[-0.02em] shadow-[0_18px_48px_rgba(125,85,255,0.26)] transition duration-300 sm:px-8 sm:text-[17px] ${validation.isValid
                   ? 'bg-[linear-gradient(90deg,#7340f6_0%,#e57ac5_100%)] text-white hover:-translate-y-0.5 hover:shadow-[0_22px_58px_rgba(125,85,255,0.34)] active:scale-[0.995]'
                   : 'cursor-not-allowed bg-[linear-gradient(90deg,#cbb7ff_0%,#edc6de_100%)] text-white/85 shadow-none'
-              }`}
+                }`}
             >
               Save Brand &amp; Start Creating
               <ArrowRight className="h-4 w-4" />
