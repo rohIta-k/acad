@@ -31,9 +31,6 @@ export const paletteGradientMap = {
   '#F2F0FF': 'bg-[linear-gradient(135deg,#f7f5ff_0%,#efecff_100%)]',
 }
 
-export const defaultPromptCopy =
-  'Diwali ad, warm and emotional, family scene, end with mascot'
-
 export function createEmptyAsset() {
   return {
     fileName: '',

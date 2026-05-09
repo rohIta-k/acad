@@ -24,6 +24,12 @@ function CreateControlPanelSection({
   onDurationChange,
   onGenerateClick,
 }) {
+  const isGenerateDisabled =
+    !prompt.trim() ||
+    !selectedFormat ||
+    !selectedPlatform ||
+    includedItems.length === 0 ||
+    !duration
   return (
     <ControlPanelCard>
       <BrandSummaryCard brandData={brandData} />
@@ -107,7 +113,11 @@ function CreateControlPanelSection({
 
       <button
         onClick={onGenerateClick}
-        className="mt-7 flex min-h-[56px] w-full items-center justify-center gap-3 rounded-[12px] bg-[linear-gradient(90deg,#7340f6_0%,#8e56ff_46%,#7340f6_100%)] px-5 py-4 text-[20px] font-medium tracking-[-0.04em] text-white shadow-[0_18px_48px_rgba(125,85,255,0.32)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_58px_rgba(125,85,255,0.38)] active:scale-[0.995] sm:min-h-[60px] sm:text-[24px]"
+        disabled={isGenerateDisabled}
+        className={`mt-7 flex min-h-[56px] w-full items-center justify-center gap-3 rounded-[12px] px-5 py-4 text-[20px] font-medium tracking-[-0.04em] transition duration-200 sm:min-h-[60px] sm:text-[24px] ${isGenerateDisabled
+            ? 'cursor-not-allowed bg-[#d9d4e7] text-[#8b86a3]'
+            : 'bg-[linear-gradient(90deg,#7340f6_0%,#8e56ff_46%,#7340f6_100%)] text-white shadow-[0_18px_48px_rgba(125,85,255,0.32)] hover:-translate-y-0.5 hover:shadow-[0_22px_58px_rgba(125,85,255,0.38)] active:scale-[0.995]'
+          }`}
       >
         <Sparkles className="h-5 w-5" />
         Generate

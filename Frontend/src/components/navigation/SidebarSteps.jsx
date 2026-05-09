@@ -6,10 +6,21 @@ function SidebarSteps({ steps, activeStep, onStepChange }) {
         return (
           <button
             key={item.id}
-            onClick={() => onStepChange(item.id)}
+            onClick={() => {
+              onStepChange(item.id)
+
+              const section = document.getElementById(`step-${item.id}`)
+
+              if (section) {
+                section.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start',
+                })
+              }
+            }}
             className={`group flex w-full items-center gap-5 rounded-[18px] px-3 py-3 text-left transition-all duration-150 ${active
-                ? 'scale-[1.02] bg-white shadow-[0_6px_18px_rgba(126,79,243,0.08)]'
-                : 'hover:scale-[1.01] hover:bg-white/70'
+              ? 'scale-[1.02] bg-white shadow-[0_6px_18px_rgba(126,79,243,0.08)]'
+              : 'hover:scale-[1.01] hover:bg-white/70'
               }`}
           >
             <span
