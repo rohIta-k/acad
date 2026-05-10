@@ -1,19 +1,11 @@
-import React from 'react'
 import { supabase } from '../../utils/supabaseClient'
 
 function LoginButton() {
   const handleLogin = async () => {
     try {
-      // debug: confirm click handler fired
-      // eslint-disable-next-line no-console
-      console.log('LoginButton clicked, initiating Supabase OAuth')
-
       await supabase.auth.signInWithOAuth({ provider: 'google' }, { redirectTo: window.location.href })
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error('Supabase sign-in error', err)
-      // show a visible alert so user notices failures in dev
-      // eslint-disable-next-line no-alert
       alert('Sign-in failed: ' + (err?.message || String(err)))
     }
   }

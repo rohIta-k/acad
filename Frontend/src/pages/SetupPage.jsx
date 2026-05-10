@@ -1,10 +1,15 @@
 import { ArrowRight, PencilLine } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import SetupShell from '../components/layout/SetupShell'
 import PageFrame from '../components/layout/PageFrame'
 import SetupSidebar from '../components/navigation/SetupSidebar'
-import { audienceOptions, createEmptyAsset, toneOptions } from '../data/brandData'
+import {
+  audienceOptions,
+  createDefaultBrandData,
+  createEmptyAsset,
+  toneOptions,
+} from '../data/brandData'
 import { sidebarSteps } from '../data/navigation'
 import { useBrandStorage } from '../hooks/useBrandStorage'
 import SetupAudienceSection from '../sections/SetupAudienceSection'
@@ -14,15 +19,23 @@ import SetupPersonalitySection from '../sections/SetupPersonalitySection'
 import SetupVisualStyleSection from '../sections/SetupVisualStyleSection'
 import { fileToDataUrl, isImageFile } from '../utils/fileUpload'
 
-function SetupPage() {
-  const navigate = useNavigate()
+function BrandSetupEditor({
+  initialDraft,
+  isEditMode,
+  brandId,
+  navigate,
+  persistBrandData,
+  setActiveBrand,
+  error,
+}) {
   const [step, setStep] = useState(1)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const { brandData, persistBrandData } = useBrandStorage()
-  const [draftData, setDraftData] = useState(() => brandData)
-  const [isEditing, setIsEditing] = useState(!brandData.completedSetup)
+  const [draftData, setDraftData] = useState(initialDraft)
+  const [isEditing] = useState(true)
   const [showValidation, setShowValidation] = useState(false)
   const [activePaletteIndex, setActivePaletteIndex] = useState(-1)
+  const [isSaving, setIsSaving] = useState(false)
+  const [saveError, setSaveError] = useState('')
 
   const validation = useMemo(() => {
     const brandNameValid = draftData.brandName.trim().length > 0
@@ -126,17 +139,30 @@ function SetupPage() {
     setActivePaletteIndex(-1)
   }
 
-  const saveAndContinue = () => {
+  const saveAndContinue = async () => {
     setShowValidation(true)
     if (!validation.isValid) return
 
-    persistBrandData({
-      ...draftData,
-      completedSetup: true,
-      updatedAt: new Date().toISOString(),
-    })
-    setIsEditing(false)
-    navigate('/create')
+    setIsSaving(true)
+    setSaveError('')
+
+    try {
+      const savedBrand = await persistBrandData(
+        {
+          ...draftData,
+          completedSetup: true,
+          updatedAt: new Date().toISOString(),
+        },
+        isEditMode ? brandId : null,
+      )
+
+      setActiveBrand(savedBrand.id)
+      navigate('/create')
+    } catch (err) {
+      setSaveError(err?.message || 'Failed to save your brand. Please try again.')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   return (
@@ -157,13 +183,13 @@ function SetupPage() {
         <div className="flex min-h-full flex-col">
           <SetupHeaderSection />
           <div className="mt-2 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center sm:justify-end">
-            {draftData.completedSetup && !isEditing ? (
+            {isEditMode ? (
               <button
-                onClick={() => setIsEditing(true)}
+                onClick={() => navigate('/brands')}
                 className="inline-flex items-center gap-2 self-start rounded-[12px] border border-[#e5def3] bg-white/85 px-4 py-3 text-[15px] font-medium text-[#494564] shadow-[0_10px_24px_rgba(89,68,148,0.05)] transition hover:border-[#cfbfef] hover:text-[#2e2947] sm:self-auto"
               >
                 <PencilLine className="h-4 w-4" />
-                Edit Brand
+                Back to Brands
               </button>
             ) : null}
           </div>
@@ -252,21 +278,92 @@ function SetupPage() {
                 Complete the required brand details before continuing.
               </div>
             ) : null}
+            {error ? (
+              <div className="mb-4 rounded-[16px] border border-[#f1c6d5] bg-[linear-gradient(180deg,rgba(255,245,248,0.96)_0%,rgba(255,250,252,0.98)_100%)] px-4 py-3 text-[14px] text-[#b15576] shadow-[0_12px_28px_rgba(187,84,122,0.08)]">
+                {error}
+              </div>
+            ) : null}
+            {saveError ? (
+              <div className="mb-4 rounded-[16px] border border-[#f1c6d5] bg-[linear-gradient(180deg,rgba(255,245,248,0.96)_0%,rgba(255,250,252,0.98)_100%)] px-4 py-3 text-[14px] text-[#b15576] shadow-[0_12px_28px_rgba(187,84,122,0.08)]">
+                {saveError}
+              </div>
+            ) : null}
             <button
               onClick={saveAndContinue}
-              disabled={!validation.isValid}
+              disabled={!validation.isValid || isSaving}
               className={`flex min-h-[58px] w-full items-center justify-center gap-3 rounded-[12px] px-6 py-4 text-center text-[16px] font-medium tracking-[-0.02em] shadow-[0_18px_48px_rgba(125,85,255,0.26)] transition duration-300 sm:px-8 sm:text-[17px] ${validation.isValid
                   ? 'bg-[linear-gradient(90deg,#7340f6_0%,#e57ac5_100%)] text-white hover:-translate-y-0.5 hover:shadow-[0_22px_58px_rgba(125,85,255,0.34)] active:scale-[0.995]'
                   : 'cursor-not-allowed bg-[linear-gradient(90deg,#cbb7ff_0%,#edc6de_100%)] text-white/85 shadow-none'
                 }`}
             >
-              Save Brand &amp; Start Creating
+              {isSaving ? 'Saving brand...' : 'Save Brand & Start Creating'}
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
         </div>
       </SetupShell>
     </PageFrame>
+  )
+}
+
+function SetupPage() {
+  const navigate = useNavigate()
+  const { brandId } = useParams()
+  const isEditMode = Boolean(brandId)
+  const { user, brands, loading, error, persistBrandData, setActiveBrand } = useBrandStorage()
+
+  const selectedBrand = useMemo(() => {
+    if (!isEditMode) return null
+    return brands.find((item) => item.id === brandId) || null
+  }, [brandId, brands, isEditMode])
+
+  if (loading) {
+    return (
+      <PageFrame className="p-6 sm:p-8">
+        <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#e9e2f6] bg-white/85 p-6 text-[#635d7c] shadow-[0_18px_42px_rgba(85,63,148,0.08)] sm:p-8">
+          Loading your brand workspace...
+        </div>
+      </PageFrame>
+    )
+  }
+
+  if (!user) {
+    return (
+      <PageFrame className="p-6 sm:p-8">
+        <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#efdbe5] bg-white/85 p-6 text-[#8f4362] shadow-[0_18px_42px_rgba(85,63,148,0.08)] sm:p-8">
+          Please sign in to create and manage your brands.
+        </div>
+      </PageFrame>
+    )
+  }
+
+  if (isEditMode && !selectedBrand) {
+    return (
+      <PageFrame className="p-6 sm:p-8">
+        <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#efdbe5] bg-white/85 p-6 text-[#8f4362] shadow-[0_18px_42px_rgba(85,63,148,0.08)] sm:p-8">
+          <p>This brand no longer exists in your account.</p>
+          <button
+            onClick={() => navigate('/brands')}
+            className="mt-4 inline-flex items-center gap-2 rounded-[12px] border border-[#e5def3] bg-white px-4 py-2 text-[14px] font-medium text-[#4e4768]"
+          >
+            Back to Brands
+          </button>
+        </div>
+      </PageFrame>
+    )
+  }
+
+  return (
+    <BrandSetupEditor
+      key={brandId || 'new'}
+      initialDraft={selectedBrand || createDefaultBrandData()}
+      isEditMode={isEditMode}
+      brandId={brandId}
+      navigate={navigate}
+      persistBrandData={persistBrandData}
+      setActiveBrand={setActiveBrand}
+      error={error}
+    />
   )
 }
 

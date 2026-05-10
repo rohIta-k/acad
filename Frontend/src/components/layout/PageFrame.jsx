@@ -15,7 +15,6 @@ function PageFrame({ children, className = '' }) {
         const { data } = await supabase.auth.getUser()
         if (mounted) setUser(data?.user ?? null)
       } catch (err) {
-        // eslint-disable-next-line no-console
         console.error('Error getting supabase user', err)
       }
     })()

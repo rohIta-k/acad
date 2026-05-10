@@ -1,5 +1,5 @@
 import { Lock } from 'lucide-react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PageFrame from '../components/layout/PageFrame'
 import CreateHeader from '../components/navigation/CreateHeader'
@@ -7,7 +7,6 @@ import { includeOptions } from '../data/brandData'
 import {
   formatOptions,
   platformOptions,
-  profileMenuItems,
 } from '../data/navigation'
 import { useBrandStorage } from '../hooks/useBrandStorage'
 import { useToggleList } from '../hooks/useToggleList'
@@ -15,104 +14,37 @@ import CreateControlPanelSection from '../sections/CreateControlPanelSection'
 import CreatePreviewSection from '../sections/CreatePreviewSection'
 import { generateRunwayVideo } from '../utils/api'
 
-const CREATE_PAGE_STORAGE_KEY = 'brandforge.createPage'
-
-function getStoredCreatePage() {
-  if (typeof window === 'undefined') return null
-
-  try {
-    return JSON.parse(
-      sessionStorage.getItem(CREATE_PAGE_STORAGE_KEY),
-    )
-  } catch {
-    return null
-  }
-}
-
-function normalizeDuration(value, fallback = 10) {
-  const parsed = Number(value)
-
-  if (!Number.isFinite(parsed)) {
-    return fallback
-  }
-
-  return Math.min(10, Math.max(0, Math.round(parsed)))
-}
-
 function CreatePage() {
   const navigate = useNavigate()
-  const storedState = getStoredCreatePage()
-  const [selectedFormat, setSelectedFormat] = useState(
-    storedState?.selectedFormat || 'video',
-  )
-  const [selectedPlatform, setSelectedPlatform] = useState(
-    storedState?.selectedPlatform || 'reel',
-  )
-  const [duration, setDuration] = useState(
-    normalizeDuration(storedState?.duration),
-  )
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [prompt, setPrompt] = useState(
-    storedState?.prompt || '',
-  )
+  const [selectedFormat, setSelectedFormat] = useState('video')
+  const [selectedPlatform, setSelectedPlatform] = useState('reel')
+  const [duration, setDuration] = useState(10)
+  const [prompt, setPrompt] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
-  const [hasGenerated, setHasGenerated] = useState(
-    storedState?.hasGenerated || false,
-  )
-  const [generationResult, setGenerationResult] = useState(
-    storedState?.generationResult || null,
-  )
-  const [generationError, setGenerationError] = useState(
-    storedState?.generationError || '',
-  )
-  const {
-    items: included,
-    setItems: setIncluded,
-    toggleItem: toggleIncluded,
-  } = useToggleList(
-    storedState?.included || includeOptions,
-  )
+  const [hasGenerated, setHasGenerated] = useState(false)
+  const [generationResult, setGenerationResult] = useState(null)
+  const [generationError, setGenerationError] = useState('')
+  const { items: included, toggleItem: toggleIncluded } = useToggleList(includeOptions)
 
-  const { brandData } = useBrandStorage()
+  const {
+    user,
+    brandData,
+    activeBrandId,
+    loading: brandLoading,
+  } = useBrandStorage()
 
   useEffect(() => {
-    sessionStorage.setItem(
-      CREATE_PAGE_STORAGE_KEY,
-      JSON.stringify({
-        prompt,
-        selectedFormat,
-        selectedPlatform,
-        duration,
-        included,
-        generationResult,
-        generationError,
-        hasGenerated,
-      }),
-    )
-  }, [
-    prompt,
-    selectedFormat,
-    selectedPlatform,
-    duration,
-    included,
-    generationResult,
-    generationError,
-    hasGenerated,
-  ])
+    if (brandLoading) return
 
-  const resetGenerationState = useCallback(() => {
-    setPrompt('')
-    setSelectedFormat('video')
-    setSelectedPlatform('reel')
-    setDuration(10)
-    setIncluded(includeOptions)
-    setIsGenerating(false)
-    setHasGenerated(false)
-    setGenerationResult(null)
-    setGenerationError('')
-    sessionStorage.removeItem(CREATE_PAGE_STORAGE_KEY)
-  }, [setIncluded])
+    if (!user) {
+      navigate('/')
+      return
+    }
 
+    if (!activeBrandId) {
+      navigate('/brands')
+    }
+  }, [activeBrandId, brandLoading, navigate, user])
 
   const handleGenerate = async () => {
     if (isGenerating) return
@@ -160,12 +92,7 @@ function CreatePage() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_30%,rgba(137,92,255,0.14),transparent_22%),radial-gradient(circle_at_82%_22%,rgba(255,255,255,0.96),transparent_28%),radial-gradient(circle_at_70%_80%,rgba(252,173,205,0.12),transparent_28%)]" />
       <div className="relative z-10 min-h-screen px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
         <CreateHeader
-          navigate={navigate}
-          menuOpen={isMenuOpen}
-          onMenuToggle={() => setIsMenuOpen((value) => !value)}
-          menuItems={profileMenuItems}
-          onMenuItemClick={() => setIsMenuOpen(false)}
-          onBackToSetup={() => navigate('/setup')}
+          onBackToBrands={() => navigate('/brands')}
         />
 
         <main className="mt-6 sm:mt-10 lg:mt-12">

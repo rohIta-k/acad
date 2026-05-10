@@ -30,7 +30,7 @@ function LandingHeroSection() {
             AI-driven precision.
           </p>
           <button
-            onClick={() => navigate('/setup')}
+            onClick={() => navigate('/brands')}
             className="mt-8 inline-flex items-center justify-center gap-3 rounded-[16px] bg-[linear-gradient(90deg,#7340f6_0%,#e57ac5_100%)] px-6 py-4 text-white shadow-[0_18px_42px_rgba(125,85,255,0.24)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_60px_rgba(125,85,255,0.32)] active:translate-y-0 active:scale-[0.99]"
           >
             <div className="text-[20px] font-medium leading-none tracking-[0.05em]">

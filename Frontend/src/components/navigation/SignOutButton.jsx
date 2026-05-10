@@ -6,9 +6,7 @@ export default function SignOutButton() {
       await supabase.auth.signOut()
       // Supabase will trigger auth state change which PageFrame listens to
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error('Supabase sign-out error', err)
-      // eslint-disable-next-line no-alert
       alert('Sign-out failed: ' + (err?.message || String(err)))
     }
   }

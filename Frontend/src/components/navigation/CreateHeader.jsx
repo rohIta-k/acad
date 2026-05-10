@@ -1,21 +1,15 @@
 import { ArrowLeft, Sparkles } from 'lucide-react'
 import BrandForgeLogo from '../shared/BrandForgeLogo'
 import Pill from '../shared/Pill'
-import ProfileMenu from './ProfileMenu'
 
 function CreateHeader({
-  navigate,
-  menuOpen,
-  onMenuToggle,
-  menuItems,
-  onMenuItemClick,
-  onBackToSetup,
+  onBackToBrands,
 }) {
   return (
     <header className="flex flex-col gap-4 sm:gap-5 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex flex-wrap items-center gap-3 sm:gap-5">
         <button
-          onClick={onBackToSetup}
+          onClick={onBackToBrands}
           className="group inline-flex h-12 w-12 items-center justify-center rounded-full bg-[linear-gradient(135deg,#7340f6_0%,#e57ac5_100%)] text-white shadow-[0_12px_30px_rgba(125,85,255,0.22)] transition-all duration-200 hover:scale-[1.03] hover:shadow-[0_16px_38px_rgba(125,85,255,0.30)] active:scale-[0.98]"
         >
           <ArrowLeft className="h-6 w-6 transition-transform duration-200 group-hover:-translate-x-0.5" strokeWidth={2.5} />

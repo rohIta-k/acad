@@ -1,10 +1,6 @@
-import { AlertCircle, CheckCircle2, FileJson } from 'lucide-react'
+import { AlertCircle, FileJson } from 'lucide-react'
 import EmptyState from '../components/media/EmptyState'
 import { platformOptions } from '../data/navigation'
-
-function isVideoUrl(url = '') {
-  return /\.(mp4|webm|mov)(\?.*)?$/i.test(url) || url.startsWith('data:video/')
-}
 
 function ResultRow({ icon: Icon, label, children }) {
   return (

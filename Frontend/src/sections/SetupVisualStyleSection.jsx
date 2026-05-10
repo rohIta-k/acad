@@ -17,7 +17,6 @@ function SetupVisualStyleSection({
   onPaletteEditorClose,
   onPaletteColorChange,
   onPendingPaletteColorChange,
-  onConfirmPaletteColor,
 
   onReferenceUpload,
   onReferenceRemove,
