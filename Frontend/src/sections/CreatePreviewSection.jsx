@@ -1,6 +1,5 @@
 import { ChevronDown } from 'lucide-react'
 import EmptyState from '../components/media/EmptyState'
-import TabSwitcher from '../components/navigation/TabSwitcher'
 
 function CreatePreviewSection({
   tabs,

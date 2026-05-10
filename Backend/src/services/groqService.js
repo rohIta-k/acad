@@ -4,7 +4,10 @@ const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY
 });
 
-const generateTagline = async (product) => {
+const generateResponse = async (prompt) => {
+    if (!prompt || typeof prompt !== "string") {
+        throw new Error("prompt (string) is required");
+    }
 
     try {
 
@@ -12,7 +15,7 @@ const generateTagline = async (product) => {
             messages: [
                 {
                     role: "user",
-                    content: `Generate a cinematic luxury advertisement tagline for ${product}`
+                    content: prompt
                 }
             ],
             model: "llama-3.3-70b-versatile"
@@ -22,8 +25,8 @@ const generateTagline = async (product) => {
 
     } catch (error) {
         console.log(error);
-        return "Error generating tagline";
+        throw new Error("Error generating response");
     }
 };
 
-module.exports = { generateTagline };
+module.exports = { generateResponse };
