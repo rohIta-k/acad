@@ -31,7 +31,6 @@ async function buildGenerationPrompt({
 
   return `
 You are an elite AI commercial director.
-
 Generate a structured cinematic generation plan for Runway.
 
 USER IDEA:
@@ -87,12 +86,15 @@ AUDIO RULES:
 ${audioRules}
 
 GLOBAL OUTPUT RULES
-- Return ONLY valid JSON
+- RETURN ONLY THE FINAL OPTIMIZED RUNWAY PROMPT.
 - No markdown
 - No explanations
+- No labels
+- No bullet points in the final output
 - All prompts must be generation-ready
 - Use technical cinematic language
 - Keep outputs visually coherent
+- Keep the final prompt concise: under 120 words and under 1000 characters.
 - "include" reflects requested brand elements
 
 VIDEO OUTPUT

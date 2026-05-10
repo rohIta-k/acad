@@ -1,7 +1,5 @@
 import { AlertCircle, CheckCircle2, FileJson } from 'lucide-react'
 import EmptyState from '../components/media/EmptyState'
-<<<<<<< HEAD
-=======
 
 function isVideoUrl(url = '') {
   return /\.(mp4|webm|mov)(\?.*)?$/i.test(url) || url.startsWith('data:video/')
@@ -89,7 +87,6 @@ function CreateError({ message }) {
     </div>
   )
 }
->>>>>>> 94d0801 (added groq rules)
 
 function CreatePreviewSection({
   brandData,

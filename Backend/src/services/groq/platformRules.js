@@ -1,4 +1,3 @@
-
 const PLATFORM_RULES = {
   instagram_reel: {
     aspect_ratio: "9:16",
@@ -33,6 +32,13 @@ const PLATFORM_RULES = {
 
     platform_behavior:
       "Vertical mobile-first share format optimized for immediate readability.",
+  },
+
+  linkedin: {
+    aspect_ratio: "16:9",
+
+    platform_behavior:
+      "Professional, business-focused presentation optimized for feed and in-stream viewing; prioritize clear messaging, readable captions, and restrained visual effects. Use subtle motion, maintain brand credibility, avoid overly casual slang or sensationalism, and ensure text remains legible on desktop and mobile. Prefer 16:9 widescreen or 1:1 square for feed placements.",
   },
 }
 

@@ -1,47 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const RunwayML = require("@runwayml/sdk");
+const {
+  generateRunwayCreative,
+  getRunwayTask,
+} = require("../services/runway/runwayGenerationService");
 
-const client = new RunwayML({
-  apiKey: process.env.RUNWAYML_API_SECRET,
-});
-// Utility function to poll task status
-const pollTaskStatus = async (taskId, maxAttempts = 60, delayMs = 5000) => {
-  let attempts = 0;
-  while (attempts < maxAttempts) {
-    const task = await client.tasks.retrieve(taskId);
-    if (task.status === "SUCCEEDED" || task.status === "FAILED" || task.status === "CANCELED") {
-      return task;
-    }
-    attempts++;
-    if (attempts < maxAttempts) await new Promise((r) => setTimeout(r, delayMs));
-  }
-  throw new Error(`Task polling timeout - max attempts (${maxAttempts}) reached`);
-};
-
-// Minimal: create a text->video task
 router.post("/generate", async (req, res) => {
   try {
-    const {idea, format, platform, include, duration, brandData, ratio = "1280:720", model = "gen4.5"} = req.body || {};
-    console.log(idea);
-    const promptText = typeof idea === "string" ? idea : JSON.stringify(idea);
-    if (!promptText) {
-      return res.status(400).json({
-        success: false,
-        error: "idea is required in body",
-      });
-    }
-    if (duration < 1 || duration > 20) {
-      return res.status(400).json({ success: false, error: "duration must be between 1 and 20 seconds" });
-    }
+    const result = await generateRunwayCreative(req.body || {});
 
-    const task = await client.textToVideo.create({ model, promptText, duration, ratio });
-
-    // Wait for completion and return result (keep simple for now)
-    const completed = await pollTaskStatus(task.id);
-    return res.json({ success: true, taskId: completed.id, status: completed.status, videoUrl: completed.output?.[0], sceneDirection: null });
+    return res.json(result);
   } catch (error) {
-    return res.status(500).json({ success: false, error: error.message });
+    const message = error?.message || "Runway generation failed";
+
+    return res.status(message.includes("required") || message.includes("duration must") ? 400 : 500).json({
+      success: false,
+      error: message,
+    });
   }
 });
 
@@ -49,8 +24,9 @@ router.post("/generate", async (req, res) => {
 router.get("/task/:taskId", async (req, res) => {
   try {
     const { taskId } = req.params;
-    const task = await client.tasks.retrieve(taskId);
-    return res.json({ success: true, id: task.id, status: task.status, videoUrl: task.output?.[0] || null });
+    const task = await getRunwayTask(taskId);
+
+    return res.json(task);
   } catch (error) {
     return res.status(500).json({ success: false, error: error.message });
   }
