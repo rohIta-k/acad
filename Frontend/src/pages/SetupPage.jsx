@@ -252,7 +252,7 @@ function BrandSetupEditor({
 
   return (
     <PageFrame className="p-3 sm:p-4 lg:p-5">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(137,92,255,0.06),transparent_24%),radial-gradient(circle_at_86%_20%,rgba(255,255,255,0.92),transparent_24%),radial-gradient(circle_at_75%_76%,rgba(251,174,206,0.05),transparent_28%)]" />
+      <div className="pointer-events-none absolute inset-0" />
       <SetupShell
         sidebar={
           <SetupSidebar
@@ -271,7 +271,7 @@ function BrandSetupEditor({
             {isEditMode ? (
               <button
                 onClick={() => navigate('/brands')}
-                className="inline-flex items-center gap-2 self-start rounded-[12px] border border-[#e5def3] bg-white/85 px-4 py-3 text-[15px] font-medium text-[#494564] shadow-[0_10px_24px_rgba(89,68,148,0.05)] transition hover:border-[#cfbfef] hover:text-[#2e2947] sm:self-auto"
+                className="inline-flex items-center gap-2 self-start rounded-[12px] border border-[#2C2D3C] bg-[#111219] px-4 py-3 text-[15px] font-medium text-[#e2e2e8] transition hover:border-[#B8C2FF] hover:bg-[#1D1E29] sm:self-auto"
               >
                 <PencilLine className="h-4 w-4" />
                 Back to Brands
@@ -364,26 +364,26 @@ function BrandSetupEditor({
 
           <div className="mt-auto pt-6">
             {!validation.isValid && showValidation ? (
-              <div className="mb-4 rounded-[16px] border border-[#f1c6d5] bg-[linear-gradient(180deg,rgba(255,245,248,0.96)_0%,rgba(255,250,252,0.98)_100%)] px-4 py-3 text-[14px] text-[#b15576] shadow-[0_12px_28px_rgba(187,84,122,0.08)]">
+              <div className="mb-4 rounded-[16px] border border-[#2C2D3C] bg-[#111219] px-4 py-3 text-[14px] text-[#b15576] ">
                 Complete the required brand details before continuing.
               </div>
             ) : null}
             {error ? (
-              <div className="mb-4 rounded-[16px] border border-[#f1c6d5] bg-[linear-gradient(180deg,rgba(255,245,248,0.96)_0%,rgba(255,250,252,0.98)_100%)] px-4 py-3 text-[14px] text-[#b15576] shadow-[0_12px_28px_rgba(187,84,122,0.08)]">
+              <div className="mb-4 rounded-[16px] border border-[#2C2D3C] bg-[#111219] px-4 py-3 text-[14px] text-[#b15576] ">
                 {error}
               </div>
             ) : null}
             {saveError ? (
-              <div className="mb-4 rounded-[16px] border border-[#f1c6d5] bg-[linear-gradient(180deg,rgba(255,245,248,0.96)_0%,rgba(255,250,252,0.98)_100%)] px-4 py-3 text-[14px] text-[#b15576] shadow-[0_12px_28px_rgba(187,84,122,0.08)]">
+              <div className="mb-4 rounded-[16px] border border-[#2C2D3C] bg-[#111219] px-4 py-3 text-[14px] text-[#b15576] ">
                 {saveError}
               </div>
             ) : null}
             <button
               onClick={saveAndContinue}
               disabled={!validation.isValid || isSaving}
-              className={`flex min-h-[58px] w-full items-center justify-center gap-3 rounded-[12px] px-6 py-4 text-center text-[16px] font-medium tracking-[-0.02em] shadow-[0_18px_48px_rgba(125,85,255,0.26)] transition duration-300 sm:px-8 sm:text-[17px] ${validation.isValid
-                  ? 'bg-[linear-gradient(90deg,#7340f6_0%,#e57ac5_100%)] text-white hover:-translate-y-0.5 hover:shadow-[0_22px_58px_rgba(125,85,255,0.34)] active:scale-[0.995]'
-                  : 'cursor-not-allowed bg-[linear-gradient(90deg,#cbb7ff_0%,#edc6de_100%)] text-white/85 shadow-none'
+              className={`flex min-h-[58px] w-full items-center justify-center gap-3 rounded-[12px] px-6 py-4 text-center text-[16px] font-medium tracking-[-0.02em] transition duration-300 sm:px-8 sm:text-[17px] ${validation.isValid
+                  ? 'bg-[#B8C2FF] text-[#131318] hover:bg-[#C3C8FF] hover:-translate-y-0.5 active:scale-[0.995]'
+                  : 'cursor-not-allowed bg-[#1D1E29] text-[#766f8d] shadow-none'
                 }`}
             >
               {isSaving ? 'Saving brand...' : 'Save Brand & Start Creating'}
@@ -411,7 +411,7 @@ function SetupPage() {
   if (loading) {
     return (
       <PageFrame className="p-6 sm:p-8">
-        <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#e9e2f6] bg-white/85 p-6 text-[#635d7c] shadow-[0_18px_42px_rgba(85,63,148,0.08)] sm:p-8">
+        <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
           Loading your brand workspace...
         </div>
       </PageFrame>
@@ -421,7 +421,7 @@ function SetupPage() {
   if (!user) {
     return (
       <PageFrame className="p-6 sm:p-8">
-        <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#efdbe5] bg-white/85 p-6 text-[#8f4362] shadow-[0_18px_42px_rgba(85,63,148,0.08)] sm:p-8">
+        <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
           Please sign in to create and manage your brands.
         </div>
       </PageFrame>
@@ -431,11 +431,11 @@ function SetupPage() {
   if (isEditMode && !selectedBrand) {
     return (
       <PageFrame className="p-6 sm:p-8">
-        <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#efdbe5] bg-white/85 p-6 text-[#8f4362] shadow-[0_18px_42px_rgba(85,63,148,0.08)] sm:p-8">
+        <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
           <p>This brand no longer exists in your account.</p>
           <button
             onClick={() => navigate('/brands')}
-            className="mt-4 inline-flex items-center gap-2 rounded-[12px] border border-[#e5def3] bg-white px-4 py-2 text-[14px] font-medium text-[#4e4768]"
+            className="mt-4 inline-flex items-center gap-2 rounded-[12px] border border-[#2C2D3C] bg-[#1D1E29] px-4 py-2 text-[14px] font-medium text-[#e2e2e8]"
           >
             Back to Brands
           </button>

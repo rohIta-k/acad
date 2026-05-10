@@ -36,17 +36,8 @@ function CreatePage() {
   const { saveGeneration } = useGenerationStorage(user)
 
   useEffect(() => {
-    if (brandLoading) return
-
-    if (!user) {
-      navigate('/')
-      return
-    }
-
-    if (!activeBrandId) {
-      navigate('/brands')
-    }
-  }, [activeBrandId, brandLoading, navigate, user])
+    // Only fetch/load brand data on mount; no silent redirects
+  }, [activeBrandId, brandLoading, user])
 
   const handleGenerate = async () => {
     if (isGenerating) return
@@ -105,9 +96,55 @@ function CreatePage() {
     return `${brandLabel} is ready for content creation with your saved assets and brand tone.`
   }, [brandData.brandName])
 
+  if (brandLoading) {
+    return (
+      <PageFrame className="px-3 py-3 sm:px-4 sm:py-4 lg:px-0">
+        <div className="pointer-events-none absolute inset-0" />
+        <div className="relative z-10 min-h-screen px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
+          <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#a1a1aa]  sm:p-8">
+            Loading your brand workspace...
+          </div>
+        </div>
+      </PageFrame>
+    )
+  }
+
+  if (!user) {
+    return (
+      <PageFrame className="px-3 py-3 sm:px-4 sm:py-4 lg:px-0">
+        <div className="pointer-events-none absolute inset-0" />
+        <div className="relative z-10 min-h-screen px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
+          <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
+            Please sign in to generate ads.
+          </div>
+        </div>
+      </PageFrame>
+    )
+  }
+
+  if (!activeBrandId) {
+    return (
+      <PageFrame className="px-3 py-3 sm:px-4 sm:py-4 lg:px-0">
+        <div className="pointer-events-none absolute inset-0" />
+        <div className="relative z-10 min-h-screen px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
+          <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
+            <h2 className="text-[20px] font-semibold text-white mb-2">No Active Brand</h2>
+            <p className="text-[#a1a1aa] mb-6">You need to set up a brand before generating cinematic ad content.</p>
+            <button
+              onClick={() => navigate('/brands/new')}
+              className="inline-flex items-center justify-center gap-2 rounded-[14px] bg-[#B8C2FF] hover:bg-[#C3C8FF] px-5 py-3 text-[15px] font-medium text-[#131318] transition"
+            >
+              Set up a Brand
+            </button>
+          </div>
+        </div>
+      </PageFrame>
+    )
+  }
+
   return (
     <PageFrame className="px-3 py-3 sm:px-4 sm:py-4 lg:px-0">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_30%,rgba(137,92,255,0.14),transparent_22%),radial-gradient(circle_at_82%_22%,rgba(255,255,255,0.96),transparent_28%),radial-gradient(circle_at_70%_80%,rgba(252,173,205,0.12),transparent_28%)]" />
+      <div className="pointer-events-none absolute inset-0" />
       <div className="relative z-10 min-h-screen px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
         <CreateHeader
           onBackToBrands={() => navigate('/brands')}
@@ -115,7 +152,7 @@ function CreatePage() {
         />
 
         <main className="mt-6 sm:mt-10 lg:mt-12">
-          <h1 className="bg-[linear-gradient(90deg,#5f36e9_0%,#e26db8_100%)] bg-clip-text text-[clamp(2.1rem,7vw,3.25rem)] font-semibold tracking-[-0.055em] text-transparent">
+          <h1 className="text-[#e2e2e8] text-[clamp(2.1rem,7vw,3.25rem)] font-semibold tracking-[-0.055em]">
             Create on-brand content
           </h1>
           <p className="mt-1 max-w-[760px] text-[16px] tracking-[-0.02em] text-[#7d7692] sm:text-[18px]">

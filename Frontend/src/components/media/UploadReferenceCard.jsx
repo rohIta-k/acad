@@ -21,7 +21,7 @@ function UploadReferenceCard({
   }
 
   return (
-    <div className="rounded-[18px] border border-dashed border-[#d8d1eb] bg-[linear-gradient(180deg,rgba(255,255,255,0.92)_0%,rgba(252,250,255,0.96)_100%)] p-4">
+    <div className="rounded-[18px] border border-dashed border-[#2C2D3C] bg-[#111219] p-4">
       <button
         type="button"
         onClick={openPicker}
@@ -33,8 +33,8 @@ function UploadReferenceCard({
         onDragOver={(event) => event.preventDefault()}
         className={`group flex min-h-[164px] w-full flex-col items-center justify-center rounded-[14px] border border-dashed px-8 py-6 text-center transition ${
           isEditing
-            ? 'border-[#d8d1eb] hover:border-[#bca8ff] hover:shadow-[0_18px_40px_rgba(135,107,219,0.12)]'
-            : 'border-[#ebe4f6] bg-white/45'
+            ? 'border-[#2C2D3C] hover:border-[#bca8ff] hover:'
+            : 'border-[#ebe4f6] bg-[#1D1E29]/45'
         }`}
       >
         <Image className="h-10 w-10 text-[#9c91bf] transition group-hover:text-[#7b52f3]" />
@@ -62,7 +62,7 @@ function UploadReferenceCard({
           {references.map((reference, index) => (
             <div
               key={`${reference.fileName}-${index}`}
-              className="group relative overflow-hidden rounded-[14px] border border-[#e7e0f4] bg-white shadow-[0_10px_24px_rgba(89,68,148,0.06)]"
+              className="group relative overflow-hidden rounded-[14px] border border-[#2C2D3C] bg-[#1D1E29] "
             >
               <img
                 src={reference.dataUrl}
@@ -78,7 +78,7 @@ function UploadReferenceCard({
                 <button
                   type="button"
                   onClick={() => onRemove?.(index)}
-                  className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-[#ffffffd9] text-[#7b708f] shadow-[0_8px_20px_rgba(61,39,114,0.12)] transition hover:text-[#d25584]"
+                  className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-[#1D1E29] text-[#a1a1aa]  transition hover:text-[#d25584]"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>

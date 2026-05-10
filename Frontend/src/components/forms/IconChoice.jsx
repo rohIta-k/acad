@@ -8,8 +8,8 @@ function IconChoice({ active, children, onClick, icon: Icon, compact = false }) 
           : 'h-[54px] gap-3 px-[1px] py-[1px] text-[17px]'
       } ${
         active
-          ? 'bg-[linear-gradient(135deg,#5f36e9_0%,#e26db8_100%)] shadow-[0_8px_18px_rgba(125,85,255,0.10)]'
-          : 'border border-[#ddd6ea] bg-white/75 hover:border-[#c7b9eb] hover:bg-white'
+          ? 'bg-[#B8C2FF] '
+          : 'border border-[#2C2D3C] bg-[#1D1E29]/75 hover:border-[#c7b9eb] hover:bg-[#1D1E29]'
       }`}
     >
       <div
@@ -17,14 +17,14 @@ function IconChoice({ active, children, onClick, icon: Icon, compact = false }) 
           compact ? 'gap-1.5 px-2.5' : 'gap-3 px-4'
         } ${
           active
-            ? 'bg-white text-[#252042]'
-            : 'bg-transparent text-[#45405f]'
+            ? 'bg-[#B8C2FF] text-[#131318]'
+            : 'bg-transparent text-[#e2e2e8]'
         }`}
       >
         <Icon
           className={`${
             compact ? 'h-3.5 w-3.5' : 'h-5 w-5'
-          } ${active ? 'text-[#7a54f3]' : 'text-[#59536f]'}`}
+          } ${active ? 'text-[#131318]' : 'text-[#a1a1aa]'}`}
         />
 
         {children}

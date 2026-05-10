@@ -6,7 +6,7 @@ function Dialog({ open, title, children, onClose }) {
       }`}
     >
       <div
-        className={`max-h-[min(88vh,720px)] w-full max-w-md overflow-y-auto rounded-[24px] border border-[#ece5f6] bg-white p-5 shadow-[0_30px_80px_rgba(38,24,87,0.18)] transition duration-200 sm:p-6 ${
+        className={`max-h-[min(88vh,720px)] w-full max-w-md overflow-y-auto rounded-[24px] border border-[#2C2D3C] bg-[#1D1E29] p-5  transition duration-200 sm:p-6 ${
           open ? 'translate-y-0 scale-100' : 'translate-y-2 scale-[0.98]'
         }`}
       >
@@ -27,7 +27,7 @@ function Dialog({ open, title, children, onClose }) {
         <div className="mt-8 flex justify-end">
           <button
             onClick={onClose}
-            className="rounded-[12px] bg-[linear-gradient(90deg,#7340f6_0%,#9f63ff_100%)] px-5 py-3 text-[15px] font-medium text-white shadow-[0_14px_30px_rgba(125,85,255,0.24)] transition hover:-translate-y-0.5 active:translate-y-0"
+            className="rounded-[12px] bg-[linear-gradient(90deg,#7340f6_0%,#9f63ff_100%)] px-5 py-3 text-[15px] font-medium text-white  transition hover:-translate-y-0.5 active:translate-y-0"
           >
             Close
           </button>

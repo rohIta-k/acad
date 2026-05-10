@@ -135,8 +135,8 @@ function CreateControlPanelSection({
         onClick={onGenerateClick}
         disabled={isGenerateDisabled}
         className={`mt-7 flex min-h-[56px] w-full items-center justify-center gap-3 rounded-[14px] px-5 py-4 text-[20px] font-medium tracking-[-0.04em] transition-all duration-200 sm:min-h-[60px] sm:text-[24px] ${isGenerateDisabled
-          ? 'cursor-not-allowed border border-[#e4dfef] bg-[#ebe7f4] text-[#8b86a3]'
-          : 'bg-[linear-gradient(90deg,#5f36e9_0%,#e26db8_100%)] text-white shadow-[0_14px_34px_rgba(125,85,255,0.18)] hover:-translate-y-[1px] hover:shadow-[0_18px_42px_rgba(125,85,255,0.24)] active:translate-y-0 active:scale-[0.995]'
+          ? 'cursor-not-allowed border border-[#2C2D3C] bg-[#111219] text-[#766f8d]'
+          : 'bg-[#B8C2FF] text-[#131318] hover:bg-[#C3C8FF]  hover:-translate-y-[1px] hover: active:translate-y-0 active:scale-[0.995]'
           }`}
       >
         <Sparkles className="h-5 w-5" />

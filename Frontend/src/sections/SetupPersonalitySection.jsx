@@ -19,7 +19,7 @@ function SetupPersonalitySection({
       title="Personality"
       subtitle="How your brand sounds and feels."
     >
-      <div className="grid gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,1.95fr)]">
+      <div className="grid gap-8 lg:grid-cols-2">
         <FieldBlock
           label="Tagline"
           required

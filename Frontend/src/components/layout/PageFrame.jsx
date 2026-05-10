@@ -32,15 +32,17 @@ function PageFrame({ children, className = '' }) {
   return (
     <div
       className={cn(
-        'relative min-h-screen overflow-x-clip bg-[#fcfbff]',
+        'relative min-h-screen overflow-x-clip bg-transparent flex flex-col',
         className,
       )}
     >
-      <div className="pointer-events-auto absolute right-4 top-4 z-50">
+      <div className="flex w-full justify-end px-4 pt-4 sm:px-6 lg:px-8">
         {user ? <SignOutButton /> : <LoginButton />}
       </div>
 
-      {children}
+      <div className="flex-1 flex flex-col">
+        {children}
+      </div>
     </div>
   )
 }

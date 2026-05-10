@@ -81,7 +81,7 @@ export function useBrandStorage() {
       const cachedBrands = brandCacheByUserId.get(nextUser.id)
       if (cachedBrands && !force) {
         setError('')
-        setBrands(cachedBrands)
+        syncBrands(cachedBrands)
         setLoading(false)
         return cachedBrands
       }

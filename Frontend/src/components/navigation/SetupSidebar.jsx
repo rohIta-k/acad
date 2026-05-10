@@ -5,11 +5,11 @@ import SidebarSteps from './SidebarSteps'
 function SetupSidebar({ steps, activeStep, onStepChange, open, onOpen, onClose }) {
   return (
     <>
-      <div className="mb-4 flex items-center justify-between rounded-[18px] border border-[#ebe5f5] bg-white/80 px-4 py-3 shadow-[0_12px_30px_rgba(89,68,148,0.08)] backdrop-blur lg:hidden">
+      <div className="mb-4 flex items-center justify-between rounded-[18px] border border-[#2C2D3C] bg-[#1D1E29]/80 px-4 py-3  backdrop-blur lg:hidden">
         <BrandForgeLogo />
         <button
           onClick={onOpen}
-          className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e5def2] bg-[#faf8ff] text-[#5d5780] transition hover:bg-white hover:text-[#7a54f3]"
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-[#2C2D3C] bg-[#1D1E29] text-[#e2e2e8] transition hover:bg-[#111219] hover:text-[#B8C2FF]"
           aria-label="Open navigation"
         >
           <Menu className="h-5 w-5" />
@@ -35,7 +35,7 @@ function SetupSidebar({ steps, activeStep, onStepChange, open, onOpen, onClose }
         onClick={onClose}
       />
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-[min(84vw,320px)] border-r border-[#e6e0f2] bg-white/95 backdrop-blur-xl px-5 py-5 shadow-[0_24px_60px_rgba(48,31,96,0.16)] transition duration-300 lg:hidden ${open ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed inset-y-0 left-0 z-50 w-[min(84vw,320px)] border-r border-[#2C2D3C] bg-[#1D1E29]/95 backdrop-blur-xl px-5 py-5  transition duration-300 lg:hidden ${open ? 'translate-x-0' : '-translate-x-full'
           }`}
       >
         <div className="flex items-center justify-between gap-4">

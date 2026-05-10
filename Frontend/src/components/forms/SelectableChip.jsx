@@ -5,8 +5,8 @@ function SelectableChip({ active, children, onClick, disabled = false }) {
       disabled={disabled}
       className={`rounded-[12px] border px-5 py-2.5 text-[14px] font-medium tracking-[-0.02em] transition-all duration-200 ${
         active
-          ? 'border-transparent bg-[linear-gradient(135deg,#7340f6_0%,#e57ac5_100%)] text-white shadow-[0_10px_24px_rgba(125,85,255,0.16)]'
-          : 'border-[#ebe7f2] bg-[#fcfbfe] text-[#645d78] hover:border-[#d9cffa] hover:bg-white'
+          ? 'border-transparent bg-[#B8C2FF] text-[#131318]'
+          : 'border-[#2C2D3C] bg-[#1D1E29] text-[#e2e2e8] hover:border-[#B8C2FF] hover:bg-[#111219]'
       } ${disabled ? 'cursor-default opacity-90' : ''}`}
     >
       {children}

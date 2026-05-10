@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 :root {
-  font-family:
-    ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
@@ -11,23 +11,25 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1, h2, h3, h4, h5, h6, .outfit-font {
+  font-family: 'Outfit', sans-serif;
+}
+
 * {
   box-sizing: border-box;
 }
 
 html {
   min-height: 100%;
-  background: #fcfbff;
+  background: #0A0B10;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top, rgba(151, 127, 255, 0.12), transparent 24%),
-    linear-gradient(180deg, #fcfbff 0%, #faf8ff 100%);
-  color: #161332;
+  background: #0d0d12;
+  color: #e2e2e8;
 }
 
 button,
@@ -50,8 +52,8 @@ button {
   width: 18px;
   height: 18px;
   border-radius: 9999px;
-  background: #7e4ff3;
-  box-shadow: 0 0 0 4px rgba(126, 79, 243, 0.14);
+  background: #4F46E5;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.14);
 }
 
 .range-slider::-moz-range-thumb {
@@ -59,6 +61,6 @@ button {
   height: 18px;
   border: 0;
   border-radius: 9999px;
-  background: #7e4ff3;
-  box-shadow: 0 0 0 4px rgba(126, 79, 243, 0.14);
+  background: #4F46E5;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.14);
 }

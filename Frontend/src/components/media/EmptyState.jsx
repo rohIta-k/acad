@@ -14,21 +14,21 @@ function EmptyState({ brandData, isGenerating, hasGenerated }) {
       : 'Fill in your intent and hit Generate to see your on-brand content.'
 
   return (
-    <div className="flex min-h-[200px] items-center justify-center rounded-[22px] bg-[radial-gradient(circle_at_50%_42%,rgba(139,103,255,0.06),transparent_18%),linear-gradient(180deg,rgba(255,255,255,0.42)_0%,rgba(255,255,255,0.22)_100%)] px-4 py-8 sm:min-h-[380px] sm:px-6 lg:min-h-[460px] xl:min-h-[540px]">
+    <div className="flex min-h-[200px] items-center justify-center rounded-[22px] bg-[#1D1E29] px-4 py-8 sm:min-h-[380px] sm:px-6 lg:min-h-[460px] xl:min-h-[540px]">
       <div className="text-center">
         <div className="relative mx-auto flex h-24 w-24 items-center justify-center">
           {isGenerating ? (
             <>
-              <div className="absolute inset-0 rounded-full border border-[#ece7f5]" />
+              <div className="absolute inset-0 rounded-full border border-[#2C2D3C]" />
 
               <div className="absolute inset-0 animate-[spin_5s_linear_infinite] rounded-full border-t-[2px] border-t-[#7b52f3] border-r-[2px] border-r-[#e26db8] border-l-transparent border-b-transparent" />
 
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[radial-gradient(circle,#ffffff_0%,#f7f3ff_100%)] shadow-[0_12px_30px_rgba(125,85,255,0.10)]">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#2d2d38] ">
                 <Clapperboard className="h-6 w-6 text-[#7b52f3]" />
               </div>
             </>
           ) : (
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[linear-gradient(135deg,rgba(140,92,255,0.10)_0%,rgba(244,90,143,0.10)_100%)]">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#131318]">
               <Clapperboard className="h-10 w-10 text-[#b29ce4]" />
             </div>
           )}
@@ -37,8 +37,8 @@ function EmptyState({ brandData, isGenerating, hasGenerated }) {
         <h2
           className={`mt-4 text-[clamp(1.9rem,5vw,2.625rem)] font-medium tracking-[-0.05em] sm:mt-8 ${
             isGenerating
-              ? 'bg-[linear-gradient(90deg,#5f36e9_0%,#e26db8_100%)] bg-clip-text text-transparent'
-              : 'text-[#77718b]'
+              ? 'text-[#e2e2e8]'
+              : 'text-[#e2e2e8]'
           }`}
         >
           {title}
