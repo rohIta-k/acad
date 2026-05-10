@@ -38,7 +38,7 @@ function SetupPersonalitySection({
           hint="Choose the tone that best represents your brand."
           errorText={toneError}
         >
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-2.5">
             {toneOptions.map((option) => (
               <SelectableChip
                 key={option}

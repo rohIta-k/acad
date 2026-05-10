@@ -1,5 +1,6 @@
 import { Lock } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import PageFrame from '../components/layout/PageFrame'
 import CreateHeader from '../components/navigation/CreateHeader'
 import { includeOptions } from '../data/brandData'
@@ -28,7 +29,8 @@ function getStoredCreatePage() {
   }
 }
 
-function CreatePage({ navigate }) {
+function CreatePage() {
+  const navigate = useNavigate()
   const storedState = getStoredCreatePage()
   const [selectedFormat, setSelectedFormat] = useState(
     storedState?.selectedFormat || 'video',
@@ -156,8 +158,8 @@ function CreatePage({ navigate }) {
           onBackToSetup={() => navigate('/setup')}
         />
 
-        <main className="mt-8 sm:mt-10 lg:mt-12">
-          <h1 className="text-[clamp(2.35rem,7vw,3.25rem)] font-semibold tracking-[0.00em] text-[#131129]">
+        <main className="mt-6 sm:mt-10 lg:mt-12">
+          <h1 className="bg-[linear-gradient(90deg,#5f36e9_0%,#e26db8_100%)] bg-clip-text text-[clamp(2.1rem,7vw,3.25rem)] font-semibold tracking-[-0.055em] text-transparent">
             Create on-brand content
           </h1>
           <p className="mt-1 max-w-[760px] text-[16px] tracking-[-0.02em] text-[#7d7692] sm:text-[18px]">

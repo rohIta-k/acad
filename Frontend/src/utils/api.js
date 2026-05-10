@@ -12,7 +12,7 @@ async function readJsonResponse(response) {
 
 export async function generateRunwayVideo(payload) {
   const response = await fetch(
-    `${API_BASE_URL}/api/runway/generate`,
+    `${API_BASE_URL}/api/groq/generatefull`,
     {
       method: 'POST',
 

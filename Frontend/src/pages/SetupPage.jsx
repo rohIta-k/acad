@@ -1,5 +1,6 @@
 import { ArrowRight, PencilLine } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import SetupShell from '../components/layout/SetupShell'
 import PageFrame from '../components/layout/PageFrame'
 import SetupSidebar from '../components/navigation/SetupSidebar'
@@ -13,7 +14,8 @@ import SetupPersonalitySection from '../sections/SetupPersonalitySection'
 import SetupVisualStyleSection from '../sections/SetupVisualStyleSection'
 import { fileToDataUrl, isImageFile } from '../utils/fileUpload'
 
-function SetupPage({ navigate }) {
+function SetupPage() {
+  const navigate = useNavigate()
   const [step, setStep] = useState(1)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const { brandData, persistBrandData } = useBrandStorage()
@@ -139,7 +141,7 @@ function SetupPage({ navigate }) {
 
   return (
     <PageFrame className="p-3 sm:p-4 lg:p-5">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(137,92,255,0.15),transparent_22%),radial-gradient(circle_at_86%_20%,rgba(255,255,255,0.95),transparent_24%),radial-gradient(circle_at_75%_76%,rgba(251,174,206,0.12),transparent_25%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(137,92,255,0.06),transparent_24%),radial-gradient(circle_at_86%_20%,rgba(255,255,255,0.92),transparent_24%),radial-gradient(circle_at_75%_76%,rgba(251,174,206,0.05),transparent_28%)]" />
       <SetupShell
         sidebar={
           <SetupSidebar
@@ -154,7 +156,7 @@ function SetupPage({ navigate }) {
       >
         <div className="flex min-h-full flex-col">
           <SetupHeaderSection />
-          <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center sm:justify-end">
+          <div className="mt-2 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center sm:justify-end">
             {draftData.completedSetup && !isEditing ? (
               <button
                 onClick={() => setIsEditing(true)}
@@ -205,7 +207,7 @@ function SetupPage({ navigate }) {
                 onToneChange={(value) => updateDraftField('tone', value)}
               />
             </div>
-            <div id="step-3" className="scroll-mt-24">
+            <div id="step-3" className="relative z-50 scroll-mt-24">
               <SetupVisualStyleSection
                 palette={draftData.palette}
                 references={draftData.references}
@@ -229,7 +231,7 @@ function SetupPage({ navigate }) {
                 }
               />
             </div>
-            <div id="step-4" className="scroll-mt-24">
+            <div id="step-4" className="relative z-0 scroll-mt-24">
               <SetupAudienceSection
                 audienceOptions={audienceOptions}
                 selectedAudience={draftData.audience}

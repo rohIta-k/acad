@@ -16,7 +16,7 @@ function SetupSidebar({ steps, activeStep, onStepChange, open, onOpen, onClose }
         </button>
       </div>
 
-      <aside className="hidden border-r-2 border-[#ddd5ef] py-5 pl-4 pr-8 lg:block">
+      <aside className="hidden border-r border-[#f0ebf7] py-5 px-6 lg:block">
         <div className="-mt-2 ml-[-30px] flex items-center gap-3">
           <BrandForgeLogo />
         </div>
@@ -35,7 +35,7 @@ function SetupSidebar({ steps, activeStep, onStepChange, open, onOpen, onClose }
         onClick={onClose}
       />
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-[min(84vw,320px)] border-r border-[#e6e0f2] bg-[#fcfbff] px-5 py-5 shadow-[0_24px_60px_rgba(48,31,96,0.16)] transition duration-300 lg:hidden ${open ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed inset-y-0 left-0 z-50 w-[min(84vw,320px)] border-r border-[#e6e0f2] bg-white/95 backdrop-blur-xl px-5 py-5 shadow-[0_24px_60px_rgba(48,31,96,0.16)] transition duration-300 lg:hidden ${open ? 'translate-x-0' : '-translate-x-full'
           }`}
       >
         <div className="flex items-center justify-between gap-4">

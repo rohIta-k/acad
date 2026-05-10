@@ -1,37 +1,48 @@
 const PLATFORM_RULES = {
   instagram_reel: {
-    aspect_ratio: "9:16",
+    aspect_ratio: '9:16',
 
     platform_behavior:
-      "Vertical social-first cinematic framing optimized for mobile viewing.",
+      'Vertical cinematic format optimized for mobile reel viewing.',
+  },
+  instagram_post: {
+    aspect_ratio: '1:1',
+
+    platform_behavior:
+      'Square feed composition optimized for social engagement.',
+  },
+  tiktok_short: {
+    aspect_ratio: '9:16',
+    platform_behavior:
+      'Fast-paced vertical short format optimized for attention retention.',
   },
 
   youtube_ad: {
-    aspect_ratio: "16:9",
+    aspect_ratio: '16:9',
 
     platform_behavior:
-      "Cinematic widescreen composition optimized for landscape video consumption.",
+      'Cinematic widescreen format optimized for landscape viewing.',
   },
 
   billboard: {
-    aspect_ratio: "21:9",
+    aspect_ratio: '21:9',
 
     platform_behavior:
-      "Large-scale outdoor advertising composition optimized for distant readability.",
-  },
-
-  instagram_post: {
-    aspect_ratio: "1:1",
-
-    platform_behavior:
-      "Square social composition optimized for feed visibility.",
+      'Wide outdoor composition optimized for distant readability.',
   },
 
   whatsapp_status: {
-    aspect_ratio: "9:16",
+    aspect_ratio: '9:16',
 
     platform_behavior:
-      "Vertical mobile-first share format optimized for immediate readability.",
+      'Vertical mobile-first format optimized for quick viewing.',
+  },
+
+  linkedin: {
+    aspect_ratio: '1:1',
+
+    platform_behavior:
+      'Professional square format optimized for business audiences.',
   },
 
   linkedin: {

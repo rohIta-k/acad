@@ -1,5 +1,6 @@
 import { AlertCircle, CheckCircle2, FileJson } from 'lucide-react'
 import EmptyState from '../components/media/EmptyState'
+import { platformOptions } from '../data/navigation'
 
 function isVideoUrl(url = '') {
   return /\.(mp4|webm|mov)(\?.*)?$/i.test(url) || url.startsWith('data:video/')
@@ -17,16 +18,34 @@ function ResultRow({ icon: Icon, label, children }) {
   )
 }
 
+function getPlatformAspect(platform) {
+  const option = platformOptions.find((item) => item.id === platform)
+
+  if (!option) {
+    return 'aspect-video'
+  }
+
+  switch (option.ratio) {
+    case '9:16':
+      return 'aspect-[9/16]'
+
+    case '1:1':
+      return 'aspect-square'
+
+    case '21:9':
+      return 'aspect-[21/9]'
+
+    default:
+      return 'aspect-video'
+  }
+}
+
 function CreateResult({ result }) {
 
   return (
-    <div className="mt-5 rounded-[22px] border border-dashed border-[#d8d1eb] bg-[radial-gradient(circle_at_50%_42%,rgba(139,103,255,0.08),transparent_18%),linear-gradient(180deg,rgba(255,255,255,0.4)_0%,rgba(255,255,255,0.2)_100%)] px-4 py-5 sm:px-6">
+    <div className="mt-5 rounded-[22px] bg-[radial-gradient(circle_at_50%_42%,rgba(139,103,255,0.06),transparent_18%),linear-gradient(180deg,rgba(255,255,255,0.42)_0%,rgba(255,255,255,0.22)_100%)] px-4 py-5 sm:px-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <div className="flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.08em] text-[#8b63ff]">
-            <CheckCircle2 className="h-4 w-4" />
-            {result.status || 'completed'}
-          </div>
           <h2 className="mt-2 text-[clamp(1.8rem,4vw,2.35rem)] font-medium tracking-[-0.05em] text-[#4f4968]">
             {result.title}
           </h2>
@@ -34,19 +53,16 @@ function CreateResult({ result }) {
             {result.summary}
           </p>
         </div>
-        <span className="rounded-full border border-[#e4dcef] bg-white/70 px-3 py-1 text-[12px] font-medium text-[#7b738e]">
-          {result.generationId}
-        </span>
       </div>
       <div className="mt-6 space-y-5">
         {result.videoUrl ? (
-          <div className="overflow-hidden rounded-[22px] border border-[#e6e0f1] bg-black shadow-[0_18px_44px_rgba(70,51,126,0.12)]">
+          <div className="flex justify-center rounded-[26px] border border-[#ebe7f3] bg-[radial-gradient(circle_at_top,rgba(123,82,243,0.08),transparent_52%),#faf9fc] p-5 shadow-[0_18px_44px_rgba(70,51,126,0.10)]">
             <video
               src={result.videoUrl}
               controls
               autoPlay
               loop
-              className="aspect-video w-full object-cover"
+              className={`${getPlatformAspect(result.platform)} max-h-[720px] rounded-[20px] object-cover shadow-[0_24px_60px_rgba(15,23,42,0.18)]`}
             />
           </div>
         ) : null}

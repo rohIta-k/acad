@@ -14,7 +14,7 @@ function HeroRenderCard() {
           <div className="flex min-w-0 items-center gap-2 text-[12px] text-[#48415d] sm:gap-3 sm:text-[16px]">
             <span className="h-3 w-3 rounded-full bg-[#7b4bf2]" />
             <span className="truncate font-mono tracking-[-0.04em]">
-              Rendering: Nike_Style_Product_Ad.mp4
+              Rendering: CyberMotion_Footwear_Film.mov
             </span>
           </div>
         </div>
@@ -33,11 +33,11 @@ function HeroRenderCard() {
   <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,10,18,0.06)_0%,rgba(0,0,0,0.18)_100%)]" />
 
   <div className="absolute left-4 top-4 rounded-[10px] bg-[#5e5a74]/72 px-4 py-2 text-[12px] font-medium uppercase tracking-[0.08em] text-white backdrop-blur md:left-8 md:top-7 md:text-[14px]">
-    SCENE 04: KINETIC_FLOW
+    SEQUENCE 04: NIGHT RUN
   </div>
 
   <div className="absolute right-4 top-4 rounded-[10px] bg-[#6a667f]/72 px-4 py-2 text-[12px] font-medium uppercase tracking-[0.08em] text-white backdrop-blur md:right-8 md:top-7 md:text-[14px]">
-    4K • 60FPS • RAW
+    21:9 • CINEMATIC • HDR
   </div>
 
   <button className="absolute left-1/2 top-1/2 flex h-[78px] w-[78px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-[#1f1b2c]/72 text-white shadow-[0_18px_40px_rgba(16,10,34,0.42)] backdrop-blur transition hover:scale-[1.04]">

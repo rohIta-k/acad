@@ -22,7 +22,7 @@ function SetupAudienceSection({
         hint="You can select more than one."
         errorText={audienceError}
       >
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2.5">
           {audienceOptions.map((option) => (
             <SelectableChip
               key={option}

@@ -37,24 +37,6 @@ function CreateControlPanelSection({
       <BrandSummaryCard brandData={brandData} />
 
       <CreateSection
-        icon={Wand2}
-        title="Describe your idea"
-        subtitle="What's the ad about? Who is it for? What's the vibe?"
-      >
-        <PromptInput
-          value={prompt}
-          onChange={(value) => {
-            const words = value.trim().split(/\s+/).filter(Boolean)
-            if (words.length <= 200) {
-              onPromptChange(value)
-            }
-          }}
-          placeholder={`Describe an ad for ${brandData.brandName || 'your brand'} using your saved brand DNA.`}
-          count={`${prompt.trim().split(/\s+/).filter(Boolean).length}/200`}
-        />
-      </CreateSection>
-
-      <CreateSection
         icon={Video}
         title="Format"
         subtitle="What type of content do you want to create?"
@@ -130,15 +112,34 @@ function CreateControlPanelSection({
         />
       </CreateSection>
 
+      <CreateSection
+        icon={Wand2}
+        title="Describe your idea"
+        subtitle="What's the ad about? Who is it for? What's the vibe?"
+      >
+        <PromptInput
+          value={prompt}
+          onChange={(value) => {
+            const words = value.trim().split(/\s+/).filter(Boolean)
+            if (words.length <= 200) {
+              onPromptChange(value)
+            }
+          }}
+          placeholder={`Describe an ad for ${brandData.brandName || 'your brand'} using your saved brand DNA.`}
+          count={`${prompt.trim().split(/\s+/).filter(Boolean).length}/200`}
+        />
+      </CreateSection>
+
       <button
         onClick={onGenerateClick}
         disabled={isGenerateDisabled}
-        className={`mt-7 flex min-h-[56px] w-full items-center justify-center gap-3 rounded-[12px] px-5 py-4 text-[20px] font-medium tracking-[-0.04em] transition duration-200 sm:min-h-[60px] sm:text-[24px] ${isGenerateDisabled
-          ? 'cursor-not-allowed bg-[#d9d4e7] text-[#8b86a3]'
-          : 'bg-[linear-gradient(90deg,#7340f6_0%,#8e56ff_46%,#7340f6_100%)] text-white shadow-[0_18px_48px_rgba(125,85,255,0.32)] hover:-translate-y-0.5 hover:shadow-[0_22px_58px_rgba(125,85,255,0.38)] active:scale-[0.995]'
+        className={`mt-7 flex min-h-[56px] w-full items-center justify-center gap-3 rounded-[14px] px-5 py-4 text-[20px] font-medium tracking-[-0.04em] transition-all duration-200 sm:min-h-[60px] sm:text-[24px] ${isGenerateDisabled
+          ? 'cursor-not-allowed border border-[#e4dfef] bg-[#ebe7f4] text-[#8b86a3]'
+          : 'bg-[linear-gradient(90deg,#5f36e9_0%,#e26db8_100%)] text-white shadow-[0_14px_34px_rgba(125,85,255,0.18)] hover:-translate-y-[1px] hover:shadow-[0_18px_42px_rgba(125,85,255,0.24)] active:translate-y-0 active:scale-[0.995]'
           }`}
       >
         <Sparkles className="h-5 w-5" />
+
         {isGenerating ? 'Generating' : 'Generate'}
       </button>
     </ControlPanelCard>

@@ -45,7 +45,7 @@ function SetupVisualStyleSection({
           <div className="relative overflow-visible">
             <div className="flex flex-wrap gap-4">
               {palette.map((hex, index) => (
-                <div key={`${hex}-${index}`} className="space-y-2">
+                <div key={`${hex}-${index}`} className="relative space-y-1">
                   <button
                     type="button"
                     onClick={() => onUpdatePaletteColor(index)}
@@ -53,7 +53,7 @@ function SetupVisualStyleSection({
                     className="group relative"
                   >
                     <div
-                      className={`h-[70px] w-[70px] rounded-[12px] border shadow-[0_12px_25px_rgba(92,72,153,0.08)] sm:h-[82px] sm:w-[82px] ${paletteError ? 'border-[#ef8aaa]' : 'border-[#e6def7]'
+                      className={`h-[52px] w-[52px] rounded-[12px] border shadow-[0_12px_25px_rgba(92,72,153,0.08)] sm:h-[66px] sm:w-[66px] ${paletteError ? 'border-[#ef8aaa]' : 'border-[#e6def7]'
                         }`}
                       style={{ background: hex }}
                     />
@@ -76,7 +76,7 @@ function SetupVisualStyleSection({
                 type="button"
                 onClick={() => onAddPaletteColor()}
                 disabled={!isEditing || palette.length >= 5}
-                className={`flex h-[70px] w-[70px] items-center justify-center rounded-[12px] border border-dashed bg-white text-[#6d6486] transition sm:h-[82px] sm:w-[82px] ${isEditing
+                className={`flex h-[52px] w-[52px] items-center justify-center rounded-[12px] border border-dashed bg-white text-[#6d6486] transition sm:h-[66px] sm:w-[66px] ${isEditing
                   ? palette.length >= 5
                     ? 'cursor-not-allowed border-[#ece5f6] text-[#b8afca]'
                     : 'border-[#d8d1eb] hover:border-[#b8a8e8] hover:bg-[#faf8ff]'

@@ -1,11 +1,13 @@
 import { ArrowRight, Sparkles } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { landingFeatures } from '../data/navigation'
 import ConnectorLine from '../components/cards/ConnectorLine'
 import FeatureCard from '../components/cards/FeatureCard'
 import HeroRenderCard from '../components/media/HeroRenderCard'
 import Pill from '../components/shared/Pill'
 
-function LandingHeroSection({ navigate }) {
+function LandingHeroSection() {
+  const navigate = useNavigate()
   return (
     <main className="relative z-10 flex flex-1 items-center py-4 sm:py-5 lg:py-6">
       <div className="grid w-full items-center gap-8 lg:grid-cols-[47%_53%] lg:gap-10 xl:grid-cols-[48%_52%] xl:gap-12">
@@ -39,7 +41,7 @@ function LandingHeroSection({ navigate }) {
           </button>
         </section>
 
-        <section className="relative flex w-full items-center justify-center lg:justify-end">
+        <section className="relative flex w-full items-center justify-center pr-6 lg:justify-end lg:pr-10">
           <div className="relative w-full max-w-[980px] xl:max-w-[1080px]">
             <div className="mx-auto w-full max-w-[960px] xl:max-w-[1040px]">
               <HeroRenderCard />

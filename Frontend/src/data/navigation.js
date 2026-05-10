@@ -27,13 +27,13 @@ export const formatOptions = [
 ]
 
 export const platformOptions = [
-  { id: 'billboard', label: 'Billboard', icon: PanelsTopLeft },
-  { id: 'instagram-reel', label: 'Insta Reel', icon: Instagram },
-  { id: 'instagram-post', label: 'Insta Post', icon: Instagram },
-  { id: 'tiktok-short', label: 'TikTok Short', icon: Music2 },
-  { id: 'youtube-ad', label: 'YouTube', icon: Youtube },
-  { id: 'whatsapp-status', label: 'WhatsApp', icon: MessageCircle },
-  { id: 'linkedin', label: 'LinkedIn', icon: Linkedin },
+  { id: 'billboard', label: 'Billboard', icon: PanelsTopLeft, ratio: '21:9' },
+  { id: 'instagram_reel', label: 'Insta Reel', icon: Instagram, ratio: '9:16' },
+  { id: 'instagram_post', label: 'Insta Post', icon: Instagram, ratio: '1:1' },
+  { id: 'tiktok_short', label: 'TikTok Short', icon: Music2, ratio: '9:16' },
+  { id: 'youtube_ad', label: 'YouTube', icon: Youtube, ratio: '16:9' },
+  { id: 'whatsapp_status', label: 'WhatsApp', icon: MessageCircle, ratio: '9:16' },
+  { id: 'linkedin', label: 'LinkedIn', icon: Linkedin,ratio: '1:1' },
 ]
 
 export const profileMenuItems = [
@@ -60,14 +60,14 @@ export const landingFeatures = [
     tint: 'amber',
     label: 'ENGINE',
     title: 'Runway Gen-4',
-    meta: 'Neural Synthesis v2',
+    meta: 'Cinematic Motion Render',
     icon: Clapperboard,
   },
   {
     tint: 'sky',
     label: 'EXPORT',
     title: '→ TikTok Ready',
-    meta: '9:16 Vertical • H.265',
+    meta: '21:9 • 4K ProRes',
     icon: Play,
   },
 ]

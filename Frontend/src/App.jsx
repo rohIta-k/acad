@@ -1,20 +1,39 @@
-import { useAppRouter } from './hooks/useAppRouter'
-import CreatePage from './pages/CreatePage'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Routes, Route, useLocation, } from 'react-router-dom'
+
 import HomePage from './pages/HomePage'
 import SetupPage from './pages/SetupPage'
+import CreatePage from './pages/CreatePage'
+
+function PageWrapper({ children }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{
+        duration: 0.09,
+        ease: 'easeOut',
+      }}
+      className="min-h-screen"
+    >
+      {children}
+    </motion.div>
+  )
+}
 
 function App() {
-  const { path, navigate } = useAppRouter()
+  const location = useLocation()
 
-  if (path === '/setup') {
-    return <SetupPage navigate={navigate} />
-  }
-
-  if (path === '/create') {
-    return <CreatePage navigate={navigate} />
-  }
-
-  return <HomePage navigate={navigate} />
+  return (
+    <AnimatePresence mode="sync">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<PageWrapper> <HomePage /> </PageWrapper>} />
+        <Route path="/setup" element={<PageWrapper> <SetupPage /></PageWrapper>} />
+        <Route path="/create" element={<PageWrapper> <CreatePage /></PageWrapper>} />
+      </Routes>
+    </AnimatePresence>
+  )
 }
 
 export default App
