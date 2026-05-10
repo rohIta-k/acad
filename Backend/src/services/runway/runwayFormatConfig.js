@@ -62,11 +62,11 @@ function resolveDuration(duration) {
   const parsed = Number(duration);
 
   if (!Number.isFinite(parsed)) {
-    return 5;
+    return 10;
   }
 
-  if (parsed < 2 || parsed > 15) {
-    throw new Error("duration must be between 2 and 15 seconds");
+  if (parsed < 0 || parsed > 10) {
+    throw new Error("duration must be between 0 and 10 seconds");
   }
 
   return Math.round(parsed);

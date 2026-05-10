@@ -31,7 +31,8 @@ function CreateControlPanelSection({
     !selectedFormat ||
     !selectedPlatform ||
     includedItems.length === 0 ||
-    !duration
+    duration === null ||
+    duration === undefined
   return (
     <ControlPanelCard>
       <BrandSummaryCard brandData={brandData} />

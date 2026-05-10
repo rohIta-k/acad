@@ -29,6 +29,16 @@ function getStoredCreatePage() {
   }
 }
 
+function normalizeDuration(value, fallback = 10) {
+  const parsed = Number(value)
+
+  if (!Number.isFinite(parsed)) {
+    return fallback
+  }
+
+  return Math.min(10, Math.max(0, Math.round(parsed)))
+}
+
 function CreatePage() {
   const navigate = useNavigate()
   const storedState = getStoredCreatePage()
@@ -39,7 +49,7 @@ function CreatePage() {
     storedState?.selectedPlatform || 'reel',
   )
   const [duration, setDuration] = useState(
-    storedState?.duration || 20,
+    normalizeDuration(storedState?.duration),
   )
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [prompt, setPrompt] = useState(
@@ -94,7 +104,7 @@ function CreatePage() {
     setPrompt('')
     setSelectedFormat('video')
     setSelectedPlatform('reel')
-    setDuration(20)
+    setDuration(10)
     setIncluded(includeOptions)
     setIsGenerating(false)
     setHasGenerated(false)

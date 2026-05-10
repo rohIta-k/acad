@@ -24,7 +24,7 @@ export async function generateRunwayVideo(payload) {
         format: payload.format,
         platform: payload.platform,
         include: payload.include,
-        duration: payload.duration || 5,
+        duration: payload.duration ?? 10,
         brandData: payload.brandData,
       }),
     },
