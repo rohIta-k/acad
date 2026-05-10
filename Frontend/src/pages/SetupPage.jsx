@@ -154,7 +154,6 @@ function SetupPage({ navigate }) {
       >
         <div className="flex min-h-full flex-col">
           <SetupHeaderSection />
-
           <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center sm:justify-end">
             {draftData.completedSetup && !isEditing ? (
               <button

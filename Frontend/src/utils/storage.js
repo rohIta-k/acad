@@ -1,6 +1,7 @@
 import { createDefaultBrandData, createEmptyAsset, defaultPalette, toneOptions } from '../data/brandData'
 
 export const BRAND_STORAGE_KEY = 'brandforge.setup'
+export const CREATE_DRAFT_STORAGE_KEY = 'brandforge.createDraft'
 
 function normalizeAsset(asset) {
   return {
@@ -36,7 +37,7 @@ export function normalizeBrandSetup(data = {}) {
 
 export function loadBrandSetup() {
   try {
-    const raw = window.localStorage.getItem(BRAND_STORAGE_KEY)
+    const raw = window.sessionStorage.getItem(BRAND_STORAGE_KEY)
     if (!raw) return createDefaultBrandData()
     return normalizeBrandSetup(JSON.parse(raw))
   } catch {
@@ -46,12 +47,28 @@ export function loadBrandSetup() {
 
 export function saveBrandSetup(data) {
   const normalized = normalizeBrandSetup(data)
-  window.localStorage.setItem(BRAND_STORAGE_KEY, JSON.stringify(normalized))
+  window.sessionStorage.setItem(BRAND_STORAGE_KEY, JSON.stringify(normalized))
   return normalized
 }
 
 export function clearBrandSetup() {
-  window.localStorage.removeItem(BRAND_STORAGE_KEY)
+  window.sessionStorage.removeItem(BRAND_STORAGE_KEY)
+}
+
+export function clearCreateDraft() {
+  window.sessionStorage.removeItem(CREATE_DRAFT_STORAGE_KEY)
+}
+
+export function hasSessionScopedStorage() {
+  return Boolean(
+    window.sessionStorage.getItem(BRAND_STORAGE_KEY) ||
+      window.sessionStorage.getItem(CREATE_DRAFT_STORAGE_KEY),
+  )
+}
+
+export function clearSessionScopedStorage() {
+  clearBrandSetup()
+  clearCreateDraft()
 }
 
 export function createClearedBrandSetup() {

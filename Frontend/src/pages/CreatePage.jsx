@@ -1,10 +1,9 @@
 import { Lock } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import PageFrame from '../components/layout/PageFrame'
 import CreateHeader from '../components/navigation/CreateHeader'
-import {includeOptions } from '../data/brandData'
+import { includeOptions } from '../data/brandData'
 import {
-  appTabs,
   formatOptions,
   platformOptions,
   profileMenuItems,
@@ -13,26 +12,130 @@ import { useBrandStorage } from '../hooks/useBrandStorage'
 import { useToggleList } from '../hooks/useToggleList'
 import CreateControlPanelSection from '../sections/CreateControlPanelSection'
 import CreatePreviewSection from '../sections/CreatePreviewSection'
+import { generateRunwayVideo } from '../utils/api'
+
+const CREATE_PAGE_STORAGE_KEY = 'brandforge.createPage'
+
+function getStoredCreatePage() {
+  if (typeof window === 'undefined') return null
+
+  try {
+    return JSON.parse(
+      sessionStorage.getItem(CREATE_PAGE_STORAGE_KEY),
+    )
+  } catch {
+    return null
+  }
+}
 
 function CreatePage({ navigate }) {
-  const [selectedFormat, setSelectedFormat] = useState('video')
-  const [selectedPlatform, setSelectedPlatform] = useState('reel')
-  const [duration, setDuration] = useState(20)
-  const [activeTab, setActiveTab] = useState('Preview')
+  const storedState = getStoredCreatePage()
+  const [selectedFormat, setSelectedFormat] = useState(
+    storedState?.selectedFormat || 'video',
+  )
+  const [selectedPlatform, setSelectedPlatform] = useState(
+    storedState?.selectedPlatform || 'reel',
+  )
+  const [duration, setDuration] = useState(
+    storedState?.duration || 20,
+  )
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [prompt, setPrompt] = useState('')
+  const [prompt, setPrompt] = useState(
+    storedState?.prompt || '',
+  )
   const [isGenerating, setIsGenerating] = useState(false)
-  const [hasGenerated, setHasGenerated] = useState(false)
-  const { items: included, toggleItem: toggleIncluded } = useToggleList(includeOptions)
+  const [hasGenerated, setHasGenerated] = useState(
+    storedState?.hasGenerated || false,
+  )
+  const [generationResult, setGenerationResult] = useState(
+    storedState?.generationResult || null,
+  )
+  const [generationError, setGenerationError] = useState(
+    storedState?.generationError || '',
+  )
+  const {
+    items: included,
+    setItems: setIncluded,
+    toggleItem: toggleIncluded,
+  } = useToggleList(
+    storedState?.included || includeOptions,
+  )
+
   const { brandData } = useBrandStorage()
 
-  const handleGenerate = () => {
-    setIsGenerating(true)
+  useEffect(() => {
+    sessionStorage.setItem(
+      CREATE_PAGE_STORAGE_KEY,
+      JSON.stringify({
+        prompt,
+        selectedFormat,
+        selectedPlatform,
+        duration,
+        included,
+        generationResult,
+        generationError,
+        hasGenerated,
+      }),
+    )
+  }, [
+    prompt,
+    selectedFormat,
+    selectedPlatform,
+    duration,
+    included,
+    generationResult,
+    generationError,
+    hasGenerated,
+  ])
 
-    window.setTimeout(() => {
-      setIsGenerating(false)
+  const resetGenerationState = useCallback(() => {
+    setPrompt('')
+    setSelectedFormat('video')
+    setSelectedPlatform('reel')
+    setDuration(20)
+    setIncluded(includeOptions)
+    setIsGenerating(false)
+    setHasGenerated(false)
+    setGenerationResult(null)
+    setGenerationError('')
+    sessionStorage.removeItem(CREATE_PAGE_STORAGE_KEY)
+  }, [setIncluded])
+
+
+  const handleGenerate = async () => {
+    if (isGenerating) return
+
+    setIsGenerating(true)
+    setHasGenerated(false)
+    setGenerationResult(null)
+    setGenerationError('')
+
+    try {
+      const result = await generateRunwayVideo({
+        idea: prompt.trim(),
+        format: selectedFormat,
+        platform: selectedPlatform,
+        include: included,
+        duration: selectedFormat === 'video' ? duration : null,
+        brandData: {
+          brandName: brandData.brandName,
+          tagline: brandData.tagline,
+          tone: brandData.tone,
+          audience: brandData.audience,
+          palette: brandData.palette,
+          hasLogo: Boolean(brandData.logo?.dataUrl),
+          hasMascot: Boolean(brandData.mascot?.dataUrl),
+          referencesCount: brandData.references?.length || 0,
+        },
+      })
+
+      setGenerationResult(result)
       setHasGenerated(true)
-    }, 1200)
+    } catch (error) {
+      setGenerationError(error.message || 'Unable to generate creative right now.')
+    } finally {
+      setIsGenerating(false)
+    }
   }
 
   const helperCopy = useMemo(() => {
@@ -62,7 +165,7 @@ function CreatePage({ navigate }) {
             shape every new concept.
           </p>
 
-          <div className="mt-6 grid gap-6 lg:mt-8 xl:grid-cols-[minmax(340px,580px)_minmax(0,1fr)] xl:gap-8">
+          <div className="mt-6 grid gap-6 lg:mt-8 xl:grid-cols-[minmax(300px,460px)_minmax(0,1fr)] xl:gap-8">
             <CreateControlPanelSection
               brandData={brandData}
               prompt={prompt}
@@ -78,14 +181,14 @@ function CreatePage({ navigate }) {
               duration={duration}
               onDurationChange={setDuration}
               onGenerateClick={handleGenerate}
+              isGenerating={isGenerating}
             />
             <CreatePreviewSection
-              tabs={appTabs}
-              activeTab={activeTab}
-              onTabChange={setActiveTab}
               brandData={brandData}
               isGenerating={isGenerating}
               hasGenerated={hasGenerated}
+              generationResult={generationResult}
+              generationError={generationError}
             />
           </div>
 

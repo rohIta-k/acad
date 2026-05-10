@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
-import { loadBrandSetup, saveBrandSetup } from '../utils/storage'
+import {
+  BRAND_STORAGE_KEY,
+  loadBrandSetup,
+  saveBrandSetup,
+} from '../utils/storage'
 
 export function useBrandStorage() {
   const [brandData, setBrandData] = useState(() => {
@@ -24,13 +28,19 @@ export function useBrandStorage() {
 
   useEffect(() => {
     const handleStorage = (event) => {
-      if (event.key === 'brandforge.setup') {
+      if (event.key === BRAND_STORAGE_KEY) {
         reloadBrandData()
       }
     }
 
+    const handleSessionReset = () => {
+      reloadBrandData()
+    }
+
     window.addEventListener('storage', handleStorage)
-    return () => window.removeEventListener('storage', handleStorage)
+    return () => {
+      window.removeEventListener('storage', handleStorage)
+    }
   }, [reloadBrandData])
 
   return {

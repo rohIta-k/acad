@@ -23,8 +23,10 @@ function CreateControlPanelSection({
   duration,
   onDurationChange,
   onGenerateClick,
+  isGenerating = false,
 }) {
   const isGenerateDisabled =
+    isGenerating ||
     !prompt.trim() ||
     !selectedFormat ||
     !selectedPlatform ||
@@ -41,9 +43,14 @@ function CreateControlPanelSection({
       >
         <PromptInput
           value={prompt}
-          onChange={onPromptChange}
+          onChange={(value) => {
+            const words = value.trim().split(/\s+/).filter(Boolean)
+            if (words.length <= 200) {
+              onPromptChange(value)
+            }
+          }}
           placeholder={`Describe an ad for ${brandData.brandName || 'your brand'} using your saved brand DNA.`}
-          count={`${prompt.length}/500`}
+          count={`${prompt.trim().split(/\s+/).filter(Boolean).length}/200`}
         />
       </CreateSection>
 
@@ -71,15 +78,18 @@ function CreateControlPanelSection({
         title="Platform"
         subtitle="Where will you publish this?"
       >
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
           {platformOptions.map((option) => (
             <IconChoice
               key={option.id}
+              compact
               active={selectedPlatform === option.id}
               onClick={() => onPlatformChange(option.id)}
               icon={option.icon}
             >
-              {option.label}
+              <span className="text-[13px] leading-none tracking-[-0.01em]">
+                {option.label}
+              </span>
             </IconChoice>
           ))}
         </div>
@@ -94,7 +104,12 @@ function CreateControlPanelSection({
           {includeOptions.map((item) => (
             <CheckboxPill
               key={item}
-              checked={includedItems.includes(item)}
+              checked={
+                item === 'Mascot'
+                  ? Boolean(brandData?.mascot?.dataUrl) && includedItems.includes(item)
+                  : includedItems.includes(item)
+              }
+              disabled={item === 'Mascot' && !brandData?.mascot?.dataUrl}
               label={item}
               onToggle={() => onIncludeToggle(item)}
             />
@@ -108,19 +123,23 @@ function CreateControlPanelSection({
         subtitle="How long should your video be?"
         extra="(for video)"
       >
-        <DurationSlider value={duration} onChange={onDurationChange} />
+        <DurationSlider
+          value={duration}
+          onChange={onDurationChange}
+          disabled={selectedFormat !== 'video'}
+        />
       </CreateSection>
 
       <button
         onClick={onGenerateClick}
         disabled={isGenerateDisabled}
         className={`mt-7 flex min-h-[56px] w-full items-center justify-center gap-3 rounded-[12px] px-5 py-4 text-[20px] font-medium tracking-[-0.04em] transition duration-200 sm:min-h-[60px] sm:text-[24px] ${isGenerateDisabled
-            ? 'cursor-not-allowed bg-[#d9d4e7] text-[#8b86a3]'
-            : 'bg-[linear-gradient(90deg,#7340f6_0%,#8e56ff_46%,#7340f6_100%)] text-white shadow-[0_18px_48px_rgba(125,85,255,0.32)] hover:-translate-y-0.5 hover:shadow-[0_22px_58px_rgba(125,85,255,0.38)] active:scale-[0.995]'
+          ? 'cursor-not-allowed bg-[#d9d4e7] text-[#8b86a3]'
+          : 'bg-[linear-gradient(90deg,#7340f6_0%,#8e56ff_46%,#7340f6_100%)] text-white shadow-[0_18px_48px_rgba(125,85,255,0.32)] hover:-translate-y-0.5 hover:shadow-[0_22px_58px_rgba(125,85,255,0.38)] active:scale-[0.995]'
           }`}
       >
         <Sparkles className="h-5 w-5" />
-        Generate
+        {isGenerating ? 'Generating' : 'Generate'}
       </button>
     </ControlPanelCard>
   )

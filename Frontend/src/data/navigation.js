@@ -8,6 +8,9 @@ import {
   Play,
   Sparkles,
   Youtube,
+  PanelsTopLeft,
+  Music2,
+  MessageCircle,
 } from 'lucide-react'
 
 export const sidebarSteps = [
@@ -17,8 +20,6 @@ export const sidebarSteps = [
   { id: 4, label: 'Audience' },
 ]
 
-export const appTabs = ['Preview', 'Specs', 'Layers']
-
 export const formatOptions = [
   { id: 'video', label: 'Video', icon: Play },
   { id: 'image', label: 'Image', icon: Image },
@@ -26,9 +27,12 @@ export const formatOptions = [
 ]
 
 export const platformOptions = [
-  { id: 'reel', label: 'Instagram Reel', icon: Instagram },
-  { id: 'story', label: 'Story', icon: Circle },
-  { id: 'short', label: 'YouTube Short', icon: Youtube },
+  { id: 'billboard', label: 'Billboard', icon: PanelsTopLeft },
+  { id: 'instagram-reel', label: 'Insta Reel', icon: Instagram },
+  { id: 'instagram-post', label: 'Insta Post', icon: Instagram },
+  { id: 'tiktok-short', label: 'TikTok Short', icon: Music2 },
+  { id: 'youtube-ad', label: 'YouTube', icon: Youtube },
+  { id: 'whatsapp-status', label: 'WhatsApp', icon: MessageCircle },
   { id: 'linkedin', label: 'LinkedIn', icon: Linkedin },
 ]
 

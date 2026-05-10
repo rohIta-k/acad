@@ -1,6 +1,6 @@
 function CheckboxPill({ checked, label, onToggle }) {
   return (
-    <label className="group flex cursor-pointer items-center gap-3 text-[16px] text-[#312d49]">
+    <label className="group flex cursor-pointer items-center gap-3 text-[14px] text-[#312d49]">
       <button
         type="button"
         onClick={onToggle}
