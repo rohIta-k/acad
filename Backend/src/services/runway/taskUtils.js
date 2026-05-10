@@ -1,4 +1,4 @@
-const { runwayClient } = require("./runwayClient");
+const { getRunwayClient } = require("./runwayClient");
 
 function isTerminalStatus(status = "") {
 	return ["SUCCEEDED", "FAILED", "CANCELED"].includes(status);
@@ -8,7 +8,7 @@ async function pollTaskStatus(taskId, maxAttempts = 60, delayMs = 5000) {
 	let attempts = 0;
 
 	while (attempts < maxAttempts) {
-		const task = await runwayClient.tasks.retrieve(taskId);
+		const task = await getRunwayClient().tasks.retrieve(taskId);
 
 		if (isTerminalStatus(task.status)) {
 			return task;

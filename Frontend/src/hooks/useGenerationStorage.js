@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createGeneration, deleteGeneration, fetchUserGenerations } from '../utils/generationApi'
 
+const generationCacheByUserId = new Map()
+
 function isMissingGenerationsTableError(err) {
   const message = (err?.message || '').toLowerCase()
   return message.includes('public.generations') && message.includes('schema cache')
@@ -16,20 +18,30 @@ export function useGenerationStorage(user) {
   const [filterBrand, setFilterBrand] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 6
+  const userId = user?.id || ''
 
   const reloadGenerations = useCallback(async () => {
-    if (!user?.id) {
+    if (!userId) {
       setGenerations([])
       setLoading(false)
       return []
+    }
+
+    const cachedGenerations = generationCacheByUserId.get(userId)
+    if (cachedGenerations) {
+      setGenerations(cachedGenerations)
+      setLoading(false)
+      setError('')
+      return cachedGenerations
     }
 
     setLoading(true)
     setError('')
 
     try {
-      const data = await fetchUserGenerations(user.id)
+      const data = await fetchUserGenerations(userId)
       setGenerations(data)
+      generationCacheByUserId.set(userId, data)
       return data
     } catch (err) {
       if (isMissingGenerationsTableError(err)) {
@@ -43,31 +55,39 @@ export function useGenerationStorage(user) {
     } finally {
       setLoading(false)
     }
-  }, [user])
+  }, [userId])
 
   const saveGeneration = useCallback(
     async (payload) => {
-      if (!user?.id) {
+      if (!userId) {
         throw new Error('Please sign in to save generations')
       }
 
-      const saved = await createGeneration(user.id, payload)
-      setGenerations((current) => [saved, ...current])
+      const saved = await createGeneration(userId, payload)
+      setGenerations((current) => {
+        const nextGenerations = [saved, ...current]
+        generationCacheByUserId.set(userId, nextGenerations)
+        return nextGenerations
+      })
       return saved
     },
-    [user],
+    [userId],
   )
 
   const removeGeneration = useCallback(
     async (generationId) => {
-      if (!user?.id) {
+      if (!userId) {
         throw new Error('Please sign in to delete generations')
       }
 
-      await deleteGeneration(user.id, generationId)
-      setGenerations((current) => current.filter((item) => item.id !== generationId))
+      await deleteGeneration(userId, generationId)
+      setGenerations((current) => {
+        const nextGenerations = current.filter((item) => item.id !== generationId)
+        generationCacheByUserId.set(userId, nextGenerations)
+        return nextGenerations
+      })
     },
-    [user],
+    [userId],
   )
 
   // Compute filter options and filtered results
@@ -137,7 +157,7 @@ export function useGenerationStorage(user) {
     return () => {
       active = false
     }
-  }, [reloadGenerations])
+  }, [reloadGenerations, userId])
 
   return {
     generations,

@@ -6,6 +6,7 @@ function normalizeAsset(asset) {
     fileName: asset?.fileName || '',
     fileType: asset?.fileType || '',
     dataUrl: asset?.dataUrl || '',
+    brief: asset?.brief || '',
   }
 }
 

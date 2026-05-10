@@ -17,6 +17,8 @@ import SetupHeaderSection from '../sections/SetupHeaderSection'
 import SetupIdentitySection from '../sections/SetupIdentitySection'
 import SetupPersonalitySection from '../sections/SetupPersonalitySection'
 import SetupVisualStyleSection from '../sections/SetupVisualStyleSection'
+import { useGenerationStorage } from '../hooks/useGenerationStorage'
+import { generateRunwayMascot } from '../utils/api'
 import { fileToDataUrl, isImageFile } from '../utils/fileUpload'
 
 function BrandSetupEditor({
@@ -26,6 +28,8 @@ function BrandSetupEditor({
   navigate,
   persistBrandData,
   setActiveBrand,
+  user,
+  saveGeneration,
   error,
 }) {
   const [step, setStep] = useState(1)
@@ -36,6 +40,8 @@ function BrandSetupEditor({
   const [activePaletteIndex, setActivePaletteIndex] = useState(-1)
   const [isSaving, setIsSaving] = useState(false)
   const [saveError, setSaveError] = useState('')
+  const [isMascotGenerating, setIsMascotGenerating] = useState(false)
+  const [mascotError, setMascotError] = useState('')
 
   const validation = useMemo(() => {
     const brandNameValid = draftData.brandName.trim().length > 0
@@ -75,6 +81,16 @@ function BrandSetupEditor({
     }))
   }
 
+  const updateMascotBrief = (value) => {
+    setDraftData((current) => ({
+      ...current,
+      mascot: {
+        ...current.mascot,
+        brief: value,
+      },
+    }))
+  }
+
   const updateDraftReferences = (references) => {
     setDraftData((current) => ({
       ...current,
@@ -86,6 +102,75 @@ function BrandSetupEditor({
     if (!isImageFile(file)) return
     const asset = await fileToDataUrl(file)
     updateDraftAsset(field, asset)
+  }
+
+  const handleMascotGenerate = async () => {
+    if (isMascotGenerating) return
+
+    setIsMascotGenerating(true)
+    setMascotError('')
+
+    try {
+      const result = await generateRunwayMascot({
+        brandData: {
+          brandName: draftData.brandName,
+          tagline: draftData.tagline,
+          tone: draftData.tone,
+          audience: draftData.audience,
+          palette: draftData.palette,
+          logo: draftData.logo,
+          mascot: draftData.mascot,
+          references: draftData.references,
+        },
+      })
+
+      const generatedMascot = {
+        fileName: `${draftData.brandName || 'Brand'} mascot`,
+        fileType: 'image/png',
+        dataUrl: result.imageUrl || result.outputUrl || '',
+        brief: draftData.mascot?.brief || '',
+      }
+
+      if (!generatedMascot.dataUrl) {
+        throw new Error('Runway did not return a mascot image URL.')
+      }
+
+      updateDraftAsset('mascot', generatedMascot)
+
+      if (user?.id) {
+        await saveGeneration({
+          brandId: brandId || null,
+          brandName: draftData.brandName,
+          prompt: generatedMascot.brief || `Mascot for ${draftData.brandName || 'brand'}`,
+          format: 'image',
+          platform: 'mascot',
+          include: ['Mascot'],
+          outputUrl: generatedMascot.dataUrl,
+          imageUrl: generatedMascot.dataUrl,
+          title: `${draftData.brandName || 'Brand'} mascot`,
+          summary: 'Generated mascot saved to My Stuff.',
+          rawResponse: result,
+        })
+      }
+
+      if (isEditMode) {
+        const savedBrand = await persistBrandData(
+          {
+            ...draftData,
+            mascot: generatedMascot,
+            updatedAt: new Date().toISOString(),
+          },
+          brandId,
+        )
+
+        setDraftData(savedBrand)
+      }
+
+    } catch (error) {
+      setMascotError(error?.message || 'Unable to generate a mascot right now.')
+    } finally {
+      setIsMascotGenerating(false)
+    }
   }
 
   const handleReferenceUpload = async (files) => {
@@ -200,6 +285,7 @@ function BrandSetupEditor({
                 brandName={draftData.brandName}
                 logo={draftData.logo}
                 mascot={draftData.mascot}
+                mascotBrief={draftData.mascot?.brief || ''}
                 isEditing={isEditing}
                 brandNameError={
                   showValidation && !validation.brandNameValid
@@ -211,11 +297,15 @@ function BrandSetupEditor({
                     ? 'Upload a logo before continuing.'
                     : ''
                 }
+                mascotError={mascotError}
                 onBrandNameChange={(value) => updateDraftField('brandName', value)}
                 onLogoUpload={(file) => handleAssetUpload('logo', file)}
                 onMascotUpload={(file) => handleAssetUpload('mascot', file)}
+                onMascotGenerate={handleMascotGenerate}
+                onMascotBriefChange={updateMascotBrief}
                 onLogoRemove={() => updateDraftAsset('logo', createEmptyAsset())}
                 onMascotRemove={() => updateDraftAsset('mascot', createEmptyAsset())}
+                isMascotGenerating={isMascotGenerating}
               />
             </div>
             <div id="step-2" className="scroll-mt-24">
@@ -311,6 +401,7 @@ function SetupPage() {
   const { brandId } = useParams()
   const isEditMode = Boolean(brandId)
   const { user, brands, loading, error, persistBrandData, setActiveBrand } = useBrandStorage()
+  const { saveGeneration } = useGenerationStorage(user)
 
   const selectedBrand = useMemo(() => {
     if (!isEditMode) return null
@@ -362,6 +453,8 @@ function SetupPage() {
       navigate={navigate}
       persistBrandData={persistBrandData}
       setActiveBrand={setActiveBrand}
+      user={user}
+      saveGeneration={saveGeneration}
       error={error}
     />
   )

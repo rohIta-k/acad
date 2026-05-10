@@ -9,7 +9,9 @@ function MediaDrop({
   asset,
   isEditing = true,
   onFileSelect,
+  onGenerate,
   onRemove,
+  isGenerating = false,
   hasError = false,
   errorText = '',
 }) {
@@ -101,10 +103,19 @@ function MediaDrop({
           <Upload className="h-4 w-4" />
           {asset?.dataUrl
             ? `Replace ${type}`
-            : type === 'mascot'
-              ? 'Generate mascot'
-              : `Upload ${type}`}
+            : `Upload ${type}`}
         </button>
+        {type === 'mascot' && onGenerate ? (
+          <button
+            type="button"
+            onClick={onGenerate}
+            disabled={!isEditing || isGenerating}
+            className={`inline-flex items-center gap-2 text-[15px] transition ${isEditing && !isGenerating ? 'text-[#7b52f3] hover:text-[#5e37d6]' : 'cursor-default text-[#a099b7]'
+              }`}
+          >
+            {isGenerating ? 'Generating...' : asset?.dataUrl ? 'Regenerate mascot' : 'Generate mascot'}
+          </button>
+        ) : null}
         {asset?.dataUrl ? (
           <button
             type="button"

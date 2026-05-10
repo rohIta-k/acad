@@ -8,6 +8,8 @@ import {
 } from '../utils/brandApi'
 import { supabase } from '../utils/supabaseClient'
 
+const brandCacheByUserId = new Map()
+
 function isMissingBrandsTableError(err) {
   const message = (err?.message || '').toLowerCase()
   return message.includes('public.brands') && message.includes('schema cache')
@@ -20,6 +22,12 @@ export function useBrandStorage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const schemaMissingRef = useRef(false)
+  const activeBrandIdRef = useRef('')
+  const userId = user?.id || ''
+
+  useEffect(() => {
+    activeBrandIdRef.current = activeBrandId
+  }, [activeBrandId])
 
   const persistActiveBrandId = useCallback((brandId) => {
     setActiveBrandIdState(brandId || '')
@@ -28,13 +36,16 @@ export function useBrandStorage() {
   const syncBrands = useCallback(
     (nextBrands) => {
       setBrands(nextBrands)
+      if (userId) {
+        brandCacheByUserId.set(userId, nextBrands)
+      }
 
       if (nextBrands.length === 0) {
         persistActiveBrandId('')
         return nextBrands
       }
 
-      const currentBrand = nextBrands.find((item) => item.id === activeBrandId)
+      const currentBrand = nextBrands.find((item) => item.id === activeBrandIdRef.current)
       if (currentBrand) {
         return nextBrands
       }
@@ -42,12 +53,12 @@ export function useBrandStorage() {
       persistActiveBrandId(nextBrands[0].id)
       return nextBrands
     },
-    [activeBrandId, persistActiveBrandId],
+    [persistActiveBrandId, userId],
   )
 
   const reloadBrandData = useCallback(
     async (forcedUser = null, options = {}) => {
-      const { showLoading = true } = options
+      const { showLoading = true, force = false } = options
 
       if (schemaMissingRef.current) {
         setLoading(false)
@@ -65,6 +76,14 @@ export function useBrandStorage() {
         persistActiveBrandId('')
         setLoading(false)
         return []
+      }
+
+      const cachedBrands = brandCacheByUserId.get(nextUser.id)
+      if (cachedBrands && !force) {
+        setError('')
+        setBrands(cachedBrands)
+        setLoading(false)
+        return cachedBrands
       }
 
       if (showLoading) {
@@ -173,6 +192,7 @@ export function useBrandStorage() {
       if (!nextUser) {
         schemaMissingRef.current = false
         setBrands([])
+        brandCacheByUserId.delete(userId)
         persistActiveBrandId('')
         setLoading(false)
         return
@@ -187,7 +207,7 @@ export function useBrandStorage() {
       mounted = false
       if (listener?.subscription) listener.subscription.unsubscribe()
     }
-  }, [persistActiveBrandId, reloadBrandData])
+  }, [persistActiveBrandId, reloadBrandData, userId])
 
   const brandData = useMemo(() => {
     if (!activeBrandId) {

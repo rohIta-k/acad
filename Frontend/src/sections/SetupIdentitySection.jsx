@@ -8,16 +8,20 @@ function SetupIdentitySection({
   brandName,
   logo,
   mascot,
+  mascotBrief,
   isEditing,
   brandNameError,
   logoError,
+  mascotError,
   onBrandNameChange,
   onLogoUpload,
   onMascotUpload,
+  onMascotGenerate,
+  onMascotBriefChange,
   onLogoRemove,
   onMascotRemove,
+  isMascotGenerating = false,
 }) {
-  console.log(brandName, logo, mascot);
   return (
     <FormPanel
       icon={UserRound}
@@ -57,8 +61,27 @@ function SetupIdentitySection({
           asset={mascot}
           isEditing={isEditing}
           onFileSelect={onMascotUpload}
+          onGenerate={onMascotGenerate}
           onRemove={onMascotRemove}
+          isGenerating={isMascotGenerating}
+          hasError={Boolean(mascotError)}
+          errorText={mascotError}
         />
+
+        <FieldBlock
+          label="Mascot brief"
+          hint="optional"
+          errorText=""
+        >
+          <textarea
+            value={mascotBrief}
+            onChange={(event) => onMascotBriefChange?.(event.target.value)}
+            disabled={!isEditing}
+            placeholder="Describe the mascot you want, for example: a friendly fox with a camera strap and playful posture"
+            rows={4}
+            className="flex w-full rounded-[12px] border border-[#ddd6ea] bg-white px-4 py-3 text-[16px] leading-6 tracking-[-0.02em] text-[#28243f] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] outline-none transition placeholder:text-[#b3abc9] focus:border-[#8b5cf6] focus:ring-4 focus:ring-[#8b5cf6]/10 disabled:cursor-not-allowed disabled:opacity-70"
+          />
+        </FieldBlock>
       </div>
     </FormPanel>
   )

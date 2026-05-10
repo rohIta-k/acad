@@ -36,6 +36,7 @@ export function createEmptyAsset() {
     fileName: '',
     fileType: '',
     dataUrl: '',
+    brief: '',
   }
 }
 
