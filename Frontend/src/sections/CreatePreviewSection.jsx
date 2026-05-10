@@ -51,17 +51,27 @@ function CreateResult({ result }) {
         </div>
       </div>
       <div className="mt-6 space-y-5">
-        {result.videoUrl ? (
-          <div className="flex justify-center rounded-[26px] border border-[#ebe7f3] bg-[radial-gradient(circle_at_top,rgba(123,82,243,0.08),transparent_52%),#faf9fc] p-5 shadow-[0_18px_44px_rgba(70,51,126,0.10)]">
-            <video
-              src={result.videoUrl}
-              controls
-              autoPlay
-              loop
-              className={`${getPlatformAspect(result.platform)} max-h-[720px] rounded-[20px] object-cover shadow-[0_24px_60px_rgba(15,23,42,0.18)]`}
-            />
-          </div>
-        ) : null}
+            {result.videoUrl ? (
+              <div className="flex justify-center rounded-[26px] border border-[#ebe7f3] bg-[radial-gradient(circle_at_top,rgba(123,82,243,0.08),transparent_52%),#faf9fc] p-5 shadow-[0_18px_44px_rgba(70,51,126,0.10)]">
+                <video
+                  src={result.videoUrl}
+                  controls
+                  autoPlay
+                  loop
+                  className={`${getPlatformAspect(result.platform)} max-h-[720px] rounded-[20px] object-cover shadow-[0_24px_60px_rgba(15,23,42,0.18)]`}
+                />
+              </div>
+            ) : null}
+
+            {result.imageUrl ? (
+              <div className="flex justify-center rounded-[26px] border border-[#ebe7f3] bg-[radial-gradient(circle_at_top,rgba(123,82,243,0.04),transparent_60%),#faf9fc] p-5 shadow-[0_18px_44px_rgba(70,51,126,0.08)]">
+                <img
+                  src={result.imageUrl}
+                  alt={result.title || 'Generated image'}
+                  className={`max-h-[720px] rounded-[20px] object-contain shadow-[0_24px_60px_rgba(15,23,42,0.12)] w-full`}
+                />
+              </div>
+            ) : null}
 
         {Array.isArray(result.sceneDirection) && result.sceneDirection.length > 0 ? (
           <ResultRow icon={FileJson} label="Scene direction">

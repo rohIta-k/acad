@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage'
 import SetupPage from './pages/SetupPage'
 import CreatePage from './pages/CreatePage'
 import BrandsPage from './pages/BrandsPage'
+import MyStuffPage from './pages/MyStuffPage'
 
 function PageWrapper({ children }) {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/brands/:brandId/edit" element={<PageWrapper> <SetupPage /></PageWrapper>} />
         <Route path="/setup" element={<PageWrapper> <SetupPage /></PageWrapper>} />
         <Route path="/create" element={<PageWrapper> <CreatePage /></PageWrapper>} />
+        <Route path="/my-stuff" element={<PageWrapper> <MyStuffPage /></PageWrapper>} />
       </Routes>
     </AnimatePresence>
   )

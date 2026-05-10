@@ -2,7 +2,6 @@ import {
   Clapperboard,
   Image,
   Instagram,
-  LayoutPanelLeft,
   Linkedin,
   Play,
   Sparkles,
@@ -22,7 +21,6 @@ export const sidebarSteps = [
 export const formatOptions = [
   { id: 'video', label: 'Video', icon: Play },
   { id: 'image', label: 'Image', icon: Image },
-  { id: 'poster', label: 'Poster', icon: LayoutPanelLeft },
 ]
 
 export const platformOptions = [

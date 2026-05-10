@@ -13,6 +13,7 @@ import { useToggleList } from '../hooks/useToggleList'
 import CreateControlPanelSection from '../sections/CreateControlPanelSection'
 import CreatePreviewSection from '../sections/CreatePreviewSection'
 import { generateRunwayVideo } from '../utils/api'
+import { useGenerationStorage } from '../hooks/useGenerationStorage'
 
 function CreatePage() {
   const navigate = useNavigate()
@@ -32,6 +33,7 @@ function CreatePage() {
     activeBrandId,
     loading: brandLoading,
   } = useBrandStorage()
+  const { saveGeneration } = useGenerationStorage(user)
 
   useEffect(() => {
     if (brandLoading) return
@@ -73,6 +75,22 @@ function CreatePage() {
         },
       })
 
+      await saveGeneration({
+        brandId: activeBrandId,
+        brandName: brandData.brandName,
+        prompt: prompt.trim(),
+        format: selectedFormat,
+        platform: selectedPlatform,
+        duration: selectedFormat === 'video' ? duration : null,
+        include: included,
+        outputUrl: result.outputUrl || result.videoUrl || result.imageUrl || '',
+        videoUrl: result.videoUrl || '',
+        imageUrl: result.imageUrl || '',
+        title: result.title || 'Generated creative',
+        summary: result.summary || '',
+        rawResponse: result,
+      })
+
       setGenerationResult(result)
       setHasGenerated(true)
     } catch (error) {
@@ -93,6 +111,7 @@ function CreatePage() {
       <div className="relative z-10 min-h-screen px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
         <CreateHeader
           onBackToBrands={() => navigate('/brands')}
+          onOpenMyStuff={() => navigate('/my-stuff')}
         />
 
         <main className="mt-6 sm:mt-10 lg:mt-12">

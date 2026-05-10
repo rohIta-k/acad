@@ -1,4 +1,4 @@
-import { ArrowRight, Brush, Layers3, Plus } from 'lucide-react'
+import { ArrowRight, Brush, FolderOpen, Layers3, Plus } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import PageFrame from '../components/layout/PageFrame'
 import { useBrandStorage } from '../hooks/useBrandStorage'
@@ -106,13 +106,22 @@ function BrandsPage() {
             </p>
           </div>
 
-          <button
-            onClick={() => navigate('/brands/new')}
-            className="inline-flex items-center justify-center gap-2 rounded-[14px] bg-[linear-gradient(90deg,#7340f6_0%,#e57ac5_100%)] px-5 py-3 text-[15px] font-medium text-white shadow-[0_14px_34px_rgba(125,85,255,0.26)]"
-          >
-            <Plus className="h-4 w-4" />
-            Create Brand
-          </button>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => navigate('/my-stuff')}
+              className="inline-flex items-center justify-center gap-2 rounded-[14px] border border-[#e4daf8] bg-white px-5 py-3 text-[15px] font-medium text-[#544b77] shadow-[0_14px_34px_rgba(125,85,255,0.12)]"
+            >
+              <FolderOpen className="h-4 w-4" />
+              My Stuff
+            </button>
+            <button
+              onClick={() => navigate('/brands/new')}
+              className="inline-flex items-center justify-center gap-2 rounded-[14px] bg-[linear-gradient(90deg,#7340f6_0%,#e57ac5_100%)] px-5 py-3 text-[15px] font-medium text-white shadow-[0_14px_34px_rgba(125,85,255,0.26)]"
+            >
+              <Plus className="h-4 w-4" />
+              Create Brand
+            </button>
+          </div>
         </header>
 
         {error ? (
