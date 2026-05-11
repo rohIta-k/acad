@@ -32,14 +32,6 @@ function LandingHeroSection() {
               </div>
               <ArrowRight className="h-4 w-4" strokeWidth={2.2} />
             </button>
-            <button
-              className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#2C2D3C] bg-[#111219] px-6 py-3.5 text-[#e2e2e8] transition duration-300 hover:bg-[#252530]"
-            >
-              <div className="text-[16px] font-medium leading-none">
-                Watch Showreel
-              </div>
-              <PlayCircle className="h-4 w-4" strokeWidth={2} />
-            </button>
           </div>
         </section>
 

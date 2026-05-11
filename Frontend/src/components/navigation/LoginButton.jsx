@@ -3,7 +3,12 @@ import { supabase } from '../../utils/supabaseClient'
 function LoginButton() {
   const handleLogin = async () => {
     try {
-      await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.href } })
+      const redirectUrl = `${window.location.origin}${window.location.pathname}${window.location.search}`
+
+      await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: redirectUrl },
+      })
     } catch (err) {
       console.error('Supabase sign-in error', err)
       alert('Sign-in failed: ' + (err?.message || String(err)))

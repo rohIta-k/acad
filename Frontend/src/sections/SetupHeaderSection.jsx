@@ -1,5 +1,4 @@
 import { Sparkles } from 'lucide-react'
-import Pill from '../components/shared/Pill'
 
 function SetupHeaderSection() {
   return (
@@ -18,7 +17,6 @@ function SetupHeaderSection() {
           </p>
         </div>
       </div>
-      <Pill icon={Sparkles}>AI-Powered Brand Media</Pill>
     </div>
   )
 }

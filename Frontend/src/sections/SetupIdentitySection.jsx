@@ -28,7 +28,7 @@ function SetupIdentitySection({
       title="Identity"
       subtitle="The basics of your brand."
     >
-      <div className="grid gap-8 lg:grid-cols-2">
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.95fr)]">
         <div className="flex flex-col gap-6">
           <FieldBlock
             label="Brand name"
@@ -36,33 +36,18 @@ function SetupIdentitySection({
             hint="This is how your brand name will appear."
             errorText={brandNameError}
           >
-            <StaticInput
-              value={brandName}
-              isEditing={isEditing}
-              onChange={onBrandNameChange}
-              placeholder="Enter your brand name"
-              hasError={Boolean(brandNameError)}
-            />
+            <div className="max-w-[420px]">
+              <StaticInput
+                value={brandName}
+                isEditing={isEditing}
+                onChange={onBrandNameChange}
+                placeholder="Enter your brand name"
+                hasError={Boolean(brandNameError)}
+              />
+            </div>
           </FieldBlock>
 
-          <FieldBlock
-            label="Mascot brief"
-            hint="optional"
-            errorText=""
-          >
-            <textarea
-              value={mascotBrief}
-              onChange={(event) => onMascotBriefChange?.(event.target.value)}
-              disabled={!isEditing}
-              placeholder="Describe the mascot you want, for example: a friendly fox with a camera strap and playful posture"
-              rows={4}
-              className="flex w-full rounded-[12px] border border-[#2C2D3C] bg-[#1D1E29] px-4 py-3 text-[16px] leading-6 tracking-[0.02em] text-[#e2e2e8] shadow-none outline-none transition placeholder:text-[#a1a1aa] focus:border-[#4f46e5] focus:ring-4 focus:ring-[#4f46e5]/10 disabled:cursor-not-allowed disabled:opacity-70"
-            />
-          </FieldBlock>
-        </div>
-
-        <div className="flex flex-col gap-6 sm:flex-row">
-          <div className="flex-1">
+          <div className="max-w-[420px]">
             <MediaDrop
               label="Logo"
               required
@@ -75,7 +60,10 @@ function SetupIdentitySection({
               errorText={logoError}
             />
           </div>
-          <div className="flex-1">
+        </div>
+
+        <div className="flex flex-col gap-6">
+          <div className="max-w-[420px]">
             <MediaDrop
               label="Mascot"
               hint="optional"
@@ -90,6 +78,23 @@ function SetupIdentitySection({
               errorText={mascotError}
             />
           </div>
+
+          <FieldBlock
+            label="Mascot brief"
+            hint="optional"
+            errorText=""
+          >
+            <div className="max-w-[420px]">
+              <textarea
+                value={mascotBrief}
+                onChange={(event) => onMascotBriefChange?.(event.target.value)}
+                disabled={!isEditing}
+                placeholder="Describe the mascot you want, for example: a friendly fox with a camera strap and playful posture"
+                rows={4}
+                className="flex w-full rounded-[12px] border border-white/12 bg-[rgba(29,30,41,0.78)] px-4 py-3 text-[16px] leading-6 tracking-[0.02em] text-[#e2e2e8] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_0_1px_rgba(255,255,255,0.03)] outline-none transition backdrop-blur-md placeholder:text-[#a1a1aa] focus:border-[#4f46e5] focus:ring-4 focus:ring-[#4f46e5]/10 disabled:cursor-not-allowed disabled:opacity-70"
+              />
+            </div>
+          </FieldBlock>
         </div>
       </div>
     </FormPanel>

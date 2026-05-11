@@ -140,7 +140,7 @@ function BrandsPage() {
             </p>
             <button
               onClick={() => navigate('/brands/new')}
-              className="mt-6 inline-flex items-center gap-2 rounded-[12px] bg-[#B8C2FF] text-[#131318]"
+              className="mt-6 inline-flex items-center gap-2 rounded-[12px] bg-[#B8C2FF] px-6 py-3 text-[15px] font-medium text-[#131318]"
             >
               <Plus className="h-4 w-4" />
               Create Your First Brand

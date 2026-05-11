@@ -1,8 +1,9 @@
 import { useEffect, useCallback } from 'react'
 
-const STORAGE_KEY = 'create_page_state'
+const getStorageKey = (userId) => `create_page_state_${userId}`
 
 export function useCreatePagePersistence({
+  user,
   prompt,
   selectedFormat,
   selectedPlatform,
@@ -18,10 +19,15 @@ export function useCreatePagePersistence({
   setGenerationResult,
   setHasGenerated,
 }) {
+  const userId = user?.id
+  const storageKey = userId ? getStorageKey(userId) : null
+
   // Load from localStorage on mount
   useEffect(() => {
+    if (!userId) return
+
     try {
-      const saved = localStorage.getItem(STORAGE_KEY)
+      const saved = localStorage.getItem(storageKey)
       if (saved) {
         const {
           savedPrompt,
@@ -50,6 +56,8 @@ export function useCreatePagePersistence({
 
   // Save to localStorage whenever state changes
   useEffect(() => {
+    if (!userId || !storageKey) return
+
     try {
       const stateToSave = {
         savedPrompt: prompt,
@@ -60,27 +68,34 @@ export function useCreatePagePersistence({
         savedGenerationResult: generationResult,
         savedHasGenerated: hasGenerated,
       }
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave))
+      localStorage.setItem(storageKey, JSON.stringify(stateToSave))
     } catch (error) {
       console.warn('Failed to save create page state:', error)
     }
-  }, [prompt, selectedFormat, selectedPlatform, duration, included, generationResult, hasGenerated])
+  }, [userId, storageKey, prompt, selectedFormat, selectedPlatform, duration, included, generationResult, hasGenerated])
 
-  // Clear localStorage on unmount (tab close)
+  // Clear localStorage when user logs out
   useEffect(() => {
     return () => {
-      // Optionally clear on unmount - comment out if you want persistence even after leaving page
-      // localStorage.removeItem(STORAGE_KEY)
+      // Clear user's session storage when component unmounts (user logs out)
+      if (storageKey) {
+        try {
+          localStorage.removeItem(storageKey)
+        } catch (error) {
+          console.warn('Failed to clear create page state on logout:', error)
+        }
+      }
     }
-  }, [])
+  }, [storageKey])
 
   const clearPersistence = useCallback(() => {
+    if (!storageKey) return
     try {
-      localStorage.removeItem(STORAGE_KEY)
+      localStorage.removeItem(storageKey)
     } catch (error) {
       console.warn('Failed to clear create page state:', error)
     }
-  }, [])
+  }, [storageKey])
 
   return { clearPersistence }
 }

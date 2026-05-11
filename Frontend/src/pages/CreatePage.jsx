@@ -39,6 +39,7 @@ function CreatePage() {
 
   // Persist state across page refreshes
   useCreatePagePersistence({
+    user,
     prompt,
     selectedFormat,
     selectedPlatform,
@@ -58,6 +59,10 @@ function CreatePage() {
   useEffect(() => {
     // Only fetch/load brand data on mount; no silent redirects
   }, [activeBrandId, brandLoading, user])
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }, [])
 
   const handleGenerate = async () => {
     if (isGenerating) return
@@ -121,9 +126,9 @@ function CreatePage() {
   if (brandLoading) {
     return (
       <PageFrame className="px-3 py-3 sm:px-4 sm:py-4 lg:px-0">
-        <div className="pointer-events-none absolute inset-0" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_96%_4%,rgba(148,163,184,0.28),transparent_32%)]" />
         <div className="relative z-10 min-h-screen px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
-          <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#a1a1aa]  sm:p-8">
+          <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] bg-[#111219] p-6 text-[#a1a1aa]  sm:p-8">
             Loading your brand workspace...
           </div>
         </div>
@@ -134,9 +139,9 @@ function CreatePage() {
   if (!user) {
     return (
       <PageFrame className="px-3 py-3 sm:px-4 sm:py-4 lg:px-0">
-        <div className="pointer-events-none absolute inset-0" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_96%_4%,rgba(148,163,184,0.28),transparent_32%)]" />
         <div className="relative z-10 min-h-screen px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
-          <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
+          <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
             Please sign in to generate ads.
           </div>
         </div>
@@ -147,9 +152,9 @@ function CreatePage() {
   if (!activeBrandId) {
     return (
       <PageFrame className="px-3 py-3 sm:px-4 sm:py-4 lg:px-0">
-        <div className="pointer-events-none absolute inset-0" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_96%_4%,rgba(148,163,184,0.28),transparent_32%)]" />
         <div className="relative z-10 min-h-screen px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
-          <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
+          <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
             <h2 className="text-[20px] font-semibold text-white mb-2">No Active Brand</h2>
             <p className="text-[#a1a1aa] mb-6">You need to set up a brand before generating cinematic ad content.</p>
             <button
@@ -166,7 +171,7 @@ function CreatePage() {
 
   return (
     <PageFrame className="px-3 py-3 sm:px-4 sm:py-4 lg:px-0">
-      <div className="pointer-events-none absolute inset-0" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_96%_4%,rgba(148,163,184,0.28),transparent_32%)]" />
       <div className="relative z-10 min-h-screen px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
         <CreateHeader
           onBackToBrands={() => navigate('/brands')}

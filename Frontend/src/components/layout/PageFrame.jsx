@@ -6,6 +6,7 @@ import SignOutButton from '../navigation/SignOutButton'
 
 function PageFrame({ children, className = '' }) {
   const [user, setUser] = useState(null)
+  const [authLoading, setAuthLoading] = useState(true)
 
   useEffect(() => {
     let mounted = true
@@ -13,14 +14,19 @@ function PageFrame({ children, className = '' }) {
     ;(async () => {
       try {
         const { data } = await supabase.auth.getUser()
-        if (mounted) setUser(data?.user ?? null)
+        if (mounted) {
+          setUser(data?.user ?? null)
+          setAuthLoading(false)
+        }
       } catch (err) {
         console.error('Error getting supabase user', err)
+        if (mounted) setAuthLoading(false)
       }
     })()
 
     const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null)
+      setAuthLoading(false)
     })
 
     return () => {
@@ -37,7 +43,7 @@ function PageFrame({ children, className = '' }) {
       )}
     >
       <div className="flex w-full justify-end px-4 pt-4 sm:px-6 lg:px-8">
-        {user ? <SignOutButton /> : <LoginButton />}
+        {!authLoading ? (user ? <SignOutButton /> : <LoginButton />) : null}
       </div>
 
       <div className="flex-1 flex flex-col">

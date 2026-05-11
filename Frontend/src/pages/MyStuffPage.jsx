@@ -87,7 +87,7 @@ function GenerationCard({ item, onDelete }) {
 
 function MyStuffPage() {
   const navigate = useNavigate()
-  const { user } = useBrandStorage()
+  const { user, loading: brandLoading } = useBrandStorage()
   const {
     paginatedGenerations,
     loading,
@@ -107,6 +107,16 @@ function MyStuffPage() {
     totalPages,
     filteredGenerations,
   } = useGenerationStorage(user)
+
+  if (brandLoading) {
+    return (
+      <PageFrame className="p-4 sm:p-6 lg:p-8">
+        <div className="relative z-10 mx-auto max-w-[1200px] rounded-[22px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#625b7a] sm:p-8">
+          Loading your stuff...
+        </div>
+      </PageFrame>
+    )
+  }
 
   if (!user) {
     return (

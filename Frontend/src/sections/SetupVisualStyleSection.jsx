@@ -132,18 +132,35 @@ function SetupVisualStyleSection({
         </FieldBlock>
 
         <FieldBlock
-          label="Reference image"
+          label="Reference image previews"
           hint="optional"
           hintText="Helps us understand the vibe, style and mood you love."
         >
-          <div className="flex flex-col gap-4">
-            <UploadReferenceCard
-              references={references}
-              isEditing={isEditing}
-              onFilesSelect={onReferenceUpload}
-              onRemove={onReferenceRemove}
-            />
-          </div>
+          <UploadReferenceCard
+            references={references}
+            isEditing={isEditing}
+            onFilesSelect={onReferenceUpload}
+            onRemove={onReferenceRemove}
+            showUploadArea={false}
+            showPreviewGrid
+          />
+        </FieldBlock>
+      </div>
+
+      <div className="mt-8">
+        <FieldBlock
+          label="Reference image upload"
+          hint="optional"
+          hintText="Upload additional references to guide the look and feel."
+        >
+          <UploadReferenceCard
+            references={references}
+            isEditing={isEditing}
+            onFilesSelect={onReferenceUpload}
+            onRemove={onReferenceRemove}
+            showPreviewGrid={false}
+            showUploadArea
+          />
         </FieldBlock>
       </div>
     </FormPanel>

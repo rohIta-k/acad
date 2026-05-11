@@ -60,7 +60,7 @@ function CreateResult({ result,selectedPlatform }) {
       </div>
       <div className="mt-6 space-y-5">
         {result.videoUrl ? (
-          <div className="flex justify-center rounded-[26px] border border-[#2C2D3C] bg-[radial-gradient(circle_at_top,rgba(123,82,243,0.08),transparent_52%),#faf9fc] p-5 ">
+          <div className="flex justify-center rounded-[26px] bg-[radial-gradient(circle_at_top,rgba(123,82,243,0.08),transparent_52%),#faf9fc] p-5 ">
             <video
               src={result.videoUrl}
               controls
@@ -77,7 +77,7 @@ function CreateResult({ result,selectedPlatform }) {
         ) : null}
 
         {imageSrc ? (
-          <div className="flex justify-center rounded-[26px] border border-[#2C2D3C] bg-[radial-gradient(circle_at_top,rgba(123,82,243,0.04),transparent_60%),#faf9fc] p-5 ">
+          <div className="flex justify-center rounded-[26px] bg-[radial-gradient(circle_at_top,rgba(123,82,243,0.04),transparent_60%),#faf9fc] p-5 ">
             <img
               src={imageSrc}
               alt={result.title || 'Generated image'}

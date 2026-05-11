@@ -3,14 +3,12 @@ import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import SetupShell from '../components/layout/SetupShell'
 import PageFrame from '../components/layout/PageFrame'
-import SetupSidebar from '../components/navigation/SetupSidebar'
 import {
   audienceOptions,
   createDefaultBrandData,
   createEmptyAsset,
   toneOptions,
 } from '../data/brandData'
-import { sidebarSteps } from '../data/navigation'
 import { useBrandStorage } from '../hooks/useBrandStorage'
 import SetupAudienceSection from '../sections/SetupAudienceSection'
 import SetupHeaderSection from '../sections/SetupHeaderSection'
@@ -37,8 +35,6 @@ function BrandSetupEditor({
   saveGeneration,
   error,
 }) {
-  const [step, setStep] = useState(1)
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [draftData, setDraftData] = useState(initialDraft)
   const [isEditing] = useState(true)
   const [showValidation, setShowValidation] = useState(false)
@@ -284,19 +280,8 @@ function BrandSetupEditor({
 
   return (
     <PageFrame className="p-3 sm:p-4 lg:p-5">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(137,92,255,0.15),transparent_22%),radial-gradient(circle_at_86%_20%,rgba(255,255,255,0.95),transparent_24%),radial-gradient(circle_at_75%_76%,rgba(251,174,206,0.12),transparent_25%)]" />
-      <SetupShell
-        sidebar={
-          <SetupSidebar
-            steps={sidebarSteps}
-            activeStep={step}
-            onStepChange={setStep}
-            open={isSidebarOpen}
-            onOpen={() => setIsSidebarOpen(true)}
-            onClose={() => setIsSidebarOpen(false)}
-          />
-        }
-      >
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_96%_16%,rgba(148,163,184,0.30),transparent_20%),radial-gradient(circle_at_90%_6%,rgba(255,255,255,0.14),transparent_12%),radial-gradient(circle_at_100%_40%,rgba(148,163,184,0.14),transparent_24%)]" />
+      <SetupShell>
         <div className="flex min-h-full flex-col">
           <SetupHeaderSection />
           <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center sm:justify-end">
@@ -311,8 +296,8 @@ function BrandSetupEditor({
             ) : null}
           </div>
 
-          <div className="mt-8 space-y-4">
-            <div id="step-1" className="scroll-mt-24">
+          <div className="mt-8 grid gap-4 xl:grid-cols-2 xl:gap-5">
+            <div id="step-1" className="scroll-mt-24 xl:col-span-2">
               <SetupIdentitySection
                 brandName={draftData.brandName}
                 logo={draftData.logo}
@@ -340,6 +325,7 @@ function BrandSetupEditor({
                 isMascotGenerating={isMascotGenerating}
               />
             </div>
+
             <div id="step-2" className="scroll-mt-24">
               <SetupPersonalitySection
                 tagline={draftData.tagline}
@@ -355,7 +341,22 @@ function BrandSetupEditor({
                 onToneChange={(value) => updateDraftField('tone', value)}
               />
             </div>
-            <div id="step-3" className="scroll-mt-24">
+
+            <div id="step-4" className="scroll-mt-24">
+              <SetupAudienceSection
+                audienceOptions={audienceOptions}
+                selectedAudience={draftData.audience}
+                isEditing={isEditing}
+                audienceError={
+                  showValidation && !validation.audienceValid
+                    ? 'Choose at least one audience segment.'
+                    : ''
+                }
+                onAudienceToggle={toggleAudience}
+              />
+            </div>
+
+            <div id="step-3" className="scroll-mt-24 xl:col-span-2">
               <SetupVisualStyleSection
                 palette={draftData.palette}
                 references={draftData.references}
@@ -379,19 +380,6 @@ function BrandSetupEditor({
                 }
               />
             </div>
-            <div id="step-4" className="scroll-mt-24">
-              <SetupAudienceSection
-                audienceOptions={audienceOptions}
-                selectedAudience={draftData.audience}
-                isEditing={isEditing}
-                audienceError={
-                  showValidation && !validation.audienceValid
-                    ? 'Choose at least one audience segment.'
-                    : ''
-                }
-                onAudienceToggle={toggleAudience}
-              />
-            </div>
           </div>
 
           <div className="mt-auto pt-6">
@@ -413,9 +401,9 @@ function BrandSetupEditor({
             <button
               onClick={saveAndContinue}
               disabled={!validation.isValid}
-              className={`flex min-h-[58px] w-full items-center justify-center gap-3 rounded-[12px] px-6 py-4 text-center text-[16px] font-medium tracking-[-0.02em] shadow-[0_18px_48px_rgba(125,85,255,0.26)] transition duration-300 sm:px-8 sm:text-[17px] ${validation.isValid
-                ? 'bg-[linear-gradient(90deg,#7340f6_0%,#e57ac5_100%)] text-white hover:-translate-y-0.5 hover:shadow-[0_22px_58px_rgba(125,85,255,0.34)] active:scale-[0.995]'
-                : 'cursor-not-allowed bg-[linear-gradient(90deg,#cbb7ff_0%,#edc6de_100%)] text-white/85 shadow-none'
+              className={`flex min-h-[58px] w-full items-center justify-center gap-3 rounded-[12px] px-6 py-4 text-center text-[20px] font-semibold tracking-[-0.02em] shadow-[0_18px_48px_rgba(184,194,255,0.18)] transition duration-300 sm:px-8 sm:text-[21px] ${validation.isValid
+                ? 'bg-[#B8C2FF] text-[#131318] hover:-translate-y-0.5 hover:bg-[#C3C8FF] hover:shadow-[0_22px_58px_rgba(184,194,255,0.24)] active:scale-[0.995]'
+                : 'cursor-not-allowed bg-[#B8C2FF]/55 text-[#131318]/70 shadow-none'
                 }`}
             >
               {isSaving ? 'Saving brand...' : 'Save Brand & Start Creating'}

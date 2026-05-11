@@ -8,7 +8,7 @@ function FieldBlock({
 }) {
   return (
     <div>
-      <div className="mb-3 text-[13px] font-bold uppercase tracking-[0.1em] text-[#e2e2e8] font-mono">
+      <div className="mb-3 outfit-font text-[17px] font-semibold tracking-[-0.015em] text-[#e2e2e8]">
         {label}
         {required ? <span className="text-[#f2708f]"> *</span> : null}
         {!required && hint ? (

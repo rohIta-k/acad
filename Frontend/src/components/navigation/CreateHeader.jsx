@@ -1,6 +1,5 @@
-import { ArrowLeft, FolderOpen, Sparkles } from 'lucide-react'
+import { ArrowLeft, FolderOpen } from 'lucide-react'
 import BrandForgeLogo from '../shared/BrandForgeLogo'
-import Pill from '../shared/Pill'
 
 function CreateHeader({
   onBackToBrands,
@@ -22,7 +21,7 @@ function CreateHeader({
         <BrandForgeLogo />
       </div>
 
-      <div className="flex items-center gap-3 self-start sm:self-end lg:self-auto">
+      <div className="flex items-center gap-3 self-start sm:self-end lg:self-auto lg:-translate-x-6">
         <button
           onClick={onOpenMyStuff}
           className="inline-flex items-center gap-2 rounded-[12px] border border-[#2C2D3C] bg-[#111219] px-4 py-2.5 text-[14px] font-medium text-[#e2e2e8] transition hover:border-[#B8C2FF]"
@@ -30,9 +29,6 @@ function CreateHeader({
           <FolderOpen className="h-4 w-4" />
           My Stuff
         </button>
-        <Pill icon={Sparkles} className="max-w-full px-4 text-[13px] sm:px-5 sm:text-[15px] !border-[#2C2D3C] !bg-[#1D1E29] !text-[#e2e2e8]">
-          AI-Powered Brand Media
-        </Pill>
       </div>
     </header>
   )
