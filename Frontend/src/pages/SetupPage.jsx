@@ -19,7 +19,12 @@ import SetupPersonalitySection from '../sections/SetupPersonalitySection'
 import SetupVisualStyleSection from '../sections/SetupVisualStyleSection'
 import { useGenerationStorage } from '../hooks/useGenerationStorage'
 import { generateRunwayMascot } from '../utils/api'
-import { fileToDataUrl, isImageFile } from '../utils/fileUpload'
+import { isImageFile } from '../utils/fileUpload'
+import {
+  getAssetUrl,
+  uploadBrandImageAsset,
+  uploadBrandImageAssetFromUrl,
+} from '../utils/brandAssetStorage'
 
 function BrandSetupEditor({
   initialDraft,
@@ -45,7 +50,7 @@ function BrandSetupEditor({
 
   const validation = useMemo(() => {
     const brandNameValid = draftData.brandName.trim().length > 0
-    const logoValid = Boolean(draftData.logo.dataUrl)
+    const logoValid = Boolean(getAssetUrl(draftData.logo))
     const toneValid = Boolean(draftData.tone)
     const audienceValid = draftData.audience.length > 0
     const paletteValid =
@@ -102,8 +107,18 @@ function BrandSetupEditor({
 
   const handleAssetUpload = async (field, file) => {
     if (!isImageFile(file)) return
-    const asset = await fileToDataUrl(file)
-    updateDraftAsset(field, asset)
+
+    try {
+      setSaveError('')
+      const asset = await uploadBrandImageAsset(file, {
+        userId: user?.id,
+        brandId: brandId || 'draft',
+        kind: field,
+      })
+      updateDraftAsset(field, asset)
+    } catch (error) {
+      setSaveError(error?.message || 'Unable to upload the image right now.')
+    }
   }
 
   const handleMascotGenerate = async () => {
@@ -126,16 +141,20 @@ function BrandSetupEditor({
         },
       })
 
-      const generatedMascot = {
-        fileName: `${draftData.brandName || 'Brand'} mascot`,
-        fileType: 'image/png',
-        dataUrl: result.imageUrl || result.outputUrl || '',
-        brief: draftData.mascot?.brief || '',
-      }
+      const generatedMascotUrl = result.imageUrl || result.outputUrl || ''
 
-      if (!generatedMascot.dataUrl) {
+      if (!generatedMascotUrl) {
         throw new Error('Runway did not return a mascot image URL.')
       }
+
+      const generatedMascot = await uploadBrandImageAssetFromUrl(generatedMascotUrl, {
+        userId: user?.id,
+        brandId: brandId || 'draft',
+        kind: 'mascot',
+        fileName: `${draftData.brandName || 'Brand'} mascot.png`,
+      })
+
+      generatedMascot.brief = draftData.mascot?.brief || ''
 
       updateDraftAsset('mascot', generatedMascot)
 
@@ -147,8 +166,8 @@ function BrandSetupEditor({
           format: 'image',
           platform: 'mascot',
           include: ['Mascot'],
-          outputUrl: generatedMascot.dataUrl,
-          imageUrl: generatedMascot.dataUrl,
+          outputUrl: generatedMascot.url,
+          imageUrl: generatedMascot.url,
           title: `${draftData.brandName || 'Brand'} mascot`,
           summary: 'Generated mascot saved to My Stuff.',
           rawResponse: result,
@@ -176,13 +195,24 @@ function BrandSetupEditor({
   }
 
   const handleReferenceUpload = async (files) => {
-    const nextAssets = await Promise.all(
-      files.filter(isImageFile).map((file) => fileToDataUrl(file)),
-    )
+    try {
+      const nextAssets = await Promise.all(
+        files
+          .filter(isImageFile)
+          .map((file) => uploadBrandImageAsset(file, {
+            userId: user?.id,
+            brandId: brandId || 'draft',
+            kind: 'reference',
+          })),
+      )
 
-    if (nextAssets.length === 0) return
+      if (nextAssets.length === 0) return
 
-    updateDraftReferences([...draftData.references, ...nextAssets].slice(0, 6))
+      updateDraftReferences([...draftData.references, ...nextAssets].slice(0, 6))
+      setSaveError('')
+    } catch (error) {
+      setSaveError(error?.message || 'Unable to upload reference images right now.')
+    }
   }
 
   const toggleAudience = (value) => {

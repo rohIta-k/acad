@@ -1,5 +1,6 @@
 import { Image, Trash2, Upload } from 'lucide-react'
 import { useRef } from 'react'
+import { getAssetUrl } from '../../data/brandData'
 
 function UploadReferenceCard({
   references,
@@ -65,7 +66,7 @@ function UploadReferenceCard({
               className="group relative overflow-hidden rounded-[14px] border border-[#2C2D3C] bg-[#1D1E29] "
             >
               <img
-                src={reference.dataUrl}
+                src={getAssetUrl(reference)}
                 alt={reference.fileName || `Reference ${index + 1}`}
                 className="h-24 w-full object-cover"
               />

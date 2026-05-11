@@ -73,10 +73,10 @@ async function createRunwayTask(payload = {}) {
   }
 
   const logoUrl =
-    brandData?.logo?.dataUrl || "";
+    brandData?.logo?.url || brandData?.logo?.dataUrl || "";
 
   const mascotUrl =
-    brandData?.mascot?.dataUrl || "";
+    brandData?.mascot?.url || brandData?.mascot?.dataUrl || "";
 
   // Handle mascot content type
   if (contentType === "content/mascot") {
@@ -103,15 +103,15 @@ async function createRunwayTask(payload = {}) {
 
 ${String(output.direction || "")}
 
-Brand name: ${brandData?.brandName || ""}.
+Use the exact Brand name: ${brandData?.brandName || ""}.
 Tagline: ${brandData?.tagline || ""}.
 Tone: ${brandData?.tone || ""}.
 Audience: ${(brandData?.audience || []).join(", ")}.
 Brand colors: ${(brandData?.palette || []).join(", ")}.
 Include: ${String(output.includes || "")}.
 
-Logo reference: ${logoUrl || "None"}.
-Mascot reference: ${mascotUrl || "None"}..
+Use the exact Logo: ${logoUrl || "None"}.
+use the exact Mascot: ${mascotUrl || "None"}..
 `
       .replace(/\s+/g, " ")
       .trim()
@@ -136,15 +136,15 @@ Mascot reference: ${mascotUrl || "None"}..
 
 ${String(output.creativeDirection || "")}
 
-Brand name: ${brandData?.brandName || ""}.
+Use the exact Brand name: ${brandData?.brandName || ""}.
 Tagline: ${brandData?.tagline || ""}.
 Tone: ${brandData?.tone || ""}.
 Audience: ${(brandData?.audience || []).join(", ")}.
 Brand colors: ${(brandData?.palette || []).join(", ")}.
 Include: ${String(output.includes || "")}.
 
-Logo reference: ${logoUrl || "None"}.
-Mascot reference: ${mascotUrl || "None"}.
+Use the exact Logo: ${logoUrl || "None"}.
+use the exact Mascot: ${mascotUrl || "None"}.
 `
     .replace(/\s+/g, " ")
     .trim()

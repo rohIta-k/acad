@@ -1,4 +1,5 @@
 import { Bot, ImagePlus, Palette, Sparkles, UsersRound } from 'lucide-react'
+import { getAssetUrl } from '../../data/brandData'
 
 function BrandSummaryCard({ brandData }) {
   const { brandName, tagline, tone, audience, logo, mascot } = brandData
@@ -8,9 +9,9 @@ function BrandSummaryCard({ brandData }) {
       <div className="flex items-start gap-3">
         <div className="flex shrink-0 flex-col gap-2">
           <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-[12px] border border-[#2C2D3C] bg-[#1D1E29]">
-            {logo?.dataUrl ? (
+            {getAssetUrl(logo) ? (
               <img
-                src={logo.dataUrl}
+                src={getAssetUrl(logo)}
                 alt={logo.fileName || 'Brand logo'}
                 className="h-full w-full object-cover"
               />
@@ -20,9 +21,9 @@ function BrandSummaryCard({ brandData }) {
           </div>
 
           <div className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-[12px] border border-[#2C2D3C] bg-[#1D1E29]">
-            {mascot?.dataUrl ? (
+            {getAssetUrl(mascot) ? (
               <img
-                src={mascot.dataUrl}
+                src={getAssetUrl(mascot)}
                 alt={mascot.fileName || 'Brand mascot'}
                 className="h-full w-full object-cover"
               />

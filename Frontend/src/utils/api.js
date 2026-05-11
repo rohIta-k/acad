@@ -2,6 +2,10 @@ const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL?.trim() ||
   'http://localhost:5000'
 
+function getAssetUrl(asset) {
+  return asset?.url || asset?.dataUrl || ''
+}
+
 async function readJsonResponse(response) {
   const data = await response.json().catch(() => ({}))
 
@@ -20,8 +24,8 @@ function buildMascotBrandData(brandData = {}) {
     audience: Array.isArray(brandData.audience) ? brandData.audience.slice(0, 6) : [],
     palette: Array.isArray(brandData.palette) ? brandData.palette.slice(0, 5) : [],
     mascotBrief: typeof brandData.mascot?.brief === 'string' ? brandData.mascot.brief.trim() : '',
-    hasLogo: Boolean(brandData.logo?.dataUrl),
-    hasMascot: Boolean(brandData.mascot?.dataUrl),
+    hasLogo: Boolean(getAssetUrl(brandData.logo)),
+    hasMascot: Boolean(getAssetUrl(brandData.mascot)),
     referencesCount: Array.isArray(brandData.references) ? brandData.references.length : 0,
   }
 }

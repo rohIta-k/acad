@@ -102,6 +102,10 @@ so the product wins.
 const { buildFormatRulesPrompt } = require("./formatRules");
 const { buildPlatformRulesPrompt } = require("./platformRules");
 
+function getAssetUrl(asset) {
+  return asset?.url || asset?.dataUrl || "";
+}
+
 function arrayToBulletList(items = []) {
   return items.map((item) => `- ${item}`).join("\n");
 }
@@ -144,13 +148,13 @@ ${brandData?.palette?.join(", ") ||
     }
 
 LOGO:
-${brandData?.logo?.dataUrl
+${getAssetUrl(brandData?.logo)
       ? "Logo reference attached"
       : "None"
     }
 
 MASCOT:
-${brandData?.mascot?.dataUrl
+${getAssetUrl(brandData?.mascot)
       ? "Mascot reference attached"
       : "None"
     }
@@ -163,7 +167,7 @@ Reference style images attached:
 ${brandData.references
         .map(
           (item, index) =>
-            `- Reference ${index + 1}: ${item.dataUrl || item.url || "No reference"}`
+            `- Reference ${index + 1}: ${item.url || item.dataUrl || "No reference"}`
         )
         .join("\n")}
 
@@ -192,22 +196,19 @@ GLOBAL OUTPUT RULES
 - All JSON must be fully parseable using JSON.parse()
 - Use double quotes for all property names and strings
 - Escape internal quotation marks properly
-- Keep outputs visually coherent and cinematic
-- Use technical cinematic language
-- "include" reflects requested brand elements
-- The brand name must remain visually noticeable and feel like the central advertised identity
-- Branding should feel naturally integrated into the cinematic composition instead of artificially pasted on
+- Keep outputs visually coherent, cinematic, and commercially impactful
+- Keep creativeDirection and direction compact while still covering all required cinematic details
 - The audience should immediately understand what brand or product is being advertised
-- Avoid unnecessarily long descriptions or repetitive cinematic explanations
-- creativeDirection and direction outputs must remain compact while still covering all required cinematic details
-- Understand the target audience not only from the provided audience field, but also from the product type, product behavior, industry category, brand tone, and overall brand identity
-- The cinematic direction, pacing, visual style, emotional energy, transitions, and branding moments should feel naturally designed for the most relevant audience likely to engage with the product
-- Adapt the advertisement creatively according to how the target audience would emotionally respond to the product, while still maintaining the provided brand tone and identity
-- If reference images are provided, analyze their cinematic intent, emotional energy, composition style, framing language, lighting behavior, pacing, atmosphere, visual hierarchy, and commercial storytelling approach
-- Use the references only as creative inspiration for mood, visual direction, cinematic quality, or storytelling style
-- NEVER directly copy compositions, subjects, poses, layouts, environments, typography placement, or exact scenes from the references
+- The brand name must remain visually dominant, clearly noticeable, and feel like the central advertised identity
+- Branding should feel naturally integrated into the cinematic composition instead of artificially pasted on
+- Understand the target audience not only from the provided audience field, but also from the product type, industry category, product behavior, brand tone, and overall brand identity
+- Adapt the cinematic direction, pacing, emotional energy, visual style, transitions, and branding moments according to how the target audience would emotionally connect with the product
+- If reference images are provided, analyze their cinematic intent, composition style, lighting behavior, emotional energy, pacing, atmosphere, framing language, and storytelling approach
+- Use references only as creative inspiration for cinematic quality, mood, storytelling style, or visual direction
+- NEVER directly copy compositions, subjects, poses, typography placement, layouts, environments, or exact scenes from references
 - The final output must remain original while capturing a similar emotional and cinematic impact inspired by the references
-
+- Brand names, taglines, URLs, logos, mascots, and requested branding elements provided in the input must remain EXACTLY the same in the generated output without renaming, rewriting, shortening, reformatting, or modifying them
+- These exact branding instructions are intended for the final Runway generation prompt and visual output behavior
 VIDEO OUTPUT
 {
   "type": "video",

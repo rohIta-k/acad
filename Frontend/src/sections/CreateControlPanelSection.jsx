@@ -1,5 +1,6 @@
 import { Clapperboard, FolderCog, Sparkles, Video, Wand2 } from 'lucide-react'
 import { includeOptions } from '../data/brandData'
+import { getAssetUrl } from '../data/brandData'
 import BrandSummaryCard from '../components/cards/BrandSummaryCard'
 import CreateSection from '../components/cards/CreateSection'
 import ControlPanelCard from '../components/cards/ControlPanelCard'
@@ -89,10 +90,10 @@ function CreateControlPanelSection({
               key={item}
               checked={
                 item === 'Mascot'
-                  ? Boolean(brandData?.mascot?.dataUrl) && includedItems.includes(item)
+                  ? Boolean(getAssetUrl(brandData?.mascot)) && includedItems.includes(item)
                   : includedItems.includes(item)
               }
-              disabled={item === 'Mascot' && !brandData?.mascot?.dataUrl}
+              disabled={item === 'Mascot' && !getAssetUrl(brandData?.mascot)}
               label={item}
               onToggle={() => onIncludeToggle(item)}
             />

@@ -35,9 +35,14 @@ export function createEmptyAsset() {
   return {
     fileName: '',
     fileType: '',
-    dataUrl: '',
+    url: '',
+    storagePath: '',
     brief: '',
   }
+}
+
+export function getAssetUrl(asset) {
+  return asset?.url || asset?.dataUrl || ''
 }
 
 export function createDefaultBrandData() {

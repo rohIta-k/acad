@@ -15,6 +15,7 @@ import CreateControlPanelSection from '../sections/CreateControlPanelSection'
 import CreatePreviewSection from '../sections/CreatePreviewSection'
 import { generateRunwayVideo } from '../utils/api'
 import { useGenerationStorage } from '../hooks/useGenerationStorage'
+import { getAssetUrl } from '../data/brandData'
 
 function CreatePage() {
   const navigate = useNavigate()
@@ -79,8 +80,8 @@ function CreatePage() {
           tone: brandData.tone,
           audience: brandData.audience,
           palette: brandData.palette,
-          hasLogo: Boolean(brandData.logo?.dataUrl),
-          hasMascot: Boolean(brandData.mascot?.dataUrl),
+            hasLogo: Boolean(getAssetUrl(brandData.logo)),
+            hasMascot: Boolean(getAssetUrl(brandData.mascot)),
           logo: brandData.logo,
           mascot: brandData.mascot,
           referencesCount: brandData.references?.length || 0,

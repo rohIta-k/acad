@@ -1,5 +1,6 @@
 import { ImagePlus, Trash2, Upload } from 'lucide-react'
 import { useRef } from 'react'
+import { getAssetUrl } from '../../data/brandData'
 
 function MediaDrop({
   label,
@@ -53,10 +54,10 @@ function MediaDrop({
             : 'border-[#2C2D3C] bg-[#1D1E29]/50'
           }`}
       >
-        {asset?.dataUrl ? (
+        {getAssetUrl(asset) ? (
           <>
             <img
-              src={asset.dataUrl}
+              src={getAssetUrl(asset)}
               alt={asset.fileName || `${type} upload`}
               className="absolute inset-0 h-full w-full object-cover"
             />
@@ -101,7 +102,7 @@ function MediaDrop({
             }`}
         >
           <Upload className="h-4 w-4" />
-          {asset?.dataUrl
+          {getAssetUrl(asset)
             ? `Replace ${type}`
             : `Upload ${type}`}
         </button>
@@ -113,10 +114,10 @@ function MediaDrop({
             className={`inline-flex items-center gap-2 text-[15px] transition ${isEditing && !isGenerating ? 'text-[#4f46e5] hover:text-[#818cf8]' : 'cursor-default text-[#a1a1aa]'
               }`}
           >
-            {isGenerating ? 'Generating...' : asset?.dataUrl ? 'Regenerate mascot' : 'Generate mascot'}
+            {isGenerating ? 'Generating...' : getAssetUrl(asset) ? 'Regenerate mascot' : 'Generate mascot'}
           </button>
         ) : null}
-        {asset?.dataUrl ? (
+        {getAssetUrl(asset) ? (
           <button
             type="button"
             onClick={onRemove}

@@ -5,7 +5,8 @@ function normalizeAsset(asset) {
   return {
     fileName: asset?.fileName || '',
     fileType: asset?.fileType || '',
-    dataUrl: asset?.dataUrl || '',
+    url: asset?.url || asset?.dataUrl || '',
+    storagePath: asset?.storagePath || '',
     brief: asset?.brief || '',
   }
 }
@@ -27,7 +28,7 @@ export function normalizeBrandData(data = {}) {
     logo: normalizeAsset(data.logo),
     mascot: normalizeAsset(data.mascot),
     references: Array.isArray(data.references)
-      ? data.references.map(normalizeAsset).filter((item) => item.dataUrl)
+      ? data.references.map(normalizeAsset).filter((item) => item.url)
       : defaults.references,
     completedSetup: Boolean(data.completedSetup),
     updatedAt: typeof data.updatedAt === 'string' ? data.updatedAt : '',

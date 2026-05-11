@@ -1,6 +1,10 @@
 const { generateGroqCompletion } = require("./groqService");
 const { buildGenerationPrompt } = require("./buildGenerationPrompt");
 
+function getAssetUrl(asset) {
+  return asset?.url || asset?.dataUrl || "";
+}
+
 function cleanGenerationResult(text = "") {
   return text
     .replace(/```json/g, "")
@@ -50,7 +54,7 @@ async function runCreativeAgent({
   The prompt should naturally weave in:
   - SHOT & MOTION: Handheld tracking shot, cinematic dolly shot, drone reveal shot, slow-motion movement, dynamic motion blur.
   - LENS & LIGHTING: Shallow depth of field, dramatic rim lighting using ${brandData?.palette?.join(", ")}, volumetric lighting, realistic reflections.
-  - TEXTURE & PHYSICS: Subsurface scattering on ${brandData?.mascot?.dataUrl}, ultra-realistic textures, atmospheric haze, ray-traced reflections.
+  - TEXTURE & PHYSICS: Subsurface scattering on ${getAssetUrl(brandData?.mascot)}, ultra-realistic textures, atmospheric haze, ray-traced reflections.
   - STORYTELLING: Feel visually expensive, avoid generic AI visuals, preserve brand identity naturally, align with ${
       brandData?.audience?.join(", ") || "General"
     } psychology.
