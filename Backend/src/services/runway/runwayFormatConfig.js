@@ -20,7 +20,7 @@ const PLATFORM_TO_IMAGE_RATIO = {
 
 const FORMAT_CONFIG = {
   video: {
-    defaultModel: "gen4.5",
+    defaultModel: "veo3.1",
     runwayMethod: "textToVideo",
   },
   image: {
@@ -58,14 +58,12 @@ function resolveDuration(duration) {
   const parsed = Number(duration);
 
   if (!Number.isFinite(parsed)) {
-    return 10;
+    return 8; // Default to 8 seconds
   }
 
-  if (parsed < 0 || parsed > 10) {
-    throw new Error("duration must be between 0 and 10 seconds");
-  }
-
-  return Math.round(parsed);
+  if (parsed <= 4) return 4;
+  if (parsed <= 6) return 6;
+  return 8;
 }
 
 function resolvePromptText(result) {

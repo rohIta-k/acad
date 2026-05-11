@@ -1,4 +1,4 @@
-import { ArrowRight, Brush, FolderOpen, Layers3, Plus } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Brush, FolderOpen, Layers3, Plus } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import PageFrame from '../components/layout/PageFrame'
 import { useBrandStorage } from '../hooks/useBrandStorage'
@@ -68,11 +68,26 @@ function BrandsPage() {
   const navigate = useNavigate()
   const { user, brands, activeBrandId, setActiveBrand, loading, error } = useBrandStorage()
 
+  const BackButton = () => (
+    <button
+      onClick={() => navigate('/')}
+      className="group inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#B8C2FF] text-[#131318] transition-all duration-200 hover:scale-[1.03] hover:bg-[#C3C8FF] active:scale-[0.98]"
+      aria-label="Back to home"
+    >
+      <ArrowLeft className="h-5 w-5 transition-transform duration-200 group-hover:-translate-x-0.5" strokeWidth={2.5} />
+    </button>
+  )
+
   if (loading) {
     return (
       <PageFrame className="p-4 sm:p-6 lg:p-8">
-        <div className="relative z-10 mx-auto max-w-[1200px] rounded-[22px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#625b7a]  sm:p-8">
-          Loading your brands...
+        <div className="relative z-10 mx-auto w-full max-w-[1200px]">
+          <div className="flex w-full justify-start">
+            <BackButton />
+          </div>
+          <div className="mt-4 rounded-[22px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#625b7a] sm:p-8">
+            Loading your brands...
+          </div>
         </div>
       </PageFrame>
     )
@@ -81,8 +96,13 @@ function BrandsPage() {
   if (!user) {
     return (
       <PageFrame className="p-4 sm:p-6 lg:p-8">
-        <div className="relative z-10 mx-auto max-w-[1200px] rounded-[22px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
-          Sign in to create and manage your brands.
+        <div className="relative z-10 mx-auto w-full max-w-[1200px]">
+          <div className="flex w-full justify-start">
+            <BackButton />
+          </div>
+          <div className="mt-4 rounded-[22px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8] sm:p-8">
+            Sign in to create and manage your brands.
+          </div>
         </div>
       </PageFrame>
     )
@@ -92,7 +112,27 @@ function BrandsPage() {
     <PageFrame className="p-4 sm:p-6 lg:p-8">
       <div className="pointer-events-none absolute inset-0" />
       <div className="relative z-10 mx-auto w-full max-w-[1200px]">
-        <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <header className="flex flex-col gap-5">
+          <div className="flex w-full items-start justify-between gap-4">
+            <BackButton />
+            <div className="flex flex-wrap gap-3">
+              <button
+                onClick={() => navigate('/my-stuff')}
+                className="inline-flex items-center justify-center gap-2 rounded-[14px] border border-[#2C2D3C] bg-[#111219] px-5 py-3 text-[15px] font-medium text-[#e2e2e8] transition hover:border-[#B8C2FF] hover:bg-[#1D1E29]"
+              >
+                <FolderOpen className="h-4 w-4" />
+                My Stuff
+              </button>
+              <button
+                onClick={() => navigate('/brands/new')}
+                className="inline-flex items-center justify-center gap-2 rounded-[14px] bg-[#B8C2FF] px-5 py-3 text-[15px] font-medium text-[#131318] transition hover:bg-[#C3C8FF]"
+              >
+                <Plus className="h-4 w-4" />
+                Create Brand
+              </button>
+            </div>
+          </div>
+
           <div>
             <p className="inline-flex items-center gap-2 rounded-full border border-[#2C2D3C] bg-[#1D1E29] px-4 py-2 text-[12px] font-medium tracking-[0.06em] text-[#e2e2e8]">
               <Layers3 className="h-4 w-4" />
@@ -104,23 +144,6 @@ function BrandsPage() {
             <p className="mt-2 max-w-[700px] text-[16px] leading-7 text-[#a1a1aa]">
               Every brand is securely stored in the database under your account. Pick one and generate ads instantly.
             </p>
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            <button
-              onClick={() => navigate('/my-stuff')}
-              className="inline-flex items-center justify-center gap-2 rounded-[14px] border border-[#2C2D3C] bg-[#111219] px-5 py-3 text-[15px] font-medium text-[#e2e2e8] transition hover:border-[#B8C2FF] hover:bg-[#1D1E29]"
-            >
-              <FolderOpen className="h-4 w-4" />
-              My Stuff
-            </button>
-            <button
-              onClick={() => navigate('/brands/new')}
-              className="inline-flex items-center justify-center gap-2 rounded-[14px] bg-[#B8C2FF] px-5 py-3 text-[15px] font-medium text-[#131318] transition hover:bg-[#C3C8FF]"
-            >
-              <Plus className="h-4 w-4" />
-              Create Brand
-            </button>
           </div>
         </header>
 

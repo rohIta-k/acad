@@ -18,7 +18,6 @@ export const audienceOptions = [
 export const includeOptions = [
   'Logo',
   'Mascot',
-  'Tagline',
   'Color palette',
 ]
 

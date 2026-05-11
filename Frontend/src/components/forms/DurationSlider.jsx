@@ -4,9 +4,9 @@ function DurationSlider({ value, onChange, disabled = false }) {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <input
           type="range"
-          min="0"
-          max="10"
-          step="1"
+          min="4"
+          max="8"
+          step="2"
           disabled={disabled}
           value={value}
           onChange={(event) => onChange(Number(event.target.value))}

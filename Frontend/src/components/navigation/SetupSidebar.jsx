@@ -1,12 +1,15 @@
 import { Menu, X } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import BrandForgeLogo from '../shared/BrandForgeLogo'
 import SidebarSteps from './SidebarSteps'
 
 function SetupSidebar({ steps, activeStep, onStepChange, open, onOpen, onClose }) {
+  const navigate = useNavigate()
+
   return (
     <>
       <div className="mb-4 flex items-center justify-between rounded-[18px] border border-[#2C2D3C] bg-[#1D1E29]/80 px-4 py-3  backdrop-blur lg:hidden">
-        <BrandForgeLogo />
+        <BrandForgeLogo onClick={() => navigate('/')} />
         <button
           onClick={onOpen}
           className="flex h-11 w-11 items-center justify-center rounded-full border border-[#2C2D3C] bg-[#1D1E29] text-[#e2e2e8] transition hover:bg-[#111219] hover:text-[#B8C2FF]"
@@ -18,7 +21,7 @@ function SetupSidebar({ steps, activeStep, onStepChange, open, onOpen, onClose }
 
       <aside className="hidden border-r border-[#f0ebf7] py-5 px-6 lg:block">
         <div className="-mt-2 ml-[-30px] flex items-center gap-3">
-          <BrandForgeLogo />
+          <BrandForgeLogo onClick={() => navigate('/')} />
         </div>
         <div className="mt-10 ml-1">
           <SidebarSteps
@@ -39,7 +42,7 @@ function SetupSidebar({ steps, activeStep, onStepChange, open, onOpen, onClose }
           }`}
       >
         <div className="flex items-center justify-between gap-4">
-          <BrandForgeLogo />
+          <BrandForgeLogo onClick={() => navigate('/')} />
           <button
             onClick={onClose}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f5f1ff] text-[#655f80] transition hover:bg-[#ede7ff] hover:text-[#463f60]"

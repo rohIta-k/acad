@@ -18,7 +18,7 @@ function CreateHeader({
 
         <div className="hidden h-5 w-px bg-[#e3ddef] md:block" />
 
-        <BrandForgeLogo />
+        <BrandForgeLogo onClick={onBackToBrands} />
       </div>
 
       <div className="flex items-center gap-3 self-start sm:self-end lg:self-auto lg:-translate-x-6">

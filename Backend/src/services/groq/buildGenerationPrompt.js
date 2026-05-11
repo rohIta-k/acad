@@ -16,17 +16,15 @@ STRUCTURE (fit within 700 characters):
    cinematic color language naturally
 5. Mood — one line, what the viewer feels
 
-BRAND NAME RULE:
-The brand name MUST always appear literally in the scene
-regardless of the include list.
-Place it on a physical surface natural to the scene:
-- product label, packaging, cup sleeve
-- storefront sign, chalkboard, neon sign
-- embossed surface, engraved object
+TITLE RULE:
+Prefer no visible text at all.
+Only include a brand title when it is explicitly needed by the brief or requested in the include list.
+If a title is necessary, keep it small, physical, and naturally integrated into the product or environment.
+Never add taglines, captions, subtitles, signs, labels, numbers, URLs, or extra words.
 
 WRONG: "brand name visible in frame"
-RIGHT: "'Chai Co.' hand-lettered on the clay cup surface"
-RIGHT: "'Chai Co.' etched into the wooden storefront"
+RIGHT: "a small engraved title on the product base"
+RIGHT: "a subtle embossed brand title on the packaging edge"
 
 CONDITIONAL INCLUDES:
 Only write the following if they appear in the INCLUDE LIST.
@@ -48,29 +46,15 @@ RIGHT: "a small illustrated bear in a warm kurta
         sits beside the cup, both hands wrapped 
         around it, eyes closed, content"
 
-TAGLINE (only if "tagline" in include list):
-- Place the tagline on a physical surface that 
-  exists naturally in the scene
-- The surface must have enough contrast for 
-  the tagline to feel readable
-- Describe the surface and how the tagline 
-  sits on it — not just that it exists
-
-WRONG: "tagline displayed in frame"
-RIGHT: "'Every cup, a story.' chalked on the 
-        dark wooden board behind the counter"
-RIGHT: "'Every cup, a story.' printed on the 
-        paper sleeve wrapped around the cup"
-
 HARD RULES:
 - Never use vague words: beautiful, stunning, amazing
 - Never describe multiple scenes — one frame only
 - One hero subject — no cluttered compositions
-- Never say text, typography, overlay, or logo
+- Never say text, typography, overlay, logo, caption, subtitle, URL, sign, label, or watermark
 - Translate brand tone, palette, audience into 
   cinematic language — never list them literally
-- Brand name is always included regardless of list
-- Mascot and tagline only appear if in include list
+- Brand title should only appear when explicitly necessary
+- Mascot only appears if in include list
 - Everything else in the include list — translate 
   into cinematic presence, not literal description
 
@@ -106,6 +90,12 @@ function getAssetUrl(asset) {
   return asset?.url || asset?.dataUrl || "";
 }
 
+function hasIncludeItem(include = [], value) {
+  const target = String(value).trim().toLowerCase();
+
+  return Array.isArray(include) && include.some((item) => String(item).trim().toLowerCase() === target);
+}
+
 function arrayToBulletList(items = []) {
   return items.map((item) => `- ${item}`).join("\n");
 }
@@ -126,7 +116,7 @@ async function buildGenerationPrompt({
 
   return `
 You are an elite AI commercial director.
-Generate a structured cinematic generation plan for Runway.
+Generate a structured cinematic generation plan for a premium live-action Runway commercial.
 
 USER IDEA:
 ${idea}
@@ -134,7 +124,6 @@ ${idea}
 BRAND DNA
 
 Name: ${brandData?.brandName || "Unknown"}
-Tagline: ${brandData?.tagline || "None"}
 Tone: ${brandData?.tone || "Neutral"}
 
 Audience:
@@ -153,8 +142,8 @@ ${getAssetUrl(brandData?.logo)
       : "None"
     }
 
-MASCOT:
-${getAssetUrl(brandData?.mascot)
+    MASCOT:
+    ${hasIncludeItem(include, "Mascot") && getAssetUrl(brandData?.mascot)
       ? "Mascot reference attached"
       : "None"
     }
@@ -197,18 +186,20 @@ GLOBAL OUTPUT RULES
 - Use double quotes for all property names and strings
 - Escape internal quotation marks properly
 - Keep outputs visually coherent, cinematic, and commercially impactful
+- Make the ad feel like real camera-captured footage, not AI-generated footage
+- Favor believable motion, practical lighting, natural product handling, and realistic textures over synthetic, glossy AI visuals
 - Keep creativeDirection and direction compact while still covering all required cinematic details
 - The audience should immediately understand what brand or product is being advertised
-- The brand name must remain visually dominant, clearly noticeable, and feel like the central advertised identity
-- Branding should feel naturally integrated into the cinematic composition instead of artificially pasted on
+- DO NOT describe scenes that feature UI interfaces, software dashboards, computer screens, books, signs, or any objects that naturally contain text. The video generation model will hallucinate gibberish text on these objects. Focus on cinematic live-action, products, people, or abstract environments instead of digital interfaces.
+- The product itself must remain visually dominant and clearly noticeable without relying on any written text.
 - Understand the target audience not only from the provided audience field, but also from the product type, industry category, product behavior, brand tone, and overall brand identity
 - Adapt the cinematic direction, pacing, emotional energy, visual style, transitions, and branding moments according to how the target audience would emotionally connect with the product
 - If reference images are provided, analyze their cinematic intent, composition style, lighting behavior, emotional energy, pacing, atmosphere, framing language, and storytelling approach
 - Use references only as creative inspiration for cinematic quality, mood, storytelling style, or visual direction
 - NEVER directly copy compositions, subjects, poses, typography placement, layouts, environments, or exact scenes from references
 - The final output must remain original while capturing a similar emotional and cinematic impact inspired by the references
-- Brand names, taglines, URLs, logos, mascots, and requested branding elements provided in the input must remain EXACTLY the same in the generated output without renaming, rewriting, shortening, reformatting, or modifying them
-- These exact branding instructions are intended for the final Runway generation prompt and visual output behavior
+- NEVER instruct the video or image model to draw, spell, or overlay any literal text, brand names, letters, or taglines on the screen. Text rendering causes severe spelling hallucinations in diffusion models. Rely entirely on the visual atmosphere, product focus, and reference images to convey brand identity.
+- Any references to the brand identity in your prompt must describe visual mood and aesthetic, NOT literal on-screen text overlays.
 VIDEO OUTPUT
 {
   "type": "video",
@@ -232,6 +223,10 @@ VIDEO OUTPUT RULES
 - The advertisement should feel intentionally paced according to the requested duration
 - Product reveals, branding moments, emotional peaks, and CTA moments should appear progressively throughout the advertisement
 - Avoid repetitive actions, repetitive camera movement, static progression, filler shots, or generic advertisements
+- Make the ad feel like a realistic premium commercial shot on real cinema cameras, not like AI-generated footage
+- Keep the entire product fully visible in the hero moments, even for very short durations; do not rely on extreme crops, fancy angles, or partial obscuring of the product
+- For longer videos, progress through a clear range of angles such as front hero, three-quarter, side, close-up detail, and environmental coverage while keeping the product readable and continuous
+- End with a smooth, resolved final frame or gentle fade-out rather than an abrupt stop
 - Use the provided brand tone, audience, palette, logo, mascot, references, and overall brand DNA to creatively design the advertisement like a premium brand director
 - The sequence should feel visually evolving, attention-grabbing, commercially impactful, and creatively distinct from beginning to end
 

@@ -21,7 +21,7 @@ function CreatePage() {
   const navigate = useNavigate()
   const [selectedFormat, setSelectedFormat] = useState('video')
   const [selectedPlatform, setSelectedPlatform] = useState('instagram_reel')
-  const [duration, setDuration] = useState(10)
+  const [duration, setDuration] = useState(8)
   const [prompt, setPrompt] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
   const [hasGenerated, setHasGenerated] = useState(false)
@@ -81,7 +81,6 @@ function CreatePage() {
         duration: selectedFormat === 'video' ? duration : null,
         brandData: {
           brandName: brandData.brandName,
-          tagline: brandData.tagline,
           tone: brandData.tone,
           audience: brandData.audience,
           palette: brandData.palette,
