@@ -1,5 +1,5 @@
-import { ImagePlus, Sparkles, Trash2, Upload } from 'lucide-react'
-import { useRef } from 'react'
+import { ImagePlus, Sparkles, Trash2, Upload, X } from 'lucide-react'
+import { useRef, useState } from 'react'
 import { getAssetUrl } from '../../data/brandData'
 
 function MediaDrop({
@@ -17,10 +17,24 @@ function MediaDrop({
   errorText = '',
 }) {
   const inputRef = useRef(null)
+  const [showImageModal, setShowImageModal] = useState(false)
 
   const openPicker = () => {
     if (!isEditing) return
     inputRef.current?.click()
+  }
+
+  const handleImageClick = () => {
+    const assetUrl = getAssetUrl(asset)
+    console.log(`[MediaDrop-${type}] Asset:`, asset, 'URL:', assetUrl)
+    // For mascot: show full image if it exists, regardless of editing mode
+    if (type === 'mascot' && assetUrl) {
+      setShowImageModal(true)
+    }
+    // For other types in editing mode with no image: open picker
+    else if (isEditing && !assetUrl) {
+      openPicker()
+    }
   }
 
   const handleFiles = (files) => {
@@ -38,7 +52,7 @@ function MediaDrop({
       </div>
       <button
         type="button"
-        onClick={openPicker}
+        onClick={handleImageClick}
         onDrop={(event) => {
           event.preventDefault()
           if (!isEditing) return
@@ -131,6 +145,32 @@ function MediaDrop({
       {errorText ? (
         <p className="mt-3 text-[14px] leading-6 text-[#da5f86]">{errorText}</p>
       ) : null}
+
+      {/* Full Image Modal */}
+      {showImageModal && getAssetUrl(asset) && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          onClick={() => setShowImageModal(false)}
+        >
+          <div
+            className="relative max-h-[90vh] max-w-[90vw] overflow-hidden rounded-[20px] bg-[#0a0a0f] shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setShowImageModal(false)}
+              className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-[#111219]/80 backdrop-blur-md border border-[#2C2D3C] transition hover:bg-[#111219] hover:shadow-[0_0_16px_rgba(184,194,255,0.12)]"
+            >
+              <X className="h-5 w-5 text-white" />
+            </button>
+            <img
+              src={getAssetUrl(asset)}
+              alt={asset.fileName || 'Mascot'}
+              className="h-full w-full object-contain"
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
