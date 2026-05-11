@@ -161,7 +161,10 @@ ${brandData?.references?.length
 Reference style images attached:
 
 ${brandData.references
-        .map((item, index) => `- Reference ${index + 1}: ${item.url}`)
+        .map(
+          (item, index) =>
+            `- Reference ${index + 1}: ${item.dataUrl || item.url || "No reference"}`
+        )
         .join("\n")}
 
 Capture a similar cinematic vibe, emotional tone, lighting style, composition energy, and visual atmosphere inspired by these references, but NEVER directly copy compositions, characters, layouts, or exact scenes.
@@ -200,6 +203,10 @@ GLOBAL OUTPUT RULES
 - Understand the target audience not only from the provided audience field, but also from the product type, product behavior, industry category, brand tone, and overall brand identity
 - The cinematic direction, pacing, visual style, emotional energy, transitions, and branding moments should feel naturally designed for the most relevant audience likely to engage with the product
 - Adapt the advertisement creatively according to how the target audience would emotionally respond to the product, while still maintaining the provided brand tone and identity
+- If reference images are provided, analyze their cinematic intent, emotional energy, composition style, framing language, lighting behavior, pacing, atmosphere, visual hierarchy, and commercial storytelling approach
+- Use the references only as creative inspiration for mood, visual direction, cinematic quality, or storytelling style
+- NEVER directly copy compositions, subjects, poses, layouts, environments, typography placement, or exact scenes from the references
+- The final output must remain original while capturing a similar emotional and cinematic impact inspired by the references
 
 VIDEO OUTPUT
 {

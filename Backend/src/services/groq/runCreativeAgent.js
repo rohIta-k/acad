@@ -1,6 +1,17 @@
 const { generateGroqCompletion } = require("./groqService");
 const { buildGenerationPrompt } = require("./buildGenerationPrompt");
 
+function cleanGenerationResult(text = "") {
+  return text
+    .replace(/```json/g, "")
+    .replace(/```/g, "")
+    .replace(/\r/g, "")
+    .replace(/\n/g, " ")
+    .replace(/\t/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+}
+
 async function runCreativeAgent({
   idea,
   format,
@@ -106,10 +117,12 @@ ${generationResult}
     //.replace(/\\\//g, "/")
     //.trim();
     console.log(generationResult);
+    const cleaned = cleanGenerationResult(generationResult);
+
     
-    const parsedPlan = JSON.parse(generationResult);
-    console.log("Final Groq Generation Result:", generationResult);
-    console.log(typeof generationResult);
+    const parsedPlan = JSON.parse(cleaned);
+    console.log("Final Groq Generation Result:", parsedPlan);
+    console.log(typeof parsedPlan);
 
   return {
     success: true,
