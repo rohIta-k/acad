@@ -1,7 +1,7 @@
 const PLATFORM_TO_VIDEO_RATIO = {
-  billboard: "1470:630",
+  billboard: "1280:720",
   instagram_reel: "720:1280",
-  instagram_post: "960:960",
+  instagram_post: "720:1280",
   tiktok_short: "720:1280",
   youtube_ad: "1280:720",
   whatsapp_status: "720:1280",
@@ -26,11 +26,7 @@ const FORMAT_CONFIG = {
   image: {
     defaultModel: "gen4_image",
     runwayMethod: "textToImage",
-  },
-  poster: {
-    defaultModel: "gen4_image",
-    runwayMethod: "textToImage",
-  },
+  }
 };
 
 function normalizeFormat(format = "video") {
@@ -72,26 +68,57 @@ function resolveDuration(duration) {
   return Math.round(parsed);
 }
 
-function resolvePromptText(idea) {
-  if (typeof idea === "string") {
-    return idea.trim();
+function resolvePromptText(result) {
+  // Direct string
+  if (typeof result === "string") {
+    return result.trim();
   }
-
-  if (!idea || typeof idea !== "object") {
+  // Invalid object
+  if (!result || typeof result !== "object") {
     return "";
   }
+  // Main generation plan
+  if (
+    typeof result.generationPlan === "string" &&
+    result.generationPlan.trim()
+  ) {
+    return result.generationPlan.trim();
+  }
+  // Handle parsed object generation plans
+  if (
+    result.generationPlan &&
+    typeof result.generationPlan === "object"
+  ) {
+    return JSON.stringify(
+      result.generationPlan,
+      null,
+      2
+    );
+  }
+  return "";
+}
 
-  const candidates = [
-    idea.generationPlan,
-    idea.promptText,
-    idea.prompt,
-    idea.rawPlan,
-  ];
+function resolveMascotPromptText(input) {
+  // Accept direct prompt strings.
+  if (typeof input === "string") {
+    return input
+      .trim()
+      .replace(/\s+/g, " ")
+      .slice(0, 2000);
+  }
 
-  for (const value of candidates) {
-    if (typeof value === "string" && value.trim()) {
-      return value.trim();
-    }
+  // Accept objects with known prompt fields.
+  if (input && typeof input === "object") {
+    const candidate =
+      input.promptText ||
+      input.idea ||
+      input.prompt ||
+      "";
+
+    return String(candidate)
+      .trim()
+      .replace(/\s+/g, " ")
+      .slice(0, 2000);
   }
 
   return "";
@@ -115,5 +142,6 @@ module.exports = {
   resolveRatio,
   resolveDuration,
   resolvePromptText,
+  resolveMascotPromptText,
   resolveModel,
 };

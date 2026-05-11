@@ -9,18 +9,18 @@ async function runCreativeAgent({
   include,
   brandData,
 }) {
-  let iterations = 0;
+  //let iterations = 0;
 
-  const maxIterations = 3;
+  //const maxIterations = 3;
 
-  let generationResult = "";
+  //let generationResult = "";
 
-  let critique = "Initialize cinematic generation.";
+  //let critique = "Initialize cinematic generation.";
 
-  let validated = false;
+  //let validated = false;
 
-  while (iterations < maxIterations && !validated) {
-    iterations++;
+  //while (iterations < maxIterations && !validated) {
+    //iterations++;
 
     // STEP 1:
     // Build orchestration prompt
@@ -30,8 +30,7 @@ async function runCreativeAgent({
       platform,
       duration,
       include,
-      brandData,
-      critique,
+      brandData
     });
     let systemPrompt = `You are ACAD (AI Creative Ad Director), an elite AI cinematic advertisement strategist, creative director, cinematographer, and premium commercial prompt engineer.
   Your job is to create world-class cinematic Runway prompts from structured brand inputs.
@@ -50,10 +49,10 @@ async function runCreativeAgent({
     // STEP 2:
     // Generate cinematic structure
     generationResult = await generateGroqCompletion({
-      systemPrompt: systemPrompt,
+      //systemPrompt: systemPrompt,
       userPrompt: generationPrompt,
       temperature: 0.7,
-      maxTokens: 450,
+      maxTokens: 1200,
     });
 
     // STEP 3:
@@ -85,36 +84,41 @@ Generation Plan:
 ${generationResult}
 `;
 
-    const audit = await generateGroqCompletion({
-      userPrompt: auditPrompt,
-      temperature: 0.2,
-      maxTokens: 120,
-    });
+    //const audit = await generateGroqCompletion({
+      //userPrompt: auditPrompt,
+      //temperature: 0.2,
+      //maxTokens: 120,
+    //});
 
-    if (audit.trim().toUpperCase().includes("READY")) {
-      validated = true;
-    } else {
-      critique = audit;
-    }
-  }
+    //if (audit.trim().toUpperCase().includes("READY")) {
+     // validated = true;
+    //} else {
+      //critique = audit;
+    //}
+  //}
 
   // Final parsing - return a clean, human-readable prompt (and keep raw text)
-  const cleaned = generationResult
-    .replace(/```json/g, "")
-    .replace(/```/g, "")
-    .replace(/\\n/g, "\n")
-    .replace(/\\t/g, "\t")
-    .replace(/\\\//g, "/")
-    .trim();
+  //const cleaned = generationResult
+    //.replace(/```json/g, "")
+    //.replace(/```/g, "")
+    //.replace(/\\n/g, "\n")
+    //.replace(/\\t/g, "\t")
+    //.replace(/\\\//g, "/")
+    //.trim();
+    console.log(generationResult);
+    
+    const parsedPlan = JSON.parse(generationResult);
+    console.log("Final Groq Generation Result:", generationResult);
+    console.log(typeof generationResult);
 
   return {
     success: true,
-    generationPlan: cleaned,
-    rawPlan: cleaned,
+    generationPlan: parsedPlan,
+    //rawPlan: cleaned,
     metadata: {
-      iterations,
-      validated,
-      status: validated ? "validated" : "best-effort",
+        //
+      //validated,
+      //status: validated ? "validated" : "best-effort",
     },
   };
 }

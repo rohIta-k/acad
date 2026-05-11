@@ -17,20 +17,23 @@ async function generateFullCreativeWorkflow({
     include,
     brandData,
   });
+  console.log("Groq Result in Full Workflow:", groqResult);
 
   const runwayResult = await generateRunwayCreative({
-    idea: groqResult,
+    prompt: groqResult,
     format,
     platform,
     duration,
+    brandData
   });
+  console.log("Runway Result in Full Workflow:", runwayResult);
 
   return {
     success: true,
     stage: "complete",
     groqPrompt: groqResult.generationPlan,
     groqMetadata: groqResult.metadata,
-    ...runwayResult,
+    ...runwayResult
   };
 }
 

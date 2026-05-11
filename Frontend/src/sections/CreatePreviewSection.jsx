@@ -14,35 +14,43 @@ function ResultRow({ icon: Icon, label, children }) {
   )
 }
 
-function getPlatformAspect(platform) {
-  const option = platformOptions.find((item) => item.id === platform)
+function getPlatformAspect(platform, type = 'video') {
+  const option = platformOptions.find(
+    (item) => item.id === platform
+  )
 
-  if (!option) {
-    return 'aspect-video'
+  const ratioString =
+    type === 'image'
+      ? option?.imageRatio
+      : option?.videoRatio
+
+  if (!ratioString) {
+    return {
+      aspectRatio: '16 / 9',
+      maxWidth: '100%',
+    }
   }
 
-  switch (option.ratio) {
-    case '9:16':
-      return 'aspect-[9/16]'
+  const [width, height] =
+    ratioString.split(':').map(Number)
 
-    case '1:1':
-      return 'aspect-square'
-
-    case '21:9':
-      return 'aspect-[21/9]'
-
-    default:
-      return 'aspect-video'
+  return {
+    aspectRatio: `${width} / ${height}`,
+    maxWidth: option.previewWidth || '100%',
   }
 }
 
-function CreateResult({ result }) {
+function CreateResult({ result,selectedPlatform }) {
+  const imageSrc =
+  !result.videoUrl
+    ? result.imageUrl || result.outputUrl || ''
+    : ''
 
   return (
     <div className="mt-5 rounded-[22px] bg-[#1D1E29] px-4 py-5 sm:px-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h2 className="mt-2 text-[clamp(1.8rem,4vw,2.35rem)] font-medium tracking-[-0.05em] text-[#4f4968]">
+          <h2 className="mt-2 text-[clamp(1.8rem,4vw,2.35rem)] font-medium tracking-[-0.05em] text-[#ffffff]">
             {result.title}
           </h2>
           <p className="mt-2 max-w-[620px] text-[16px] leading-7 tracking-[-0.02em] text-[#827b98]">
@@ -51,27 +59,37 @@ function CreateResult({ result }) {
         </div>
       </div>
       <div className="mt-6 space-y-5">
-            {result.videoUrl ? (
-              <div className="flex justify-center rounded-[26px] border border-[#2C2D3C] bg-[radial-gradient(circle_at_top,rgba(123,82,243,0.08),transparent_52%),#faf9fc] p-5 ">
-                <video
-                  src={result.videoUrl}
-                  controls
-                  autoPlay
-                  loop
-                  className={`${getPlatformAspect(result.platform)} max-h-[720px] rounded-[20px] object-cover `}
-                />
-              </div>
-            ) : null}
+        {result.videoUrl ? (
+          <div className="flex justify-center rounded-[26px] border border-[#2C2D3C] bg-[radial-gradient(circle_at_top,rgba(123,82,243,0.08),transparent_52%),#faf9fc] p-5 ">
+            <video
+              src={result.videoUrl}
+              controls
+              autoPlay
+              loop
+              className="w-full rounded-[20px] object-cover"
+              style={{
+                aspectRatio: getPlatformAspect(selectedPlatform,'video').aspectRatio,
+                maxWidth: getPlatformAspect(selectedPlatform,'video').maxWidth,
+                maxHeight: '720px',
+              }}
+            />
+          </div>
+        ) : null}
 
-            {result.imageUrl ? (
-              <div className="flex justify-center rounded-[26px] border border-[#2C2D3C] bg-[radial-gradient(circle_at_top,rgba(123,82,243,0.04),transparent_60%),#faf9fc] p-5 ">
-                <img
-                  src={result.imageUrl}
-                  alt={result.title || 'Generated image'}
-                  className={`max-h-[720px] rounded-[20px] object-contain  w-full`}
-                />
-              </div>
-            ) : null}
+        {imageSrc ? (
+          <div className="flex justify-center rounded-[26px] border border-[#2C2D3C] bg-[radial-gradient(circle_at_top,rgba(123,82,243,0.04),transparent_60%),#faf9fc] p-5 ">
+            <img
+              src={imageSrc}
+              alt={result.title || 'Generated image'}
+              className="w-full rounded-[20px] object-contain"
+              style={{
+                aspectRatio: getPlatformAspect(selectedPlatform,'image').aspectRatio,
+                maxWidth: getPlatformAspect(selectedPlatform,'image').maxWidth,
+                maxHeight: '720px',
+              }}
+            />
+          </div>
+        ) : null}
 
         {Array.isArray(result.sceneDirection) && result.sceneDirection.length > 0 ? (
           <ResultRow icon={FileJson} label="Scene direction">
@@ -116,13 +134,14 @@ function CreatePreviewSection({
   hasGenerated,
   generationResult,
   generationError,
+  selectedPlatform,
 }) {
   if (generationError && !isGenerating) {
     return <CreateError message={generationError} />
   }
 
   if (hasGenerated && generationResult) {
-    return <CreateResult result={generationResult} />
+    return <CreateResult result={generationResult} selectedPlatform={selectedPlatform} />
   }
 
   return (

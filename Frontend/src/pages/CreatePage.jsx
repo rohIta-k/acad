@@ -1,5 +1,5 @@
 import { Lock } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PageFrame from '../components/layout/PageFrame'
 import CreateHeader from '../components/navigation/CreateHeader'
@@ -10,6 +10,7 @@ import {
 } from '../data/navigation'
 import { useBrandStorage } from '../hooks/useBrandStorage'
 import { useToggleList } from '../hooks/useToggleList'
+import { useCreatePagePersistence } from '../hooks/useCreatePagePersistence'
 import CreateControlPanelSection from '../sections/CreateControlPanelSection'
 import CreatePreviewSection from '../sections/CreatePreviewSection'
 import { generateRunwayVideo } from '../utils/api'
@@ -18,14 +19,14 @@ import { useGenerationStorage } from '../hooks/useGenerationStorage'
 function CreatePage() {
   const navigate = useNavigate()
   const [selectedFormat, setSelectedFormat] = useState('video')
-  const [selectedPlatform, setSelectedPlatform] = useState('reel')
+  const [selectedPlatform, setSelectedPlatform] = useState('instagram_reel')
   const [duration, setDuration] = useState(10)
   const [prompt, setPrompt] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
   const [hasGenerated, setHasGenerated] = useState(false)
   const [generationResult, setGenerationResult] = useState(null)
   const [generationError, setGenerationError] = useState('')
-  const { items: included, toggleItem: toggleIncluded } = useToggleList(includeOptions)
+  const { items: included, setItems: setIncluded, toggleItem: toggleIncluded } = useToggleList(includeOptions)
 
   const {
     user,
@@ -34,6 +35,24 @@ function CreatePage() {
     loading: brandLoading,
   } = useBrandStorage()
   const { saveGeneration } = useGenerationStorage(user)
+
+  // Persist state across page refreshes
+  useCreatePagePersistence({
+    prompt,
+    selectedFormat,
+    selectedPlatform,
+    duration,
+    included,
+    generationResult,
+    hasGenerated,
+    setPrompt,
+    setSelectedFormat,
+    setSelectedPlatform,
+    setDuration,
+    setIncluded,
+    setGenerationResult,
+    setHasGenerated,
+  })
 
   useEffect(() => {
     // Only fetch/load brand data on mount; no silent redirects
@@ -62,6 +81,8 @@ function CreatePage() {
           palette: brandData.palette,
           hasLogo: Boolean(brandData.logo?.dataUrl),
           hasMascot: Boolean(brandData.mascot?.dataUrl),
+          logo: brandData.logo,
+          mascot: brandData.mascot,
           referencesCount: brandData.references?.length || 0,
         },
       })
@@ -76,7 +97,7 @@ function CreatePage() {
         include: included,
         outputUrl: result.outputUrl || result.videoUrl || result.imageUrl || '',
         videoUrl: result.videoUrl || '',
-        imageUrl: result.imageUrl || '',
+        imageUrl: result.imageUrl || result.outputUrl || '',
         title: result.title || 'Generated creative',
         summary: result.summary || '',
         rawResponse: result,
@@ -151,8 +172,8 @@ function CreatePage() {
           onOpenMyStuff={() => navigate('/my-stuff')}
         />
 
-        <main className="mt-6 sm:mt-10 lg:mt-12">
-          <h1 className="text-[#e2e2e8] text-[clamp(2.1rem,7vw,3.25rem)] font-semibold tracking-[-0.055em]">
+        <main className="mt-8 sm:mt-10 lg:mt-12">
+          <h1 className="text-[clamp(2.35rem,7vw,3.25rem)] font-semibold tracking-[0.00em] text-[#ffffff]">
             Create on-brand content
           </h1>
           <p className="mt-1 max-w-[760px] text-[16px] tracking-[-0.02em] text-[#7d7692] sm:text-[18px]">
@@ -184,6 +205,7 @@ function CreatePage() {
               hasGenerated={hasGenerated}
               generationResult={generationResult}
               generationError={generationError}
+              selectedPlatform={selectedPlatform}
             />
           </div>
 

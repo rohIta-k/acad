@@ -5,6 +5,7 @@ const {
   resolveDuration,
   resolveModel,
   resolvePromptText,
+  resolveMascotPromptText,
   resolveRatio,
 } = require("./runwayFormatConfig");
 const { buildTaskResponse, pollTaskStatus } = require("./taskUtils");
@@ -44,11 +45,17 @@ function buildMascotPrompt(brandData = {}) {
 
 async function createRunwayTask(payload = {}) {
   const format = normalizeFormat(payload.format);
-  const promptText = resolvePromptText(payload.idea);
+  const contentType = payload.content_type || null;
 
-  if (!promptText) {
-    throw new Error("idea is required in body");
-  }
+  const generationPlan =
+    payload.prompt?.generationPlan ||
+    payload.prompt;
+
+  const output =
+    generationPlan?.output || {};
+
+  const brandData =
+    payload.brandData || {};
 
   const model = resolveModel({ format, model: payload.model });
   const ratio = resolveRatio({
@@ -65,8 +72,57 @@ async function createRunwayTask(payload = {}) {
     throw new Error(`Unsupported runway method for format: ${format}`);
   }
 
+  const logoUrl =
+    brandData?.logo?.dataUrl || "";
+
+  const mascotUrl =
+    brandData?.mascot?.dataUrl || "";
+
+  // Handle mascot content type
+  if (contentType === "content/mascot") {
+    const promptText = resolveMascotPromptText(payload.idea);
+
+    if (!promptText) {
+      throw new Error(
+        "promptText is required for mascot generation"
+      );
+    }
+    console.log(promptText);
+
+    return runwayMethod.create({
+      model,
+      promptText,
+      ratio,
+    });
+  }
+
   if (format === "video") {
     const duration = resolveDuration(payload.duration);
+
+    const promptText = `
+
+${String(output.direction || "")}
+
+Brand name: ${brandData?.brandName || ""}.
+Tagline: ${brandData?.tagline || ""}.
+Tone: ${brandData?.tone || ""}.
+Audience: ${(brandData?.audience || []).join(", ")}.
+Brand colors: ${(brandData?.palette || []).join(", ")}.
+Include: ${String(output.includes || "")}.
+
+Logo reference: ${logoUrl || "None"}.
+Mascot reference: ${mascotUrl || "None"}..
+`
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 980);
+
+    if (!promptText) {
+      throw new Error(
+        "idea is required in body"
+      );
+    }
+    console.log(promptText);
 
     return runwayMethod.create({
       model,
@@ -76,13 +132,34 @@ async function createRunwayTask(payload = {}) {
     });
   }
 
-  const finalPrompt = format === "poster"
-    ? buildPosterPrompt(promptText)
-    : promptText;
+  const promptText = `
+
+${String(output.creativeDirection || "")}
+
+Brand name: ${brandData?.brandName || ""}.
+Tagline: ${brandData?.tagline || ""}.
+Tone: ${brandData?.tone || ""}.
+Audience: ${(brandData?.audience || []).join(", ")}.
+Brand colors: ${(brandData?.palette || []).join(", ")}.
+Include: ${String(output.includes || "")}.
+
+Logo reference: ${logoUrl || "None"}.
+Mascot reference: ${mascotUrl || "None"}.
+`
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 980);
+
+  if (!promptText) {
+    throw new Error(
+      "idea is required in body"
+    );
+  }
+  console.log(promptText);
 
   return runwayMethod.create({
     model,
-    promptText: finalPrompt,
+    promptText: promptText,
     ratio,
   });
 }
@@ -91,7 +168,10 @@ async function generateRunwayCreative(payload = {}) {
   assertRunwayApiKey();
 
   const format = normalizeFormat(payload.format);
-  const task = await createRunwayTask(payload);
+  const task = await createRunwayTask({
+    ...payload,
+    content_type: payload.content_type || null,
+  });
   const completedTask = await pollTaskStatus(task.id);
 
   return buildTaskResponse({
@@ -106,6 +186,7 @@ async function generateRunwayMascot(payload = {}) {
     idea: promptText,
     format: "image",
     ratio: payload.ratio || "1080:1080",
+    content_type: "content/mascot",
   });
 
   return {

@@ -66,6 +66,8 @@ function BrandSetupEditor({
     }
   }, [draftData])
 
+  console.log(draftData);
+
   const updateDraftField = (field, value) => {
     setDraftData((current) => ({
       ...current,
@@ -252,7 +254,7 @@ function BrandSetupEditor({
 
   return (
     <PageFrame className="p-3 sm:p-4 lg:p-5">
-      <div className="pointer-events-none absolute inset-0" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(137,92,255,0.15),transparent_22%),radial-gradient(circle_at_86%_20%,rgba(255,255,255,0.95),transparent_24%),radial-gradient(circle_at_75%_76%,rgba(251,174,206,0.12),transparent_25%)]" />
       <SetupShell
         sidebar={
           <SetupSidebar
@@ -267,8 +269,8 @@ function BrandSetupEditor({
       >
         <div className="flex min-h-full flex-col">
           <SetupHeaderSection />
-          <div className="mt-2 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center sm:justify-end">
-            {isEditMode ? (
+          <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center sm:justify-end">
+            {draftData.completedSetup && !isEditing ? (
               <button
                 onClick={() => navigate('/brands')}
                 className="inline-flex items-center gap-2 self-start rounded-[12px] border border-[#2C2D3C] bg-[#111219] px-4 py-3 text-[15px] font-medium text-[#e2e2e8] transition hover:border-[#B8C2FF] hover:bg-[#1D1E29] sm:self-auto"
@@ -323,7 +325,7 @@ function BrandSetupEditor({
                 onToneChange={(value) => updateDraftField('tone', value)}
               />
             </div>
-            <div id="step-3" className="relative z-50 scroll-mt-24">
+            <div id="step-3" className="scroll-mt-24">
               <SetupVisualStyleSection
                 palette={draftData.palette}
                 references={draftData.references}
@@ -347,7 +349,7 @@ function BrandSetupEditor({
                 }
               />
             </div>
-            <div id="step-4" className="relative z-0 scroll-mt-24">
+            <div id="step-4" className="scroll-mt-24">
               <SetupAudienceSection
                 audienceOptions={audienceOptions}
                 selectedAudience={draftData.audience}
@@ -380,10 +382,10 @@ function BrandSetupEditor({
             ) : null}
             <button
               onClick={saveAndContinue}
-              disabled={!validation.isValid || isSaving}
-              className={`flex min-h-[58px] w-full items-center justify-center gap-3 rounded-[12px] px-6 py-4 text-center text-[16px] font-medium tracking-[-0.02em] transition duration-300 sm:px-8 sm:text-[17px] ${validation.isValid
-                  ? 'bg-[#B8C2FF] text-[#131318] hover:bg-[#C3C8FF] hover:-translate-y-0.5 active:scale-[0.995]'
-                  : 'cursor-not-allowed bg-[#1D1E29] text-[#766f8d] shadow-none'
+              disabled={!validation.isValid}
+              className={`flex min-h-[58px] w-full items-center justify-center gap-3 rounded-[12px] px-6 py-4 text-center text-[16px] font-medium tracking-[-0.02em] shadow-[0_18px_48px_rgba(125,85,255,0.26)] transition duration-300 sm:px-8 sm:text-[17px] ${validation.isValid
+                ? 'bg-[linear-gradient(90deg,#7340f6_0%,#e57ac5_100%)] text-white hover:-translate-y-0.5 hover:shadow-[0_22px_58px_rgba(125,85,255,0.34)] active:scale-[0.995]'
+                : 'cursor-not-allowed bg-[linear-gradient(90deg,#cbb7ff_0%,#edc6de_100%)] text-white/85 shadow-none'
                 }`}
             >
               {isSaving ? 'Saving brand...' : 'Save Brand & Start Creating'}
