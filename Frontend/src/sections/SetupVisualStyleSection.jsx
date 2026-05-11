@@ -126,6 +126,27 @@ function SetupVisualStyleSection({
                     </label>
                   </div>
                 </div>
+                <div className="mt-3">
+                  <label className="text-[12px] font-medium text-[#a89ec4]">
+                    Or enter hex code
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="#B8C2FF"
+                    value={activeColor}
+                    onChange={(event) => {
+                      const value = event.target.value.trim()
+                      if (value === '' || /^#[0-9A-Fa-f]{6}$/.test(value)) {
+                        if (paletteEditorMode === 'add') {
+                          onPendingPaletteColorChange(value)
+                        } else {
+                          onPaletteColorChange(value)
+                        }
+                      }
+                    }}
+                    className="mt-1 w-full rounded-[10px] border border-[#2C2D3C] bg-[#1D1E29] px-3 py-2 text-[14px] text-[#e2e2e8] placeholder-[#6d6486] outline-none transition focus:border-[#4f46e5]"
+                  />
+                </div>
               </div>
             ) : null}
           </div>
