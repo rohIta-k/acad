@@ -299,6 +299,11 @@ async function generateRunwayCreative(payload = {}) {
 
 async function generateRunwayMascot(payload = {}) {
   const promptText = buildMascotPrompt(payload.brandData || {});
+
+  if (promptText.length > 1000) {
+    throw new Error("Prompt shouldn't exceed more than 1000 characters.");
+  }
+
   const result = await generateRunwayCreative({
     idea: promptText,
     format: "image",

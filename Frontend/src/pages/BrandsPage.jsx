@@ -12,7 +12,7 @@ function formatDate(isoDate) {
   return `Updated ${value.toLocaleDateString()}`
 }
 
-function BrandCard({ brand, isActive, onUseBrand, onEditBrand }) {
+function BrandCard({ brand, onUseBrand, onEditBrand }) {
   return (
     <article className="rounded-[22px] border border-[#2C2D3C] bg-[#111219] p-5  transition hover:-translate-y-0.5 hover: sm:p-6">
       <div className="flex items-start justify-between gap-4">
@@ -22,11 +22,6 @@ function BrandCard({ brand, isActive, onUseBrand, onEditBrand }) {
           </h2>
           <p className="mt-1 text-[14px] text-[#a1a1aa]">{formatDate(brand.updatedAt)}</p>
         </div>
-        {isActive ? (
-          <span className="rounded-full border border-[#B8C2FF] bg-[#1D1E29] px-3 py-1 text-[12px] font-medium text-[#B8C2FF]">
-            Active
-          </span>
-        ) : null}
       </div>
 
       <p className="mt-4 min-h-12 text-[15px] leading-7 text-[#a1a1aa]">
@@ -66,7 +61,7 @@ function BrandCard({ brand, isActive, onUseBrand, onEditBrand }) {
 
 function BrandsPage() {
   const navigate = useNavigate()
-  const { user, brands, activeBrandId, setActiveBrand, loading, error } = useBrandStorage()
+  const { user, brands, setActiveBrand, loading, error } = useBrandStorage()
 
   const BackButton = () => (
     <button
@@ -175,7 +170,6 @@ function BrandsPage() {
               <BrandCard
                 key={brand.id}
                 brand={brand}
-                isActive={activeBrandId === brand.id}
                 onUseBrand={() => {
                   setActiveBrand(brand.id)
                   navigate('/create')

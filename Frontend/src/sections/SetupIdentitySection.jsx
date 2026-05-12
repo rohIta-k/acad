@@ -89,10 +89,14 @@ function SetupIdentitySection({
                 value={mascotBrief}
                 onChange={(event) => onMascotBriefChange?.(event.target.value)}
                 disabled={!isEditing}
+                maxLength={1000}
                 placeholder="Describe the mascot you want, for example: a friendly fox with a camera strap and playful posture"
                 rows={4}
                 className="flex w-full rounded-[12px] border border-white/12 bg-[rgba(29,30,41,0.78)] px-4 py-3 text-[16px] leading-6 tracking-[0.02em] text-[#e2e2e8] shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_0_1px_rgba(255,255,255,0.03)] outline-none transition backdrop-blur-md placeholder:text-[#a1a1aa] focus:border-[#4f46e5] focus:ring-4 focus:ring-[#4f46e5]/10 disabled:cursor-not-allowed disabled:opacity-70"
               />
+              <p className="mt-2 text-[12px] text-[#8f88a6]">
+                {mascotBrief.length}/1000 characters
+              </p>
             </div>
           </FieldBlock>
         </div>

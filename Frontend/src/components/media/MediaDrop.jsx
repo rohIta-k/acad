@@ -27,8 +27,8 @@ function MediaDrop({
   const handleImageClick = () => {
     const assetUrl = getAssetUrl(asset)
     console.log(`[MediaDrop-${type}] Asset:`, asset, 'URL:', assetUrl)
-    // For mascot: show full image if it exists, regardless of editing mode
-    if (type === 'mascot' && assetUrl) {
+    // For mascot or logo: show full image if it exists, regardless of editing mode
+    if ((type === 'mascot' || type === 'logo') && assetUrl) {
       setShowImageModal(true)
     }
     // For other types in editing mode with no image: open picker
@@ -73,12 +73,30 @@ function MediaDrop({
             <img
               src={getAssetUrl(asset)}
               alt={asset.fileName || `${type} upload`}
-              className="absolute inset-0 h-full w-full object-cover"
+              className={`absolute inset-0 h-full w-full ${type === 'mascot' ? 'object-contain p-3' : 'object-cover'}`}
             />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.7)_100%)]" />
+            <div
+              className={`absolute inset-0 ${type === 'mascot'
+                ? 'bg-[linear-gradient(180deg,rgba(7,8,12,0.32)_0%,rgba(7,8,12,0.56)_100%)]'
+                : 'bg-[linear-gradient(180deg,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.7)_100%)]'
+                }`}
+            />
             <div className="absolute bottom-3 right-3 z-10 rounded-[10px] border border-[#2C2D3C] bg-[#111219]/80 px-3 py-1.5 text-[11px] font-medium tracking-[-0.03em] text-[#e2e2e8] backdrop-blur">
               {asset.fileName || `Uploaded ${type}`}
             </div>
+            {(type === 'mascot' || type === 'logo') ? (
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation()
+                  setShowImageModal(true)
+                }}
+                aria-label={`Open ${type} image`}
+                className="absolute left-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-[#2C2D3C] bg-[#111219]/86 text-[#e2e2e8] backdrop-blur transition hover:bg-[#131318]"
+              >
+                <ImagePlus className="h-4 w-4" />
+              </button>
+            ) : null}
           </>
         ) : (
           <div className="flex flex-col items-center justify-center gap-4">
@@ -149,26 +167,24 @@ function MediaDrop({
       {/* Full Image Modal */}
       {showImageModal && getAssetUrl(asset) && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.96)] p-6 backdrop-blur-md"
           onClick={() => setShowImageModal(false)}
         >
-          <div
-            className="relative max-h-[90vh] max-w-[90vw] overflow-hidden rounded-[20px] bg-[#0a0a0f] shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
+          <button
+            type="button"
+            onClick={() => setShowImageModal(false)}
+            aria-label={`Close ${type} preview`}
+            className="absolute right-8 top-8 z-[100] inline-flex items-center justify-center rounded-[12px] border border-white/10 bg-[#B8C2FF] px-4 py-2 text-[14px] font-medium text-[#131318] shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-md transition hover:bg-[#C3C8FF]"
           >
-            <button
-              type="button"
-              onClick={() => setShowImageModal(false)}
-              className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-[#111219]/80 backdrop-blur-md border border-[#2C2D3C] transition hover:bg-[#111219] hover:shadow-[0_0_16px_rgba(184,194,255,0.12)]"
-            >
-              <X className="h-5 w-5 text-white" />
-            </button>
-            <img
-              src={getAssetUrl(asset)}
-              alt={asset.fileName || 'Mascot'}
-              className="h-full w-full object-contain"
-            />
-          </div>
+            Close
+          </button>
+
+          <img
+            src={getAssetUrl(asset)}
+            alt={asset.fileName || 'Mascot'}
+            onClick={(e) => e.stopPropagation()}
+            className="max-h-full max-w-full rounded-[24px] object-contain shadow-[0_0_60px_rgba(0,0,0,0.6)]"
+          />
         </div>
       )}
     </div>

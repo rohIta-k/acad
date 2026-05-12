@@ -10,7 +10,25 @@ async function readJsonResponse(response) {
   const data = await response.json().catch(() => ({}))
 
   if (!response.ok) {
-    throw new Error(data.error || `Request failed with status ${response.status}`)
+    const rawError = data?.error
+    const message =
+      typeof rawError === 'string'
+        ? rawError
+        : typeof rawError?.message === 'string'
+          ? rawError.message
+          : ''
+
+    const normalized = message.toLowerCase()
+    const isPromptLengthError =
+      normalized.includes('1000') ||
+      (normalized.includes('prompt') && normalized.includes('too long')) ||
+      (normalized.includes('prompt') && normalized.includes('max'))
+
+    if (isPromptLengthError) {
+      throw new Error("Prompt shouldn't exceed more than 1000 characters.")
+    }
+
+    throw new Error(message || `Request failed with status ${response.status}`)
   }
 
   return data

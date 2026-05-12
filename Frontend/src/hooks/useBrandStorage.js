@@ -135,7 +135,7 @@ export function useBrandStorage() {
 
       setError('')
 
-      const selectedBrandId = brandId || activeBrandId
+      const selectedBrandId = brandId
 
       try {
         let savedBrand
