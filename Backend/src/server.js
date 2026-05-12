@@ -1,18 +1,9 @@
-<<<<<<< HEAD
 const crypto = require('crypto');
 const express = require('express');
 const cors = require('cors');
 const cron = require('node-cron');
 
 require('dotenv').config();
-=======
-const crypto = require("crypto");
-const express = require("express");
-const cors = require("cors");
-const cron = require("node-cron");
-
-require("dotenv").config();
->>>>>>> fd6927c65206bea0d5ae5dcda03646c9fb215584
 
 const app = express();
 
