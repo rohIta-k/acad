@@ -113,20 +113,6 @@ function LandingHeroSection() {
         </div>
       </div>
       
-      {/* Footer */}
-      <footer className="mt-auto py-8 flex flex-col items-center gap-6 text-[#a1a1aa] text-[13px]">
-        <div className="flex items-center gap-2 font-mono tracking-widest text-[#e2e2e8] font-bold">
-          <span className="text-[#B8C2FF] text-[20px] font-['Outfit'] tracking-normal">ACAD</span> CINEMATIC SYSTEMS
-        </div>
-        <div className="flex gap-8">
-          <a href="#" className="hover:text-white transition">Showcase</a>
-          <a href="#" className="hover:text-white transition">Documentation</a>
-          <a href="#" className="hover:text-white transition">Terms of Service</a>
-        </div>
-        <div className="font-mono text-[11px] opacity-60 uppercase tracking-widest text-center mt-4">
-          © 2024 ACAD Cinematic Systems. All<br/>Rights Reserved.
-        </div>
-      </footer>
     </main>
   )
 }

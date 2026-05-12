@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 const crypto = require('crypto');
 const express = require('express');
 const cors = require('cors');
 const cron = require('node-cron');
 
 require('dotenv').config();
+=======
+const crypto = require("crypto");
+const express = require("express");
+const cors = require("cors");
+const cron = require("node-cron");
+
+require("dotenv").config();
+>>>>>>> fd6927c65206bea0d5ae5dcda03646c9fb215584
 
 const app = express();
 
@@ -22,8 +31,28 @@ app.use(cors({
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-app.use('/api/groq', groqRoutes);
-app.use('/api/runway', runwayRoutes);
+
+app.use("/api/groq", groqRoutes);
+app.use("/api/runway", runwayRoutes);
+
+app.get("/", (req, res) => {
+  res.send("Backend running");
+});
+
+/*
+  CRON JOB
+  Runs every 14 minutes
+*/
+cron.schedule("*/14 * * * *", async () => {
+  try {
+    console.log("Cron job running:", new Date().toISOString());
+
+    // Optional self ping
+    // await fetch(process.env.BACKEND_URL);
+  } catch (error) {
+    console.error("Cron job error:", error.message);
+  }
+});
 
 app.get('/', (req, res) => {
   res.send('Backend running');

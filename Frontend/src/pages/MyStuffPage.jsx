@@ -87,6 +87,15 @@ function GenerationCard({ item, onDelete }) {
 
 function MyStuffPage() {
   const navigate = useNavigate()
+  const BackButton = () => (
+    <button
+      onClick={() => navigate(-1)}
+      className="group inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#B8C2FF] text-[#131318] transition-all duration-200 hover:scale-[1.03] hover:bg-[#C3C8FF] active:scale-[0.98]"
+      aria-label="Back"
+    >
+      <ChevronLeft className="h-5 w-5 transition-transform duration-200 group-hover:-translate-x-0.5" strokeWidth={2.5} />
+    </button>
+  )
   const { user, loading: brandLoading } = useBrandStorage()
   const {
     paginatedGenerations,
@@ -111,8 +120,13 @@ function MyStuffPage() {
   if (brandLoading) {
     return (
       <PageFrame className="p-4 sm:p-6 lg:p-8">
-        <div className="relative z-10 mx-auto max-w-[1200px] rounded-[22px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#625b7a] sm:p-8">
-          Loading your stuff...
+        <div className="relative z-10 mx-auto w-full max-w-[1200px]">
+          <div className="flex w-full justify-start">
+            <BackButton />
+          </div>
+          <div className="mt-4 rounded-[22px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#625b7a] sm:p-8">
+            Loading your stuff...
+          </div>
         </div>
       </PageFrame>
     )
@@ -121,8 +135,13 @@ function MyStuffPage() {
   if (!user) {
     return (
       <PageFrame className="p-4 sm:p-6 lg:p-8">
-        <div className="relative z-10 mx-auto max-w-[1200px] rounded-[22px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
-          Sign in to access My Stuff.
+        <div className="relative z-10 mx-auto w-full max-w-[1200px]">
+          <div className="flex w-full justify-start">
+            <BackButton />
+          </div>
+          <div className="mt-4 rounded-[22px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
+            Sign in to access My Stuff.
+          </div>
         </div>
       </PageFrame>
     )
@@ -132,7 +151,20 @@ function MyStuffPage() {
     <PageFrame className="p-4 sm:p-6 lg:p-8">
       <div className="pointer-events-none absolute inset-0" />
       <div className="relative z-10 mx-auto w-full max-w-[1200px]">
-        <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <header className="flex flex-col gap-4">
+          <div className="flex w-full items-start justify-between gap-4">
+            <BackButton />
+            <div>
+              <button
+                onClick={() => navigate('/create')}
+                className="inline-flex items-center justify-center gap-2 rounded-[14px] bg-[#B8C2FF] px-5 py-3 text-[15px] font-medium text-[#131318] transition hover:bg-[#C3C8FF]"
+              >
+                <Sparkles className="h-4 w-4" />
+                Generate New
+              </button>
+            </div>
+          </div>
+
           <div>
             <p className="inline-flex items-center gap-2 rounded-full border border-[#2C2D3C] bg-[#131318] px-4 py-2 text-[12px] font-medium tracking-[0.06em] text-[#B8C2FF]">
               <Layers3 className="h-4 w-4" />
@@ -145,14 +177,6 @@ function MyStuffPage() {
               Every render you generate is automatically saved in Supabase and listed here.
             </p>
           </div>
-
-          <button
-            onClick={() => navigate('/create')}
-            className="inline-flex items-center justify-center gap-2 rounded-[14px] bg-[#B8C2FF] px-5 py-3 text-[15px] font-medium text-[#131318] transition hover:bg-[#C3C8FF]"
-          >
-            <Sparkles className="h-4 w-4" />
-            Generate New
-          </button>
         </header>
 
         {loading ? (

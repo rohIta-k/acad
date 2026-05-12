@@ -1,4 +1,4 @@
-import { ArrowRight, PencilLine } from 'lucide-react'
+import { ArrowRight, PencilLine, ChevronLeft } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import SetupShell from '../components/layout/SetupShell'
@@ -43,6 +43,16 @@ function BrandSetupEditor({
   const [saveError, setSaveError] = useState('')
   const [isMascotGenerating, setIsMascotGenerating] = useState(false)
   const [mascotError, setMascotError] = useState('')
+
+  const BackButton = () => (
+    <button
+      onClick={() => navigate(-1)}
+      className="group inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#B8C2FF] text-[#131318] transition-all duration-200 hover:scale-[1.03] hover:bg-[#C3C8FF] active:scale-[0.98]"
+      aria-label="Back"
+    >
+      <ChevronLeft className="h-5 w-5 transition-transform duration-200 group-hover:-translate-x-0.5" strokeWidth={2.5} />
+    </button>
+  )
 
   const validation = useMemo(() => {
     const brandNameValid = draftData.brandName.trim().length > 0
@@ -283,6 +293,9 @@ function BrandSetupEditor({
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_96%_16%,rgba(148,163,184,0.30),transparent_20%),radial-gradient(circle_at_90%_6%,rgba(255,255,255,0.14),transparent_12%),radial-gradient(circle_at_100%_40%,rgba(148,163,184,0.14),transparent_24%)]" />
       <SetupShell>
         <div className="flex min-h-full flex-col">
+          <div className="flex w-full justify-start">
+            <BackButton />
+          </div>
           <SetupHeaderSection />
           <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center sm:justify-end">
             {draftData.completedSetup && !isEditing ? (
@@ -431,8 +444,19 @@ function SetupPage() {
   if (loading) {
     return (
       <PageFrame className="p-6 sm:p-8">
-        <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
-          Loading your brand workspace...
+        <div className="relative z-10 mx-auto w-full max-w-[900px]">
+          <div className="flex w-full justify-start">
+            <button
+              onClick={() => navigate(-1)}
+              className="group inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#B8C2FF] text-[#131318] transition-all duration-200 hover:scale-[1.03] hover:bg-[#C3C8FF] active:scale-[0.98]"
+              aria-label="Back"
+            >
+              <ChevronLeft className="h-5 w-5 transition-transform duration-200 group-hover:-translate-x-0.5" strokeWidth={2.5} />
+            </button>
+          </div>
+          <div className="mt-4 rounded-[20px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
+            Loading your brand workspace...
+          </div>
         </div>
       </PageFrame>
     )
@@ -441,8 +465,19 @@ function SetupPage() {
   if (!user) {
     return (
       <PageFrame className="p-6 sm:p-8">
-        <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
-          Please sign in to create and manage your brands.
+        <div className="relative z-10 mx-auto w-full max-w-[900px]">
+          <div className="flex w-full justify-start">
+            <button
+              onClick={() => navigate(-1)}
+              className="group inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#B8C2FF] text-[#131318] transition-all duration-200 hover:scale-[1.03] hover:bg-[#C3C8FF] active:scale-[0.98]"
+              aria-label="Back"
+            >
+              <ChevronLeft className="h-5 w-5 transition-transform duration-200 group-hover:-translate-x-0.5" strokeWidth={2.5} />
+            </button>
+          </div>
+          <div className="mt-4 rounded-[20px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
+            Please sign in to create and manage your brands.
+          </div>
         </div>
       </PageFrame>
     )
@@ -451,14 +486,25 @@ function SetupPage() {
   if (isEditMode && !selectedBrand) {
     return (
       <PageFrame className="p-6 sm:p-8">
-        <div className="relative z-10 mx-auto max-w-[900px] rounded-[20px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
-          <p>This brand no longer exists in your account.</p>
-          <button
-            onClick={() => navigate('/brands')}
-            className="mt-4 inline-flex items-center gap-2 rounded-[12px] border border-[#2C2D3C] bg-[#1D1E29] px-4 py-2 text-[14px] font-medium text-[#e2e2e8]"
-          >
-            Back to Brands
-          </button>
+        <div className="relative z-10 mx-auto w-full max-w-[900px]">
+          <div className="flex w-full justify-start">
+            <button
+              onClick={() => navigate(-1)}
+              className="group inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#B8C2FF] text-[#131318] transition-all duration-200 hover:scale-[1.03] hover:bg-[#C3C8FF] active:scale-[0.98]"
+              aria-label="Back"
+            >
+              <ChevronLeft className="h-5 w-5 transition-transform duration-200 group-hover:-translate-x-0.5" strokeWidth={2.5} />
+            </button>
+          </div>
+          <div className="mt-4 rounded-[20px] border border-[#2C2D3C] bg-[#111219] p-6 text-[#e2e2e8]  sm:p-8">
+            <p>This brand no longer exists in your account.</p>
+            <button
+              onClick={() => navigate('/brands')}
+              className="mt-4 inline-flex items-center gap-2 rounded-[12px] border border-[#2C2D3C] bg-[#1D1E29] px-4 py-2 text-[14px] font-medium text-[#e2e2e8]"
+            >
+              Back to Brands
+            </button>
+          </div>
         </div>
       </PageFrame>
     )
