@@ -1,8 +1,8 @@
-# BrandForge
+# ACAD
 
 **AI-powered creative ad generation platform that automates brand asset creation and video generation using Groq and Runway ML APIs.**
 
-BrandForge helps creators and small businesses generate professional advertising content by automating the creation of mascots, analyzing brand identity, and generating marketing videos.
+ACAD helps creators and small businesses generate professional advertising content by automating the creation of mascots, analyzing brand identity, and generating marketing videos.
 
 ## Features
 
